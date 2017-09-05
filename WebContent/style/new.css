@@ -1,0 +1,25 @@
+div.navigation{
+			padding:2px;
+			background-color:white;
+			margin-bottom:12px;
+			height: 19px;
+			line-height: 19px;
+			color: #e60012;
+			margin-left: 24px;
+		}
+		
+div.navigation img,.nav,.add_ico{
+	border: none;
+	padding: 2px 0px 0px 0px;
+	vertical-align: middle;
+}
+
+.new_table {
+	background-color: #5e5e5e;
+	color:black;
+	text-align: center
+}
+
+.new_table tr {
+	height: 18px;
+}

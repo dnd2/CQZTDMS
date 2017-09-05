@@ -1,0 +1,64 @@
+
+
+/* ------------------------ ext分页 Pages Main Tyle ----------------*/
+.pages {
+  color: #000000;
+  cursor: default;
+  font-size: 12px;
+  font-family: Tahoma, Verdana;
+  padding: 3px 0px 3px 0px;
+	margin-top:2px;
+	float:right;
+	font-size:12px;
+}
+.pages .count, .pages .number, .pages .arrow {
+  color: #000000;
+  font-size: 12px;
+  
+}
+.pages .count{background-color:#F7F7F7;}
+/* Page and PageCount Style */
+.pages .count {
+  border: 1px solid #CCC;
+  padding: 2px 10px 1px 10px;
+	float:left;
+
+}
+/* Mode 0,1,2 Style (Number) */
+.pages .number {
+  font-weight: normal;
+  padding: 2px 10px 1px 10px;
+  margin-left:5px;
+}
+.pages .number a, .pages .number span {
+  font-size: 12px;
+}
+.pages .number span {
+	float:left;
+	color: #FF9900;
+	margin: 0px 3px 0px 3px;
+	border:1px solid #CCC;
+ 
+  background-color: #F7F7F7;
+}
+.pages .number a{
+	color: #000000;
+	text-decoration: none;
+	display:block;
+	float:left; 
+	padding:1px 5px 2px 5px;
+}
+
+.pages .number a:hover {
+	background-color:#F0F0F0;
+	color:#FF9900;
+}
+.pageTips{
+			border:1px dashed #99BBE8;
+			background-color:#FFFFCC;
+			padding:30px 10px 30px 10px;
+			text-align:center;
+		}
+
+		
+	

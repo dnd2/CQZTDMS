@@ -1,0 +1,59 @@
+body,table, td, a { 
+font:9pt; 
+} 
+
+/*固定行头样式*/
+.scrollRowThead 
+{
+     position: relative; 
+     left: expression(this.parentElement.parentElement.parentElement.parentElement.scrollLeft);
+     z-index:0;
+}
+
+/*固定表头样式*/
+.scrollColThead {
+     position: relative; 
+     top: expression(this.parentElement.parentElement.parentElement.scrollTop);
+     z-index:2;
+}
+
+/*行列交叉的地方*/
+.scrollCR {
+     z-index:3;
+} 
+ 
+/*div外框*/
+.scrollDiv {
+height:480px;
+clear: both; 
+border: 1px solid #EEEEEE;
+OVERFLOW: scroll;
+width: 100%; 
+}
+
+/*行头居中*/
+.scrollColThead td,.scrollColThead th
+{
+     text-align: center ;
+}
+
+/*行头列头背景*/
+.scrollRowThead,.scrollColThead td,.scrollColThead th
+{
+background-color:EEEEEE;
+}
+
+/*表格的线*/
+.scrolltable
+{
+border-bottom:1px solid #CCCCCC; 
+border-right:1px solid #CCCCCC; 
+}
+
+/*单元格的线等*/
+.scrolltable td,.scrollTable th
+{
+     border-left: 1px solid #CCCCCC; 
+     border-top: 1px solid #CCCCCC; 
+     padding: 5px; 
+}

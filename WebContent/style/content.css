@@ -1,0 +1,1456 @@
+	/* CSS Document */
+	
+		*{	padding:0px; margin:0px; }
+		
+		
+		body{
+			font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+			font-size:12px;
+			color:#252525;
+			background-color:#FFFFFF;
+			margin:5px 15px 10px 5px;
+		}
+		
+		a {
+			text-decoration:none;
+		}
+		a:hover, a:active {
+			text-decoration:underline;
+		}
+		a:link, a:visited {
+			color:#08327e;
+		}
+		
+	/* ---------------- form 部分 --------------------------------------*/
+		b{
+			font-weight: normal;
+		}
+		span.star{
+			color: #FD6536;	
+		}
+		textarea{
+			font-size:12px;
+			border:1px solid #5E7692;
+		}
+		
+		input{/*--*/
+			font-size:12px;
+			padding:2px 0px 0px 0px;
+		}
+		
+		select{/*--*/
+			font-size:12px;
+		}
+		.msn_ico{
+			background:url(../img/mission.gif) no-repeat;
+			border:none;
+			color:#FFFFFF;
+			margin-left:-3px;
+			_margin-left:-3px;
+			padding:0px 10px 0px 5px;
+			_padding:0px 10px 0px 5px;		
+		}
+
+		.level_yell{background-color:#EFE700; cursor:pointer}
+		.level_org{background-color:#FFA700; cursor:pointer}
+		.level_red{background-color:#FE4657; cursor:pointer}
+		/*-------------文本框 类型------------*/
+		input.mini_txt{width:20px; height:15px;line-height:15px;border:1px solid #a6b2c8;padding-left: 2px;}
+		/*-add by xiayanpeng begin-*/
+		input.little_txt{ width:40px;height:14px;line-height:14px;border:1px solid #a6b2c8;padding-left: 2px;}
+		/*-add by xiayanpeng end-*/
+		input.short_txt{ width:67px;height:14px;line-height:14px;border:1px solid #a6b2c8;padding-left: 2px;}
+		input.phone_txt{ width:100px;height:14px;line-height:14px;border:1px solid #a6b2c8;padding-left: 2px;}
+		input.middle_txt{ width:150px;height:14px;line-height:14px;border:1px solid #a6b2c8;padding-left: 2px;}
+		input.long_txt{ width:190px;height:14px;line-height:14px;border:1px solid #a6b2c8;padding-left: 2px;}
+		input.supper_txt{ width:250px;height:14px;line-height:14px;border:1px solid #a6b2c8;padding-left: 2px;}
+		input.maxlong_txt{ width:450px;height:14px;line-height:14px;border:1px solid #a6b2c8;padding-left: 2px;}
+		input.no_border{width:147px;height:14px;line-height:14px;border:1px solid #FFF;}
+		input.no_border_txt{width:147px;height:14px;line-height:14px;border:0px solid #FFF;}
+		input.short_no_border_txt{width:67px;height:14px;line-height:14px;border:0px solid #FFF;}
+		input.bottom_line{width:80px; border:1px solid #F3F4F8;border-bottom:1px solid #A6B2C8;background-color:#F3F4F8;}
+		
+		/*-------------电话 类型------------*/
+		input.area_start_txt{width:35px;border:1px solid #a6b2c8;padding-left: 2px;height:14px;line-height:14px;}
+		input.area_end_txt{width:100px;border:1px solid #a6b2c8;padding-left: 2px;height:14px;line-height:14px;}
+		input.time_txt{ width:132px;height:14px;line-height:14px;border:1px solid #a6b2c8;padding-left: 2px;}
+		input.short_time_txt{ width:70px;height:14px;line-height:14px;border:1px solid #a6b2c8;padding-left: 2px;}
+		
+		/*-------------下拉框 类型------------*/
+		.min_sel{width:75px;}
+		.min_sel3{width:100px;}
+		.min_sel2{width:75px;}
+		.short_sel{width:152px;}
+		.long_sel{width:192px;}
+		
+		/*-------------按钮 类型-------------*/
+		input.normal_btn,input.long_btn,input.middle_btn,input.mini_btn,input.mark_btn,input.cssbutton{ 
+			width:60px; 
+			height:16px;	/*为了文本框高度对齐*/
+			line-height:10px;
+			background-color:#EEF0FC;
+			border:1px solid #5E7692;
+			color:#1E3988;
+			cursor: pointer;
+		}
+		input.long_btn{ 
+			width:100px; 
+			color:#1E3988;
+			height:16px;
+		}
+		input.middle_btn{
+			width:40px;
+			height:16px;
+			
+		}
+		input.mini_btn{
+			width:20px;
+			height:16px;
+			
+		}
+		input.mark_btn{
+			width:20px;	
+			height:16px;
+		}
+	/*------------------------------ 容器 ---------------------------------------*/
+		.wbox{
+
+		}
+	
+	/*------------------------------ 导航栏 ---------------------------------------*/
+		div.navigation{
+			padding:2px;
+			background-color:#F5F5F5;
+			margin-bottom:12px;
+		}
+		
+		div.navigation img,.nav,.add_ico{
+			border: none;
+			padding: 2px 0px 0px 0px;
+		}
+	/* =================================查询===================================== */
+		table.table_query{
+			border-collapse:collapse;
+			width:100%;
+			background-color:#F3F4F8;
+		}
+		table.table_query th, .table_query td{
+			background-color:#f8f8f8;
+			font-weight:normal;
+			padding:5px 0px 3px 0px;
+		}
+		table.table_query th{
+			background-color:#DAE0EE;
+			text-align: left;
+			color:#08327e;
+		}
+		table.table_query1 th{
+			background-color:#DAE0EE;
+			text-align: center;
+			color:#08327e;
+		}
+		table.table_query td{
+			padding:5px 0px 3px 0px;
+			text-indent:5px;
+			background-color:#F0F7F2;
+			
+		}
+		tr.table_query_last {
+			padding:10px 0px 10px 0px;
+			text-align: center;
+		}
+		
+		/*------------------查询-两列 ---------------*/
+		td.table_query_2Col_label_2Letter {/*2列2字w:120px; w:260px*/
+			color:#252525;
+			width:40px;
+			text-align:right;
+		}
+		td.table_query_2Col_label_3Letter {/*2列3字*/
+			color:#252525;
+			width:55px;
+			text-align:right;
+		}		
+		td.table_query_2Col_label_4Letter {/*2列4字*/
+			color:#252525;
+			width:70px;
+			text-align:right;
+		}
+		td.table_query_2Col_label_5Letter {/*2列5字*/
+			color:#252525;
+			width:85px;
+			text-align:right;
+		}	
+		td.table_query_2Col_label_6Letter {/*2列6字*/
+			color:#252525;
+			width:100px;
+			text-align:right;
+		}
+		td.innerHTMLStrong {
+			color:#496eb1;
+			font-weight:bold; 
+		}
+		
+		span.innerHTMLStrong {
+			color:#496eb1;
+			font-weight:bold; 
+		}
+	/*------------------add by wangchao---------------*/
+		td.table_query_2Col_label_7Letter {/*2列7字*/
+			color:#252525;
+			width:115px;
+			text-align:right;
+		}
+		td.table_query_2Col_label_8Letter {/*2列8字*/
+			color:#252525;
+			width:130px;
+			text-align:right;
+		}
+	/*------------------add by wangchao end---------------*/	
+		td.table_query_2Col_input {	
+			width:290px;
+			color:#252525;
+			text-align:left;
+		}
+	/*------------------查询-三列 ---------------*/
+		td.table_query_3Col_label_2Letter {/*3列2字*/
+			color:#252525;
+			width:40px;
+			text-align:right;
+		}	
+		td.table_query_3Col_label_3Letter {/*3列3字*/
+			color:#252525;
+			width:55px;
+			text-align:right;
+		}		
+		td.table_query_3Col_label_4Letter {/*3列4字*/
+			color:#252525;
+			width:70px;
+			text-align:right;
+		}
+		td.table_query_3Col_label_5Letter {/*3列5字*/
+			color:#252525;
+			width:85px;
+			text-align:right;
+		}
+		td.table_query_3Col_label_6Letter {/*3列6字*/
+			color:#252525;
+			width:100px;
+			text-align:right;
+		}		
+		/*------------------edit by wangchao ---------------*/
+		td.table_query_3Col_label_7Letter {/*3列7字*/
+			color:#252525;
+			width:115px;
+			text-align:right;
+		}	
+		td.table_query_3Col_label_8Letter {/*3列8字*/
+			color:#252525;
+			width:130px;
+			text-align:right;
+		}	
+		/*------------------edit by wangchao end---------------*/	
+		td.table_query_3Col_input {	
+			color:#252525;
+			width:170px;
+			text-align:left;
+		}
+
+	/*------------------查询-四列 ---------------*/
+/* =================================查询===================================== */
+		/*--有线条风格--*/
+		
+		table.table_query_line th,table.table_query_line td{
+			padding:1px;
+			text-indent:2px;
+			border:1px solid #EEE;	
+		}
+		
+		tr.table_query_line_label td{
+			background-color:#F0F7F2;
+			border:1px solid #EEE;	
+		}
+		
+		tr.table_query_line_input td{
+			background-color:#FFFFFF;
+			color:#5b7693;
+			border:1px solid #EEE;
+		}		
+		
+		.underline{
+			border-bottom:1px dashed #DDD;
+		}
+	/* =================================数据集 ===================================== */
+		.table_list{
+			width:100%;
+			border-collapse:collapse;
+			text-align:center;
+			margin-top:2px;
+		}
+		.table_list td{
+			line-height:1.8em;
+		}
+		
+		.table_list th{
+	background-color:#DAE0EE;
+	font-weight:normal;
+	color:#416C9B;
+	padding:2px;
+	line-height:1.5em;
+	border: 1px solid #E7E7E7;
+		}
+		
+		.table_list_row1 td{
+	border: 1px solid #DAE0EE;
+	white-space:    nowrap;
+		}
+		
+		.table_list_row2 td{
+	/*background-color:#F7F7F7;*/
+	border: 1px solid #DAE0EE;
+	white-space:    nowrap;
+		}
+		
+		.table_list_row3 td{
+			border-left:1px solid #DAE0EE;
+			text-align:left;
+			text-indent:10px;
+		}	
+		.table_list_row4 td{
+	border: 1px solid #DAE0EE;
+		}	
+		.table_list_row5 td{
+			border:1px solid #DAE0EE;
+			background-color: #F3F4F8;
+		}
+		.table_list_row6 td{
+			border:1px solid #DAE0EE;
+			background-color: #f0f0f0;
+			color:#FF0033;
+			font-weight:600;
+		}
+		.table_list_row_light td{
+			background-color: #6495ED;
+		}
+		.table_list_row_red td{
+			background-color:#ffa0a0 ;
+		}	
+		.table_list_row1 a{
+			color:#08327E;
+		}
+		.table_list_th td{
+			text-align: left;
+			border:1px solid #DAE0EE;
+			padding:2px;
+			white-space:    nowrap;
+		}
+		.table_list_th th
+		{
+			text-align: center;
+			font-weight:bold;
+			white-space:    nowrap;
+		}
+		.table_list_th_report th
+		{
+			text-align: center;
+			border:1px solid #FFFFFF;
+			font-weight:bold;
+			white-space:    nowrap;
+		}
+		
+/* =================================数据集 带网格===================================== */
+		.table_grid{
+			width:100%;
+			border-collapse:collapse;
+			text-align:center;
+			margin-top:20px;
+		}
+		.table_grid td{
+			line-height:1.8em;
+			border:1px solid #ccc;
+		}
+		
+		.table_grid th{
+			background-color:#DAE0EE;
+			font-weight:normal;
+			color:#416C9B;
+			padding:2px;
+			line-height:1.5em;
+			border-left:1px solid #ccc;
+			border-right:1px solid #ccc;	
+		}		
+		
+		/* =================================翻页================================= */	
+		div.page_info{
+			/*border:1px solid #C9D0E0;*/
+			margin-top:10px;
+			float:right;
+			font-size:12px;
+		}
+		
+		.page_info_title,div.page_info a,.page_info_input{
+			border:1px solid #ccc;
+			display:block;
+			float:left;
+			height:18px;
+			line-height:18px;
+			margin-right:4px;
+			padding:0 5px;
+		}	
+		
+		div.page_info a:hover{
+			background-color:#F0F0F0;
+			color:#FF9900;
+			text-decoration:none;
+		}
+		div.page_info a:visited{
+			color:#252525;
+			text-decoration:none;
+		}
+		div.page_info a.selected{
+			background-color:#F0F0F0;
+			color:#FF9900;
+		}	
+		/*span.page_info_left{
+			float:left; 
+			padding-left:10px; 
+			margin-top:2px;
+		}
+		span.page_info_right{
+			float:right; 
+			padding-right:10px;
+		}*/
+/* =================================新增框===================================== */
+		table.table_add{
+			border-collapse:collapse;
+			width:100%;
+			background-color:#F3F4F8;
+		}
+		table.table_add th, .table_add td{
+			background-color:#f8f8f8;
+			font-weight:normal;
+			padding:5px 0px 3px 0px;
+			text-indent:5px;
+		}
+		table.table_add th{
+			background-color:#DAE0EE;
+			text-align: left;
+			color:#08327e;
+		}
+		table.table_add td{
+			padding:5px 0px 3px 0px;
+			text-indent:10px;
+			background-color:#F0F7F2;
+		}
+		table.table_add_button{
+			width:100%;
+		}
+		table.table_add_button tr{
+			text-align: center;
+		}
+		/*------------------新增-两列 ---------------*/
+		
+		td.table_add_2Col_label_2Letter {/*2列2字*/
+			color:#252525;
+			width:40px;
+			text-align:right;
+		}		
+		td.table_add_2Col_label_3Letter {/*2列3字*/
+			color:#252525;
+			width:55px;
+			text-align:right;
+		}	
+		td.table_add_2Col_label_4Letter {/*2列4字*/
+			color:#252525;
+			width:70px;
+			text-align:right;
+		}
+		td.table_add_2Col_label_5Letter {/*2列5字*/
+			color:#252525;
+			width:85px;
+			text-align:right;
+		}
+		td.table_add_2Col_label_6Letter {/*2列6字*/
+			color:#252525;
+			width:100px;
+			text-align:right;
+		}		
+		td.table_add_2Col_input {	
+			color:#5c7693;
+			text-align:left;
+			width: 290px;
+		}
+		
+		td.table_add_2Col_last {
+			padding:10px 0px 10px 0px;
+		}
+
+	/*------------------新增-三列 ---------------*/
+		td.table_add_3Col_label_2Letter {/*3列2字*/
+			color:#252525;
+			width:40px;
+			text-align:right;
+		}
+
+		td.table_add_3Col_label_3Letter {/*3列3字*/
+			color:#252525;
+			width:55px;
+			text-align:right;
+		}
+		
+		td.table_add_3Col_label_4Letter {/*3列4字*/
+			color:#252525;
+			width:70px;
+			text-align:right;
+		}
+		td.table_add_3Col_label_5Letter {/*3列5字*/
+			color:#252525;
+			width:85px;
+			text-align:right;
+		}
+		td.table_add_3Col_label_6Letter {/*3列6字*/
+			color:#252525;
+			width:100px;
+			text-align:right;
+		}		
+		td.table_add_3Col_input {	
+			color:#5c7693;
+			text-align:left;
+		}
+		
+		td.table_add_3Col_last {
+			padding:10px 0px 10px 0px;
+		}
+
+/*------------------新增-四列 ---------------*/
+		td.table_add_4Col_label_2Letter {/*4列2字*/
+			color:#252525;
+			width:40px;
+			text-align:right;
+		}
+
+		td.table_add_4Col_label_3Letter {/*4列3字*/
+			color:#252525;
+			width:55px;
+			text-align:right;
+		}
+		
+		td.table_add_4Col_label_4Letter {/*3列4字*/
+			color:#252525;
+			width:70px;
+			text-align:right;
+		}
+		td.table_add_4Col_label_5Letter {/*4列5字*/
+			color:#252525;
+			width:85px;
+			text-align:right;
+		}
+		td.table_add_4Col_label_6Letter {/*4列6字*/
+			color:#252525;
+			width:100px;
+			text-align:right;
+		}		
+		td.table_add_4Col_input {	
+			color:#5c7693;
+			text-align:left;
+		}
+		
+		td.table_add_4Col_last {
+			padding:10px 0px 10px 0px;
+		}
+/* ===============================end 新增框===================================== */
+
+
+/* =================================编辑框===================================== */
+		table.table_edit{
+			border-collapse:collapse;
+			width:100%;
+			background-color:#F3F4F8;
+		}
+		table.table_edit th, .table_edit td{
+			background-color:#f8f8f8;
+			font-weight:normal;
+			padding:1px 0px 1px 0px;
+			text-indent:5px;
+		}
+		table.table_edit th{
+			background-color:#DAE0EE;
+			text-align: left;
+			color:#08327e;
+		}
+		table.table_edit td{
+			padding:1px 0px 1px 0px;
+			text-indent:10px;
+			background-color:#F0F7F2;
+			
+		}
+		table.table_edit_button{
+			width:100%;
+		}
+		table.table_edit_button tr{
+			text-align: center;
+		}
+		table.innerHTMLStrong {
+			color:#496eb1;
+			font-weight:bolder;
+		}
+		/*------------------编辑-两列 ---------------*/
+		
+		td.table_edit_2Col_label_2Letter {/*2列2字*/
+			color:#252525;
+			width:40px;
+			text-align:right;
+		}		
+		td.table_edit_2Col_label_3Letter {/*2列3字*/
+			color:#252525;
+			width:55px;
+			text-align:right;
+		}	
+		td.table_edit_2Col_label_4Letter {/*2列4字*/
+			color:#252525;
+			width:70px;
+			text-align:right;
+		}
+		td.table_edit_2Col_label_5Letter {/*2列5字*/
+			color:#252525;
+			width:85px;
+			text-align:right;
+		}
+		td.table_edit_2Col_label_6Letter {/*2列6字*/
+			color:#252525;
+			width:100px;
+			text-align:right;
+		}	
+		/*------------------edit by wangchao ---------------*/
+		td.table_edit_2Col_label_7Letter {/*2列7字*/
+			color:#252525;
+			width:115px;
+			text-align:right;
+		}	
+		td.table_edit_2Col_label_8Letter {/*2列8字*/
+			color:#252525;
+			width:130px;
+			text-align:right;
+		}	
+		/*------------------edit by wangchao end---------------*/		
+		td.table_edit_2Col_input {	
+			color:#252525;
+			text-align:left;
+			width: 290px;
+		}
+
+	/*------------------编辑-三列 ---------------*/
+		td.table_edit_3Col_label_2Letter {/*3列2字*/
+			color:#252525;
+			width:40px;
+			text-align:right;
+		}
+
+		td.table_edit_3Col_label_3Letter {/*3列3字*/
+			color:#252525;
+			width:55px;
+			text-align:right;
+		}
+		
+		td.table_edit_3Col_label_4Letter {/*3列4字*/
+			color:#252525;
+			width:70px;
+			text-align:right;
+		}
+		td.table_edit_3Col_label_5Letter {/*3列5字*/
+			color:#252525;
+			width:85px;
+			text-align:right;
+		}
+		td.table_edit_3Col_label_6Letter {/*3列6字*/
+			color:#252525;
+			width:100px;
+			text-align:right;
+		}		
+		/*------------------edit by wangchao ---------------*/
+		td.table_edit_3Col_label_7Letter {/*3列7字*/
+			color:#252525;
+			width:115px;
+			text-align:right;
+		}	
+		td.table_edit_3Col_label_8Letter {/*3列8字*/
+			color:#252525;
+			width:130px;
+			text-align:right;
+		}	
+		/*------------------edit by wangchao end---------------*/
+		td.table_edit_3Col_label_9Letter {/*3列9字*/
+			color:#252525;
+			width:145px;
+			text-align:right;
+		}		
+		td.table_edit_3Col_input {	
+			color:#252525;
+			width:165px;
+			text-align:left;
+		}
+
+	/*------------------编辑-四列 ---------------*/
+		td.table_edit_4Col_label_2Letter {/*4列2字*/
+			color:#252525;
+			width:40px;
+			text-align:right;
+		}
+
+		td.table_edit_4Col_label_3Letter {/*4列3字*/
+			color:#252525;
+			width:55px;
+			text-align:right;
+		}
+		
+		td.table_edit_4Col_label_4Letter {/*4列4字*/
+			color:#252525;
+			width:70px;
+			text-align:right;
+		}
+		td.table_edit_4Col_label_5Letter {/*4列5字*/
+			color:#252525;
+			width:85px;
+			text-align:right;
+		}
+		td.table_edit_4Col_label_6Letter {/*4列6字*/
+			color:#252525;
+			width:100px;
+			text-align:right;
+		}
+		/*----------------add by wangchao-------------------*/
+		td.table_edit_4Col_label_7Letter {/*4列7字*/
+			color:#252525;
+			width:115px;
+			text-align:right;
+		}		
+		/*----------------add by wangchao-------------------*/		
+		td.table_edit_4Col_input {	
+			color:#252525;
+			text-align:left;
+		}
+		td.table_edit_4Col_input2 {	
+			color:#252525;
+			width:95px;
+			text-align:left;
+		}
+		
+/* =================================end 编辑框===================================== */
+
+
+/* =================================信息框===================================== */
+		table.table_info{
+			border-collapse:collapse;
+			width:100%;
+			background-color:#F3F4F8;
+		}
+	
+		table.table_info th,table.table_info td{
+			padding:5px 0px 3px 0px;
+			text-indent:2px;
+			font-weight:normal;
+		}
+		.table_info th{
+			background-color:#DAE0EE;
+			text-align: left;
+			color:#08327e;
+		}
+		/*------------返回按钮-------------------*/
+		table.table_info_button{
+			width:100%;
+		}
+		table.table_info_button tr{
+			text-align: center;
+		}
+		/*------------------信息框-两列 ---------------*/
+		td.table_info_2col_label_2Letter {/*2列2字*/
+			color:#252525;
+			text-align:right;
+			width:40px;
+		}
+
+		td.table_info_2col_label_3Letter {/*2列3字*/
+			color:#252525;
+			text-align:right;
+			width:55px;
+		}
+		
+		td.table_info_2col_label_4Letter {/*2列4字*/
+			color:#252525;
+			text-align:right;
+			width:70px;
+		}
+
+		td.table_info_2col_label_5Letter {/*2列5字*/
+			color:#252525;
+			text-align:right;
+			width:85px;
+		}
+
+		td.table_info_2col_label_6Letter {/*2列6字*/
+			color:#252525;
+			text-align:right;
+			width:100px;
+		}
+				
+		td.table_info_2col_input {
+			color:#5c7693;
+			width:290px;
+			text-align:left;
+		}	
+
+		/*------------------消息框-三列 ---------------*/
+		td.table_info_3col_label_2Letter {/*3列2字*/
+			color:#252525;
+			text-align:right;
+			width:40px;
+		}
+
+		td.table_info_3col_label_3Letter {/*3列3字*/
+			color:#252525;
+			text-align:right;
+			width:55px;
+		}
+		
+		td.table_info_3col_label_4Letter {/*3列4字*/
+			color:#252525;
+			text-align:right;
+			width:70px;
+		}
+
+		td.table_info_3col_label_5Letter {/*3列5字*/
+			color:#252525;
+			text-align:right;
+			width:85px;
+		}
+
+		td.table_info_3col_label_6Letter {/*3列6字*/
+			color:#252525;
+			text-align:right;
+			width:100px;
+		}
+				
+		td.table_info_3col_input {
+			color:#5c7693;
+			width:185px;
+			text-align:left;
+		}	
+		td.table_info_input_all{
+			color:#5c7693;
+			width:600px;
+			text-align:left;
+		}
+
+		/*------------------消息框-四列 ---------------*/
+		td.table_info_4col_label_2Letter {/*4列2字*/
+			color:#252525;
+			text-align:right;
+			width:40px;
+		}
+
+		td.table_info_4col_label_3Letter {/*4列3字*/
+			color:#252525;
+			text-align:right;
+			width:55px;
+		}
+		
+		td.table_info_4col_label_4Letter {/*4列4字*/
+			color:#252525;
+			text-align:right;
+			width:68px;
+		}
+		td.table_info_4col_label_5Letter {/*4列5字*/
+			color:#252525;
+			text-align:right;
+			width:85px;
+		}	
+		td.table_info_4col_label_6Letter {/*4列6字*/
+			color:#252525;
+			text-align:right;
+			width:90px;
+		}			
+		td.table_info_4col_input {
+			color:#5c7693;
+			width:110px;
+			text-align:left;
+		}
+		
+		td.table_info_5col_input {
+			color:#5c7693;
+			width:90px;
+			text-align:left;
+		}
+		
+		td.table_info_4col_input2 {
+			color:#5c7693;
+			width:95px;
+			text-align:left;
+		}		
+/* =================================end 信息框===================================== */
+
+
+		/*----------------------------------回访 待销售 容器-----------------------------*/
+		div.box{
+			background-color:#fff;
+		}
+		div.box_head{
+			font-weight:bold;
+			padding:2px 2px 2px 1em;
+			background-color:#F7F7F7;
+			border:1px solid #666;
+			height:20px;
+			line-height:20px;
+		}
+		div.box_head span.left{	
+			float:left;
+			color:#666666;
+		}
+		div.box_head span.right{
+			float:right;
+			font-weight:normal;		
+		}
+		div.box_content{
+			padding:2px;	
+			border:1px solid #666;border-top:none;
+		}
+		div.box_head span a.roll {
+			padding-right:15px;
+			color:#0066CC;
+			text-decoration:none;
+			background:transparent url(../img/close.gif);
+			background-repeat: no-repeat;
+		}
+		
+		div.box_content a{ text-decoration:none; display:block;}
+
+/*----------------------消息 table-------------------*/	
+	   table.tb_list{	
+			border-collapse:collapse;		
+			border:1px solid #CCC;
+			width:100%;
+		}
+			
+		.tb_list_row1 td{ font-weight:bold; border-bottom:1px solid #CCC;}
+		
+		.tb_list_row2 td{	
+			text-indent:10px;
+		}
+		
+		.tb_list_row3 td{	
+	
+			padding:2px;
+			border-bottom:1px dashed #CCC;
+			background-repeat:no-repeat;
+		}
+		.tb_list a{
+			text-decoration:none;
+			color:#333;
+			display:block;
+			padding:2px;
+		}
+		.tb_list a:hover{
+			color:#666;
+			background-color:#E7EBF3;
+		}
+		
+		div.quick_link_box{
+			margin:1px 5px 1px 2px;
+			overflow:hidden;
+			border-top:1px solid #EEE;
+		}
+
+		
+		/*================================列表 出现滚动条效果=================================*/
+		div.list_box{
+			overflow-y:scroll;
+		}
+		
+		div.list_box ul{
+			list-style-type:none;
+		}
+		
+		div.list_box li{
+			text-align:left;
+			text-indent:20px;
+			height:12px;
+		}
+		
+		div.list_box li a{
+			display:block;
+			text-decoration:underline;
+		}
+		div.list_box li a:hover{
+			text-decoration:none;
+		}
+
+		/*=================================列表 无滚动条效果=================================*/
+		div.list_box2{}		
+		div.list_box ul, div.list_box2 ul{
+			list-style-type:none;
+		}
+		
+		div.list_box2 li{
+			text-align:left;
+			text-indent:20px;
+			height:12px;
+			padding-top:1px;
+		}
+		
+		div.list_box2 li a{
+			display:block;
+			text-decoration:none;
+			color:#8d593a;
+		}
+		div.list_box2 li a:hover{
+			text-decoration:underline;
+		}
+		
+		/*===================================汽车图片============================================*/
+		img.car{
+			border:none;
+			width:250px;
+			height:140px;
+		}
+		.limg{
+			overflow:hidden;	
+		}
+		.simg{
+			width:90px;
+			height:68px;
+			border:1px dashed #CCC;
+		}
+		img{			
+			border:none;
+		}
+		.bimg{
+			width:400px;
+			height:280px;
+			border:1px dashed #CCC;	
+		}
+
+	/*=======================================缩略图 部分===========================================*/
+		table.pic_list{
+			width:100%;
+			border-collapse:collapse;	
+		}
+		
+		table.pic_list td{
+			padding:8px;
+		}
+		table.pic_list th{
+			padding:3px;
+			border-bottom:1px dashed #CCC;
+		}
+		
+	/* =================================特殊 框架==================================== */
+		.table_list_line{
+			width:100%;
+			border-collapse:collapse;
+			text-align:center;
+		}
+		.table_list_line td, .table_list_line th{
+			line-height:1.5em;
+			border:1px solid #CCC;
+		}
+		
+		.table_list_line th{
+			font-weight:normal;
+			color:#08327e;
+		}
+		
+		.table_list_line_row1 td{
+			text-align:left;
+			text-indent:5px;
+		}
+
+	/* =================================打印==================================== */
+		.tdp {
+			border-color: #000000 #000000 #000000 #000000;
+			border-style: solid;	
+			border-width: 1px;
+			height: 22px;
+			font-size: 14px;		
+		}
+		
+		.tdpvoid {
+			border-width: 1px;
+			height: 22px;
+			font-size: 14px;		
+		}
+		
+		.tdpsp {
+			border-color: #000000 #000000 #000000 #000000;
+			border-style: solid;	
+			border-width: 1px;
+			height: 26px;
+			font-size: 16px;		
+		}
+		
+			.tdpLeft {
+			border-color: #000000 #000000 #000000 #000000;
+			border-style: solid;	
+			border-width: 1px;		
+			BORDER-LEFT: medium none;
+		}
+			.tdpright {
+			border-color: #000000 #000000 #000000 #000000;
+			border-style: solid;	
+			border-width: 1px;		
+			BORDER-RIGHT: medium none;
+		}
+		
+		
+		.tdpright {
+			border-color: #000000 #000000 #000000 #000000;
+			border-style: solid;
+			border-width: 1px;
+			border-right-width: 2px;
+		}
+		.tdpd {
+			border-bottom: 1 solid #000000;
+			border-left: 1 solid #000000;
+			border-top: 1 solid #ffffff;
+			border-right: 1 solid #ffffff;
+			
+		}
+	
+		.tabp {
+			width: 800px;
+			border-color: #000000 #000000 #000000 #000000;
+			border-collapse:collapse;
+			border-top-width: 1px;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-left-width: 1px;
+		}
+		.tabp2 {
+			width: 800px;
+			border-color: #000000 #000000 #000000 #000000;
+			border-collapse:collapse;
+			border-top-width: 1px;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-left-width: 1px;
+		}
+		
+		.tabptest {
+			width: 680px;
+			border-color: #000000 #000000 #000000 #000000;
+			border-collapse:collapse;
+			border-top-width: 1px;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-left-width: 1px;
+		}
+			.tabprint {
+			width: 250px;
+			border-color: #000000 #000000 #000000 #000000;
+			border-collapse:collapse;
+			border-top-width: 1px;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-left-width: 1px;
+		}
+
+		.NOPRINT {
+			font-family: "宋体";
+			font-size: 9pt;
+		}
+		.sign {
+			border: 2px solid #190707 ;
+		}
+		.pageNext{
+			page-break-after:always;
+		}
+		.bigTable{
+		border-collapse:collapse;
+		cellpadding:0;
+		cellspacing:0
+		
+		
+		}
+		
+		.table_listPC{
+			width:100%;
+			border-collapse:collapse;
+			text-align:center;
+			margin-top:2px;
+		}
+		.table_listPC td{
+			line-height:1.8em;
+		}
+		
+		.table_listPC th{
+	background-color:#CCFFFF;
+	font-weight:normal;
+	color:#416C9B;
+	padding:2px;
+	line-height:1.5em;
+	border: 1px solid #E7E7E7;
+		}
+/* =================================分页组件TD显示内容设置文字间隔==================================== */	
+#myTable td{
+		padding-left: 5px;
+		padding-right: 5px;
+	}		
+		
+
+/* =================================全局100%编辑样式==================================== */	
+table.sepTab {
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid black;
+}
+
+table.sepTab td,table.sepTab th {
+	border: 1px solid black;
+	font-family: '宋体';
+	height: 20px;
+}
+
+/* =================================全局100%无外框编辑样式==================================== */	
+table.voidTab {
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid black;
+	frame: void;
+}
+
+table.voidTab td {
+	border: 1px solid black;
+	font-family: '宋体';
+	height: 20px;
+}
+
+table.voidTab th {
+	border: 1px solid black;
+	background-color: #DAE0EE;
+	font-family: '宋体';
+	height: 20px;
+}
+
+/* =================================全局100%列表样式==================================== */	
+table.tab_list {
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid #5E7692;
+	frame: void;
+}
+
+table.tab_list td {
+	border: 1px solid #5E7692;
+	font-family: '宋体';
+	height: 20px;
+	text-align: center;
+}
+
+table.tab_list th {
+	border: 1px solid #5E7692;
+	background-color: #DAE0EE;
+	font-family: '宋体';
+	height: 20px;
+}
+
+/* =================================全局100%编辑高度20px样式==================================== */	
+table.tab_edit {
+	border-collapse: collapse;
+	border: 1px solid #5E7692;
+	frame: void;
+}
+
+table.tab_edit td {
+	border: 1px solid #5E7692;
+	font-family: '宋体';
+	height: 20px;
+}
+
+table.tab_edit th {
+	border: 1px solid #5E7692;
+	background-color: #DAE0EE;
+	font-family: '宋体';
+	height: 20px;
+}
+
+/* =================================全局100%打印样式==================================== */	
+table.tab_print {
+	border-collapse: collapse;
+	border: 1px solid black;
+	frame: void;
+}
+table.tab_printss {
+	border-collapse: collapse;
+	border: 1px solid black;
+	font-size: 13px;
+	height: 22px;
+	frame: void;
+}
+table.tab_printss td {
+	border-collapse: collapse;
+	border: 1px solid black;
+	font-size: 14px;
+	height: 24px;
+	frame: void;
+}
+table.tab_printssa {
+	border-collapse: collapse;
+	border: 1px solid black;
+	font-size: 20px;
+	height: 25px;
+	frame: void;
+}
+table.tab_printssa td {
+	border-collapse: collapse;
+	border: 1px solid black;
+	font-size: 20px;
+	height: 25px;
+	frame: void;
+}
+table.tab_print td, table.tab_print th {
+	border: 1px solid black;
+	font-family: '宋体';
+	height: 20px;
+}
+
+/* =================================全局100%打印无高度样式==================================== */	
+table.tab_printvoid {
+	border-collapse: collapse;
+	border: 1px solid black;
+	frame: void;
+}
+
+table.tab_printvoid td, table.tab_printvoid th {
+	border: 1px solid black;
+	font-family: '宋体';
+}
+
+/* =================================全局100%打印无高度样式==================================== */	
+table.tab_printvoid1 {
+	border-collapse: collapse;
+	border: 1px solid black;
+	frame: void;
+}
+
+table.tab_printvoid1 td, table.tab_printvoid1 th {
+	border: 1px solid black;
+	font-family: '宋体';
+	height: 30px;
+}
+
+/* =================================全局100%打印宽度650，表头24，左右居中，上下居中样式==================================== */	
+table.tab_printsep {
+	border-collapse: collapse;
+	width: 800px;
+	border: 1px solid black;
+	frame: void;
+}
+
+table.tab_printsep th {
+	text-align: center;
+	font-family: '宋体';
+	font-weight: normal;
+	font-size: 14px;
+	height: 24px;
+	border: solid black;
+}
+
+table.tab_printsep td {
+	border: 1px solid black;
+	text-align: center;
+	vertical-align: middle;
+	font-family: '宋体';
+	font-size: 14px;
+	height: 24px;
+}
+
+/* =================================全局100%打印宽度650，表头24，左右居中，上下居中样式==================================== */	
+table.tab_printsep1 {
+	border-collapse: collapse;
+	width: 800px;
+	border: 1px solid black;
+	frame: void;
+}
+
+table.tab_printsep1 th {
+	font-family: '宋体';
+	font-weight: normal;
+	font-size: 14px;
+	height: 24px;
+	border: solid black;
+}
+
+table.tab_printsep1 td {
+	border: 1px solid black;
+	vertical-align: middle;
+	font-family: '宋体';
+	font-size: 14px;
+	height: 24px;
+}
+
+/* =================================全局100%打印宽度650，表头24，左右居中，上下居中样式==================================== */	
+table.tab_printsep2 {
+	border-collapse: collapse;
+	width: 800px;
+	border: 1px solid black;
+	frame: void;
+}
+
+table.tab_printsep2 th {
+	font-weight: normal;
+	font-size: 14px;
+	height: 24px;
+	border: solid black;
+}
+
+table.tab_printsep2 td {
+	border: 1px solid black;
+	font-size: 14px;
+	height: 24px;
+}
+/* ========= 鼠标手形显示 ========= */
+.hand {
+	cursor: pointer;
+}
+/*截取一定长度字符串*/
+div.subStr{
+    max-width:200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis
+}
+
+/* =================================鼠标滑动显示图片==================================== */
+		.showimg{
+			display:block;
+/* 			margin-bottom:60px; */
+		}
+		
+		.showimg span{
+			position:relative;
+			z-index:0;
+		}
+		
+		.showimg:hover{
+			background-color:transparent;
+			z-index:50;
+		}
+		
+		.showimg span img{
+			border-width:0;
+			padding:2px;
+			position:absolute;
+			background-color:#FFFFE0;
+			left:-1000px;
+			border:1px dashed gray;
+			visibility:hidden;
+			color:#000;
+			text-decoration:none;
+			padding:5px;
+			width:400px;
+			height:500px;
+		}
+		
+		.showimg:hover img{
+			visibility:visible;
+			top:-30px;
+			left:0px;
+		}

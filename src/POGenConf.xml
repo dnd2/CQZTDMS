@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PO_CONFIG>
+	<DB_CONNECTIONS>
+		<DB_CONNECTION TYPE="ORACLE" VALID="TRUE">
+			<PROPERTY NAME="DB_DRIVER">oracle.jdbc.driver.OracleDriver</PROPERTY>
+			<PROPERTY NAME="DB_URL">jdbc:oracle:thin:@10.1.3.4:1521:orcl</PROPERTY>
+			<PROPERTY NAME="DB_USER">yxdms</PROPERTY>
+			<PROPERTY NAME="DB_PASSWORD">1qazxsw2</PROPERTY>
+		</DB_CONNECTION>
+	</DB_CONNECTIONS>
+	
+	<PO_PATH PATH="E:/aaa"/>
+	<PACKAGE NAME="com.infodms.dms.po" IS_GENERATOR="TRUE">
+
+<TABLE NAME="Tt_Part_Plan_Scroll"/>
+</PACKAGE>
+</PO_CONFIG>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jatools Class="com.jatools.core.ZJrsConfigure"
+	Name="jatools report v1.0 ">
+	<HttpFileServers ItemClass="com.jatools.rfs.ZRemoteFileServer">
+		<Item0>
+			<Name>test</Name>
+			<Root>./test</Root>
+			<User>admin</User>
+		</Item0>
+	</HttpFileServers>
+</jatools>

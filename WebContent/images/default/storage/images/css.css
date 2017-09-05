@@ -1,0 +1,121 @@
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.btz{
+	font-family: "Î¢ÈíÑÅºÚ";
+	font-size: 12px;
+	color: #0000CC;
+	background-image: url(bg.jpg);
+	text-align: center;
+	width: 45px;
+	height:28px
+
+}
+.btd{
+	font-family: "Î¢ÈíÑÅºÚ";
+	font-size: 12px;
+	color: #0000CC;
+	background-image: url(bgd.jpg);
+	text-align: center;
+	width: 45px;
+
+}
+.btzj{
+	background-image: url(bgz.jpg);
+	text-align: center;
+	width: 45px;
+
+}
+.sithave{
+	border-bottom-color:#CDCDCD;
+	width: 45px;
+	height:45px;
+	position:relative;
+}
+.sitnull{
+	background-repeat: no-repeat;
+	background-position: center 13px;
+	height: 45px;
+	top:0px;
+	left:0px;
+}
+.roadnull{
+	font-family: "Î¢ÈíÑÅºÚ";
+	font-size: 12px;
+	color: #99CCCC;
+	background-image: url(bg.jpg);
+	text-align: center;
+	width: 45px;
+	height:28px
+}
+.bodynull{
+	background-color: #ffffff;
+	border-left-color:#CDCDCD;
+	width: 45px;
+	height:45px;
+	position:relative
+}
+.checkDisable {
+	background-color: red;
+	background-repeat: no-repeat;
+	background-position: center 13px;
+	height: 45px; 
+	top:0px;
+	left:0px
+}
+.checkEnable {
+	background-color: #B2D6AA;
+	background-repeat: no-repeat;
+	background-position: center 13px;
+	height: 45px;
+	top:0px;
+	left:0px
+}
+.checkTrue {
+	background-color: #F7B40F;
+	background-repeat: no-repeat;
+	background-position: center 13px;
+	height: 45px;
+	top:0px;
+	left:0px
+}
+.checkTitleDisable {
+	background-color: red;
+	width:20px
+}
+.checkTitleEnable {
+	background-color: #B2D6AA;
+	width:20px
+}
+.checkTitleTrue {
+	background-color: #F7B40F;
+	width:20px
+}
+table.admintable {
+border:1px solid #AEDEF2;
+border-collapse: collapse;
+}
+th.adminth {
+width: 671px;
+color: #0066cc;
+background-color: #eef6fe;
+font-size:12px;
+color:#05B;
+border:1px solid #AEDEF2;
+filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#AEDEF2,endColorStr=ghostwhite);
+}
+td.admincls0 {
+border:1px solid #AEDEF2;
+font-size:12px;
+font-family: ÐÂËÎÌå;
+color: #333;
+}
+#rightList div{
+height: 45px;
+width:45px;
+top:0px;
+left:0px
+}

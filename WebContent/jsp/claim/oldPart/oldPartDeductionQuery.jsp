@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//Dtd XHTML 1.0 Transitional//EN" "http://www.w3.org/tr/xhtml1/Dtd/xhtml1-transitional.dtd">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<%
+	String contextPath = request.getContextPath();
+%>
+<%@taglib uri="/jstl/cout" prefix="c"%>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<%@ page import="com.infodms.dms.common.Constant"%>
+<jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
+<title>抵扣通知单查询</title>
+</head>
+<body onload="doInit();">
+<div class="wbox">
+<div class="navigation"><img src="<%=contextPath%>/img/nav.gif"/>&nbsp;当前位置： 售后服务管理&gt;索赔旧件管理&gt;抵扣通知单查询</div>
+  <form id="fm" name="fm">
+  	  <input type="hidden" name="curPage" id="curPage" value="1" />
+  	  <div class="form-panel">
+				<h2><img src="<%=contextPath%>/jmstyle/img/search-ico.png" style="margin-bottom: -13px;"/>查询条件</h2>
+				<div class="form-body">
+    <TABLE class="table_query">
+       <tr>
+         <td class="right" >通知日期： </td>
+         <td align="left" nowrap="true">
+			<input name="report_start_date" type="text" class="middle_txt" id="report_start_date"  readonly="readonly" style="width: 80px;"/> 
+			<input name="button" value=" " type="button" class="time_ico" onclick="showcalendar(event, 'report_start_date', false);" />  	
+             &nbsp;至&nbsp; <input name="report_end_date" type="text" class="middle_txt" id="report_end_date"  readonly="readonly" style="width: 80px;"/> 
+			<input name="button" value=" " type="button" class="time_ico" onclick="showcalendar(event, 'report_end_date', false);" /> 
+		</td>	
+		  <td class="right" >抵扣单状态：</td>
+          <td >
+            <script type="text/javascript">
+             genSelBoxExp("deductionStatus",<%=Constant.DEDUCTION_STATUS%>,"",true,"","","false",'');
+            </script>
+          </td>  
+      </tr>
+       <tr>
+         <td class="right" >抵扣单号：</td>
+          <td ><input id="deductionNo" name="deductionNo" value="${trans_no }" type="text" class="middle_txt">
+          </td>         
+       </tr>
+       <tr>
+         <td class="center" colspan="4" nowrap="nowrap">
+           <input class="u-button u-query" type="button" name="queryBtn" id="queryBtn" value="查询"  onClick="__extQuery__(1);">
+         </td>
+       </tr>
+  </table>
+  </div>
+  </div>
+  <!--分页 begin -->
+	<jsp:include page="${contextPath}/queryPage/orderHidden.html" />
+	<jsp:include page="${contextPath}/queryPage/pageDiv.html" />
+  <!--分页 end --> 
+<div id="loader" style='position:absolute;z-index:200;background:#FFCC00;padding:1px;top:4px;display:none;display: none;'></div>
+</form> 
+</div>
+<br>
+</body>
+<script type="text/javascript">
+   var myPage;
+   //查询路径
+   var url = "<%=contextPath%>/claim/oldPart/ClaimBackPieceBackListOrdManager/oldPartDeductionQueryInit.json";
+				
+   var title = null;
+
+   var columns = [
+  				{header: "序号",align:'center',renderer:getIndex},
+				{id:'action',header: "操作",sortable: false,dataIndex: 'ID',renderer:myLink,align:'center'},
+  				{header: "抵扣单号",dataIndex: 'DEDUCTION_NO',align:'center'},
+  				{header: "抵扣单状态", dataIndex: 'STATUS', align:'center',renderer:getItemValue},
+  				{header: "通知日期", dataIndex: 'CREATE_DATE', align:'center'},
+  				{header: "材料费扣款（元）", dataIndex: 'PART_PRICE', align:'center'},
+  				{header: "工时费扣款（元）", dataIndex: 'LABOUR_PRICE', align:'center'},
+  				{header: "其他项目扣款(元)", dataIndex: 'OTHER_PRICE', align:'center'},
+  				{header: "总计(元)", dataIndex: 'TOTAL_PRICE', align:'center'},
+  				{header: "开票单号", dataIndex: 'INVOICE_NO', align:'center'}
+  		      ];
+  		      
+   //超链接设置
+   function myLink(value,meta,record){  
+	 return String.format("<a href='#' onclick=check("+value+")>[查看]</a>");
+   }
+	
+   /**
+   * 查看
+   * @param value
+   */
+   function check(value){
+   	var id ="?id="+value;
+   	OpenHtmlWindow("<%=contextPath%>/claim/oldPart/ClaimBackPieceBackListOrdManager/oldPartDeductionCheck.do"+id,800,600);
+   }
+   function doInit(){
+	   __extQuery__(1);
+	  loadcalendar();
+   }
+</script>
+
+</html>

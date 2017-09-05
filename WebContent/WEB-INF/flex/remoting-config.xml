@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service" class="flex.messaging.services.RemotingService">
+    <adapters>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
+    </adapters>
+    <default-channels>
+        <channel ref="my-amf"/>
+    </default-channels>
+     <destination id="imageUpload">
+       <properties>
+       	   <source>com.jmc.dms.actions.common.AuthCarApplyImageUploadAction</source>
+       </properties>
+    </destination>
+     <destination id="picUpload">
+       <properties>
+       	   <source>com.jmc.dms.actions.common.VehicleImageUploadAction</source>
+       </properties>
+    </destination>
+    <destination id="EvaUpload">
+       <properties>
+       	   <source>com.jmc.dms.actions.common.VehicleEvaluateMng</source>
+       </properties>
+    </destination>
+	<destination id="flexStoragePic">   
+		<properties>     
+			<source>com.infodms.dms.actions.sales.storage.storagemanage.FlexStoragePic</source>
+		</properties>
+	</destination> 
+	<destination id="vehiclePicture">   
+		<properties>     
+			<source>com.infodms.dms.actions.sales.storage.storagemanage.VehiclePicture</source>
+		</properties>
+	</destination> 
+</service>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">  
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>  
+   
+    <appender name="ACTION" class="org.apache.log4j.DailyRollingFileAppender"> 
+        <param name="File" value="C:\\CHANADMS\\log\\ACTION\\action.log" />   
+        <param name="Encoding" value="GBK"/>
+        <param name="Threshold" value="DEBUG" />  
+        <param name="Append" value="true" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} [%t] %5p [%C{1}:%L] - %m%n" />  
+        </layout>  
+    </appender>
+      
+    <appender name="ERRORAPP" class="org.apache.log4j.DailyRollingFileAppender">  
+    	  <param name="File" value="dms_log\/cvs_service\/errorapp.log" />   
+        <param name="Encoding" value="GBK"/>
+        <param name="Threshold" value="ERROR" />
+        <param name="Append" value="true" />  
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %5p [%C{1}:%L] - %m%n" />  
+        </layout>  
+    </appender> 
+    
+    <appender name="INTERFACE" class="org.apache.log4j.DailyRollingFileAppender">  
+        <param name="File" value="dms_log\/cvs_service\/interface.log" />   
+        <param name="Encoding" value="GBK"/>
+        <param name="Threshold" value="DEBUG" />  
+        <param name="Append" value="true" />  
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %5p [%C{1}:%L] - %m%n" />  
+        </layout>  
+    </appender>
+    
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">  
+        <param name="File" value="dms_log\/cvs_service\/console.log" />   
+        <param name="Encoding" value="GBK"/>
+        <param name="Target" value="System.out" />  
+        <param name="Threshold" value="debug" />  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %5p [%C{1}:%L] - %m%n" />  
+        </layout>  
+    </appender>  
+       
+    <logger name="com.jmc.dms" additivity="false">  
+        <level value="debug" />  
+        <appender-ref ref="ACTION" />  
+        <appender-ref ref="CONSOLE" />  
+         <!--<appender-ref ref="ERRORAPP" /> 
+    --></logger>
+    
+    <logger name="com.jmc.dms.common.repairorder" additivity="false">  
+        <level value="info" />
+        <appender-ref ref="INTERFACE" /> 
+    </logger>
+    
+    <root>    
+      	<level value="INFO" />  
+        <appender-ref ref="ACTION" />  
+        <appender-ref ref="CONSOLE" />  
+        <!--<appender-ref ref="ERRORAPP" />
+        <appender-ref ref="INTERFACE" />  
+    --></root> 
+</log4j:configuration> 
+

@@ -1,0 +1,33 @@
+.fixedDiv{
+	overflow-x:hidden;
+	BACKGROUND: #F8F9FC;
+	position:relative;
+	}
+.fixedTitleDiv{
+	position:relative; 
+	overflow:hidden;
+	}
+.fixedCTContent{
+	position:absolute; 
+	overflow-y:hidden;
+	}
+.fixedColumnDiv{
+	position:absolute;
+	left:0px;
+	top: 2px;
+	}
+.fixedTableDiv{
+	overflow:auto;
+	}
+.fixedTitle {
+	BORDER-right: #555 1px solid;
+	BORDER-TOP: #fff 1px solid;
+	BORDER-BOTTOM: #555 1px solid;
+	BORDER-left: #fff 1px solid;
+	BACKGROUND: #9cddfc;text-align:center;
+	CURSOR: hand;
+	Font-Size:10pt;
+	overflow:hidden;
+	WHITE-SPACE: nowrap;
+	line-height:20px;
+	}

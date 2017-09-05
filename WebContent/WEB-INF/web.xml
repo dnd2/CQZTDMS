@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>CQZTDMS_Web</display-name>
+    <filter>
+        <filter-name>FilterDispatcher</filter-name>
+        <filter-class>com.infoservice.mvc.FilterDispatcher</filter-class>
+        <init-param>
+        	<param-name>suffix</param-name>
+        	<param-value>.do;.json;.xml</param-value>
+        </init-param>
+        <init-param>
+			<param-name>DefaultEncoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+    </filter>
+    
+    <!-- 压缩文件,设置过期时间 start -->
+    <filter>
+		<filter-name>AddHeaderFilter</filter-name>
+		<filter-class>
+			com.infodms.dms.common.interceptor.AddHeaderFilter
+		</filter-class>
+		<init-param>
+			<param-name>headers</param-name>
+			<param-value>Content-Encoding:gzip;Cache-Control:public, max-age=2592000</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>AddHeaderFilter</filter-name>
+		<url-pattern>*.gzjs</url-pattern>
+	</filter-mapping>
+    <!-- 压缩文件,设置过期时间 end -->
+    
+    <filter-mapping>
+        <filter-name>FilterDispatcher</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+     <!--<servlet>
+		<servlet-name>CreateBarCode</servlet-name>
+		<servlet-class>com.infodms.pms.common.BarCodeServlet</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>CreateBarCode</servlet-name>
+		<url-pattern>/CreateBarCode</url-pattern>
+	</servlet-mapping>
+	
+	--><servlet>
+        <servlet-name>httpfs</servlet-name>
+        <servlet-class>com.jatools.rfs.ZRemoteFileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>jrstest</servlet-name>
+        <servlet-class>com.jatools.server.JrsTest</servlet-class>
+    </servlet>
+    <servlet> 
+        <servlet-name>jrs2</servlet-name> 
+        <jsp-file>/jautils/jrs.jsp</jsp-file> 
+    </servlet>
+
+    <servlet>
+        <servlet-name>jrs</servlet-name>
+        <servlet-class>com.jatools.server.jrs</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>jrsstarter</servlet-name>
+        <servlet-class>com.jatools.server.Starter</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+       <servlet-name>form</servlet-name> 
+       <servlet-class>com.jatools.server.jfs</servlet-class> 
+     </servlet> 
+     <!-- 条码打印 -->
+  <servlet>
+    <servlet-name>CreateBarCode</servlet-name>
+    <servlet-class>com.infodms.dms.actions.claim.dealerClaimMng.BarCodeServlet</servlet-class>
+  </servlet>
+	 <servlet-mapping>
+        <servlet-name>jrstest</servlet-name>
+        <url-pattern>/jrstest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>jrs2</servlet-name>
+        <url-pattern>/server2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>httpfs</servlet-name>
+        <url-pattern>/httpfs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>jrs</servlet-name>
+        <url-pattern>/server</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>CreateBarCode</servlet-name>
+    <url-pattern>/CreateBarCode</url-pattern>
+  </servlet-mapping>
+	<jsp-config>
+	  <taglib>
+		<taglib-uri>/jstl/cout</taglib-uri>
+	    <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+	  </taglib>	 
+	  <taglib>
+		<taglib-uri>/jstl/fmt</taglib-uri>
+	    <taglib-location>/WEB-INF/tld/fmt.tld</taglib-location>
+	  </taglib>	 
+	  <taglib>
+		<taglib-uri>/jstl/fn</taglib-uri>
+	    <taglib-location>/WEB-INF/tld/fn.tld</taglib-location>
+	  </taglib>	 
+	  <taglib>
+		<taglib-uri>/jstl/x</taglib-uri>
+	    <taglib-location>/WEB-INF/tld/x.tld</taglib-location>
+	  </taglib>	  
+	  <taglib>
+		<taglib-uri>/jstl/change</taglib-uri>
+	    <taglib-location>/WEB-INF/tld/change.tld</taglib-location>
+	  </taglib>	  
+	</jsp-config>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+	
+	<!-- Add by liuqiang, receive syn message for infox -->
+	<!--<servlet>
+		<description>infox sync message</description>
+		<display-name>InfoXSyncServlet</display-name>
+		<servlet-name>InfoXReceiveServlet</servlet-name>
+		<servlet-class>
+			com.infoservice.de.infox.InfoXReceiveServlet
+		</servlet-class>
+		<init-param>
+			<param-name>ADAPTER_NAME</param-name>
+			<param-value>InfoxAdapter</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InfoXReceiveServlet</servlet-name>
+		<url-pattern>/InfoXSyncServlet</url-pattern>
+	</servlet-mapping>
+	--><!-- receive message end -->
+	<listener>
+        <listener-class>flex.messaging.HttpFlexSession</listener-class>
+    </listener>
+    <!-- MessageBroker Servlet -->
+    <servlet>
+        <servlet-name>MessageBrokerServlet</servlet-name>
+        <servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>
+        <init-param>
+            <param-name>services.configuration.file</param-name>
+            <param-value>/WEB-INF/flex/services-config.xml</param-value>
+       </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MessageBrokerServlet</servlet-name>
+        <url-pattern>/messagebroker/*</url-pattern>
+    </servlet-mapping>
+</web-app>

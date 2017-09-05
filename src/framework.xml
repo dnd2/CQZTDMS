@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<framework>
+	<interceptors>
+		<interceptor name="restful-1" class="com.infoservice.mvc.interceptor.RestfulInterceptor">
+			<param name="prefix" value="com.infodms.dms.actions"/>
+		</interceptor>
+		<interceptor name="restful-2" class="com.infoservice.mvc.interceptor.RestfulInterceptor">
+			<param name="prefix" value="com.infodms.yxdms.action"/>
+		</interceptor>
+		<interceptor name="XmlResult" class="com.infoservice.mvc.interceptor.XmlResultInterceptor">
+			<param name="suffix" value=".xml"/>
+		</interceptor>
+		<interceptor name="JsonResult" class="com.infoservice.mvc.interceptor.JsonResultInterceptor">
+			<param name="suffix" value=".json"/>
+		</interceptor>
+		<interceptor name="AclControl" class="com.infoservice.mvc.interceptor.ACLInterceptor">
+			<param name="errorPage" value="error"/>
+			<param name="paramName" value="LOGON_USER"/>
+			<param name="anonymUser" value="1000"/>
+		</interceptor>
+		<interceptor name="CleanTransaction" class="com.infoservice.mvc.interceptor.TransactionInterceptor">
+		</interceptor> 
+		<interceptor name="login" class="com.infodms.dms.common.interceptor.LogonInterceptor">
+			<param name="paramName" value="LOGON_USER"/>
+			<param name="innerUrl" value="universedev.shanghaigm.com/DMSUC"/>
+			<param name="outerUrl" value="universedev.shanghaigm.com/DMSUC"/>
+		</interceptor>
+		<!-- 
+		<interceptor name="ActionLogger" class="com.infoservice.mvc.interceptor.ActionLogInterceptor">
+ 			 <param name="logClass" value="com.infodms.dms.po.TlActionHisPO" /> 
+  		</interceptor> 
+  		 -->
+	</interceptors> 
+	<components>
+		<component name="po3" class="com.infoservice.mvc.component.POComponent">
+			<param name="p1" value="v1"/>
+			<param name="p2" value="v2"/>
+		</component>
+		<component name="cache" class="com.infoservice.mvc.component.CacheComponent">
+			<param name="memCache" value="com.infoservice.mvc.component.cache.impl.EhcacheCacheEngineImpl"/>
+			<param name="disCache" value="com.infoservice.mvc.component.cache.impl.EhcacheCacheEngineImpl"/>
+		</component>
+		<component name="aclMng" class="com.infoservice.mvc.component.AclComponent">
+			<!--param name="provider" value="com.infodms.dms.common.component.acl.CommonAclProvider" /-->
+			<param name="provider" value="com.infoservice.mvc.component.acl.impl.NoControlProvider" />
+		</component>
+		<component name="BizLoger" class="com.infoservice.mvc.component.BizLogComponent">
+			<param name="queueDepth" value="1024"/>
+			<param name="trigePeriod" value="10"/>
+			<param name="threadNum" value="1"/>
+		</component>
+		<component name="dict" class="com.infodms.dms.common.component.DictComponent">
+		</component>
+		<component name="claimAuditing" class="com.infodms.dms.actions.claim.auditing.ClaimAuditingComponent">
+			<param name="poolSize" value="50"/>
+			<param name="queueSize" value="1000"/>
+			<param name="keepAliveTime" value="30000"/>
+			<param name="limitMonths" value="3"/>
+			<param name="isOpen" value="true"/>
+		</component><!--
+
+		<component name="de3" class="com.infoservice.mvc.component.DEComponent">
+			<param name="DE_ADAPTER_CONFIG" value="InfoxAdapter"/>
+		</component>
+		 -->
+		<!--
+		<component name="schedule" class="com.infoservice.mvc.component.ScheduleComponent"></component>
+		-->
+		<component name="message" class="com.infodms.dms.common.component.message.MessageComponent">
+			<param  name="errorMessage" value="errorMsg_zh"></param>
+			<param  name="rightMessage" value="rightMsg_zh"></param>
+			<param  name="actionCode" value="actionCode_zh"></param>
+		</component>
+		
+	</components>
+	<global-results>
+		<result name="menu">/menu.jsp</result>
+		<result name="menu1">/menu1.jsp</result>
+		<result name="positon">/poseSelect.jsp</result>
+		<result name="firstPage">/index.jsp</result>
+		<result name="rejectPermission">/rejectPermission.jsp</result>
+	 	<result name="error">/error.jsp</result>
+	 	<result name="sessionInvalid">/sessionInvalid.jsp</result>	 
+	 	<!-- 接口用户登录的错误页面 -->
+	 	<result name="loginError">/loginError.jsp</result>
+	 	<result name="repeatPage">/preventrepeat.jsp</result>
+	</global-results>
+</framework>

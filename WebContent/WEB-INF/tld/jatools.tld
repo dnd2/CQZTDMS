@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib
+    PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+    "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib >
+	<tlib-version>1.1</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>jatools</short-name>
+	<tag>
+		<name>report</name>		
+		<tag-class>jatools.tags.ReportTag</tag-class>
+		<tei-class>jatools.tags.ReportTEI</tei-class>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+		</attribute>
+		<attribute>
+			<name>template</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>pageBorder</name>
+		</attribute>
+		<attribute>
+			<name>pageOffset</name>
+		</attribute>
+		<attribute>
+			<name>layout</name>
+		</attribute>
+		<attribute>
+			<name>pageFrom</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>pageTo</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+
+	</tag>
+
+	<tag>
+		<name>container</name>		
+		<tag-class>jatools.tags.ContainerTag</tag-class>
+		<tei-class>jatools.tags.ContainerTEI</tei-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+		</attribute>
+
+		<attribute>
+			<name>background</name>
+		</attribute>
+		<attribute>
+			<name>width</name>
+		</attribute>
+		<attribute>
+			<name>height</name>
+		</attribute>
+		<attribute>
+			<name>scroll</name>
+		</attribute>
+		<attribute>
+			<name>style</name>
+		</attribute>
+		<attribute>
+			<name>canDrag</name>
+		</attribute>
+	</tag>
+		<tag>
+		<name>navigator</name>		
+		<tag-class>jatools.tags.NavigatorTag</tag-class>
+		<tei-class>jatools.tags.NavigatorTEI</tei-class>
+		
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+		</attribute>
+		<attribute>
+			<name>alias</name>
+		</attribute>
+	</tag>
+ 	<tag>
+		<name>if</name>		
+		<tag-class>jatools.tags.IfTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>test</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>pageHandler</name>		
+		<tag-class>jatools.tags.EachPageTag</tag-class>
+		<tei-class>jatools.tags.EachPageTEI</tei-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			
+		</attribute>
+		
+	</tag>
+	<tag>
+		<name>zoomer</name>		
+		<tag-class>jatools.tags.ZoomerTag</tag-class>
+		<tei-class>jatools.tags.ZoomerTEI</tei-class>
+		
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+		</attribute>
+
+	</tag>
+	<tag>
+		<name>printer</name>		
+		<tag-class>jatools.tags.PrinterTag</tag-class>
+		<tei-class>jatools.tags.PrinterTEI</tei-class>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+		</attribute>
+
+		<attribute>
+			<name>printer</name>
+		</attribute>
+		<attribute>
+			<name>pageWidth</name>
+		</attribute>
+		<attribute>
+			<name>pageHeight</name>
+		</attribute>
+		<attribute>
+			<name>orientation</name>
+		</attribute>
+		<attribute>
+			<name>print_settings_id</name>
+		</attribute>
+
+		<attribute>
+			<name>documents</name>
+		</attribute>
+
+		<attribute>
+			<name>load_print_settings_if_exists</name>
+		</attribute>		   
+		<attribute>
+			<name>save_print_settings_after_print</name>
+		</attribute>
+	</tag>
+		<tag>
+		<name>exporter</name>		
+		<tag-class>jatools.tags.ExporterTag</tag-class>
+		<tei-class>jatools.tags.ExporterTEI</tei-class>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+		</attribute>
+
+
+		<attribute>
+			<name>report_server</name>
+		</attribute>
+		
+	</tag>
+</taglib>

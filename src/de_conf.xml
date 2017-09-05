@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+	
+	<!-- msg format convertor  -->
+	<bean id="SerializeConvertor" class="com.infoservice.de.convertor.JavaSerializeConvert"/>
+	<bean id="XmlConvertorF2" class="com.infoservice.de.convertor.f2.XmlConvertor"/>
+	<bean id="P01XmlConvertor" class="com.infoservice.de2.convertor.XmlConvertor4YiQiP01"/>
+	<bean id="PO1XmlConvertorF2" class="com.infoservice.de.convertor.f2.XmlConvertor4YiQiP01"/>
+	<!-- confiagurate MsgId generator -->
+	<bean id="DefMsgIdGenerator" class="com.infoservice.dms.chana.common.GeneratorDEMsgId"/>
+	<bean id="MsgGeneratorForDE2" class="com.infoservice.de.actions.MsgGeneratorForDE2"/>
+	<!-- execte -->	
+	<bean id="actExecutor" class="com.infoservice.de.action.ExecutorDefaultImpl">
+		<property name="bizMapping">
+			<set>
+				<value>com.infoservice.dms.chana.actions</value>
+			</set>
+		</property>
+	</bean>
+	
+	<!-- configuration for infox -->
+	<bean id="InfoxAdapter" class="com.infoservice.de.infox.InfoxAdapter">
+		<constructor-arg index="0" type="java.lang.Class" value="com.infoservice.de.infox.InfoxDriver"></constructor-arg>
+		<property name="msgConvertor">
+			<ref local="PO1XmlConvertorF2"/>
+		</property>
+		<property name="actExecutor">
+			<ref local="actExecutor"/>
+		</property>
+		<!-- configurate msgId generator  -->
+		<property name="msgIdGenerator" ref="DefMsgIdGenerator"/>
+	</bean>
+	
+	<!-- Configration for MQ -->
+	<bean id="MQAdapter" class="com.infoservice.de.mq.MqAdapter">
+		<constructor-arg index="0" type="java.lang.Class" value="com.infoservice.de.mq.MqDriver"></constructor-arg>
+		<property name="msgConvertor">
+			<ref local="PO1XmlConvertorF2"/>
+		</property>
+		<property name="actExecutor">
+			<ref local="actExecutor"/>
+		</property>
+		<!-- configurate msgId generator  -->
+		<property name="msgIdGenerator" ref="DefMsgIdGenerator"/>
+	</bean>	
+	
+</beans>

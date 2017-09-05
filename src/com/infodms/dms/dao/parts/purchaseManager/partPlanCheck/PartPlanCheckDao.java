@@ -1,0 +1,223 @@
+package com.infodms.dms.dao.parts.purchaseManager.partPlanCheck;
+
+import com.infodms.dms.common.Constant;
+import com.infodms.dms.dao.common.BaseDao;
+import com.infodms.dms.util.CommonUtils;
+import com.infoservice.mvc.context.RequestWrapper;
+import com.infoservice.po3.bean.PO;
+import com.infoservice.po3.bean.PageResult;
+
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class PartPlanCheckDao extends BaseDao {
+    private static final PartPlanCheckDao dao = new PartPlanCheckDao();
+
+    private PartPlanCheckDao() {
+    }
+
+    public static final PartPlanCheckDao getInstance() {
+        return dao;
+    }
+
+    protected PO wrapperPO(ResultSet rs, int idx) {
+        return null;
+    }
+
+    /**
+     * @param : @return
+     * @return :
+     * @throws : LastDate    : 2013-4-9
+     * @Title :
+     * @Description: 获取库房
+     */
+    public List<Map<String, Object>> getWareHouse() {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select t.wh_id,t.wh_name from TT_PART_WAREHOUSE_DEFINE t");
+        List<Map<String, Object>> wareHoustList = this.pageQuery(sql.toString(), null, this.getFunName());
+        return wareHoustList;
+    }
+
+    /**
+     * @param : @param request
+     * @param : @param curPage
+     * @param : @param pageSize
+     * @param : @return
+     * @return :
+     * @throws : LastDate    : 2013-4-16
+     * @Title :
+     * @Description: 查询
+     */
+    public PageResult<Map<String, Object>> queryPartPlan(RequestWrapper request, int curPage, int pageSize, long userId) {
+        StringBuffer sql = new StringBuffer();
+        String planCode = CommonUtils.checkNull(request.getParamValue("PLAN_CODE"));//计划单号
+        String year = CommonUtils.checkNull(request.getParamValue("MYYEAR"));//计划年
+        String month = CommonUtils.checkNull(request.getParamValue("MYMONTH"));//计划月
+        String planType = CommonUtils.checkNull(request.getParamValue("PLAN_TYPE"));//计划类型
+        String whId = CommonUtils.checkNull(request.getParamValue("WH_ID"));//库房
+        String state = CommonUtils.checkNull(request.getParamValue("STATE"));//状态
+        String createType = CommonUtils.checkNull(request.getParamValue("CREATE_TYPE"));//生成方式
+        String planerId = CommonUtils.checkNull(request.getParamValue("planerId"));//计划员
+
+        String sCreateDate = CommonUtils.checkNull(request.getParamValue("SCREATE_DATE"));//制单开始日期
+        String eCreateDate = CommonUtils.checkNull(request.getParamValue("ECREATE_DATE"));//制单结束日期
+
+        String sSubmitDate = CommonUtils.checkNull(request.getParamValue("SSUBMIT_DATE"));//提交开始日期
+        String eSubmitDate = CommonUtils.checkNull(request.getParamValue("ESUBMIT_DATE"));//提交结束日期
+
+        sql.append("SELECT PLAN_ID,PLAN_CODE,PLANER_NAME,CREATE_DATE,WH_NAME,to_char(YEAR_MONTH,'yyyy-mm') YEAR_MONTH,");
+        sql.append("(SELECT COUNT(*) FROM TT_PART_PLAN_DETAIL T WHERE T.PLAN_ID=A.PLAN_ID) DTL_COUNT,");
+        sql.append("PLAN_TYPE,SUM_QTY,to_char(AMOUNT,'FM999,999,999,999,990.00') AMOUNT,STATE,SUBMIT_DATE\n");
+        sql.append("  FROM TT_PART_PLAN_MAIN A\n");
+        sql.append(" WHERE 1 = 1\n");
+        sql.append(" and A.AMOUNT>0");
+        //add by yuan 20130812
+        /*sql.append("AND A.CREATE_BY = DECODE((SELECT count(1)\n");
+        sql.append(" FROM TT_PART_USERPOSE_DEFINE PU\n");
+        sql.append("WHERE PU.USER_ID =").append(userId);
+        sql.append("  AND PU.IS_CHKZY =").append(Constant.IF_TYPE_YES);
+        sql.append("  AND PU.USER_TYPE = 1\n");
+        sql.append("  AND ROWNUM=1),0,").append(userId).append(",A.CREATE_BY)\n");*/
+
+        //modify by yuan
+        if (!"".equals(year) && year != "") {
+            if (!"".equals(month) && month != "") {
+                sql.append(" AND to_char(a.year_month,'yyyy-mm')>='" + year + "-" + month + "'");
+            } else {
+                sql.append("  AND to_char(a.year_month,'yyyy')='" + year + "'");
+            }
+        } else {
+            if (!"".equals(month) && month != "") {
+                sql.append(" AND to_char(a.year_month,'mm') >='" + month + "'");
+            }
+        }
+        if (!"".equals(planType)) {
+            sql.append(" and PLAN_TYPE='").append(planType).append("'");
+        }
+        if (!"".equals(whId)) {
+            sql.append(" and WH_ID='").append(whId).append("'");
+        }
+        if (!"".equals(state)) {
+            sql.append(" and STATE='").append(state).append("'");
+        }
+        if (!"".equals(createType)) {
+            sql.append(" and CREATE_TYPE='").append(createType).append("'");
+        }
+        if (!"".equals(planCode)) {
+            sql.append(" and PLAN_CODE like'%").append(planCode).append("%'");
+        }
+       /* if (!"".equals(planerId)) {
+            sql.append(" and PLANER_NAME like '%").append(planerId).append("%'");
+        }*/
+        if (!"".equals(planerId)) {
+            sql.append(" and A.PLANER_ID=").append(planerId);
+        }
+        if (!"".equals(sCreateDate)) {
+            sql.append(" and TRUNC(A.CREATE_DATE)>= to_date('").append(sCreateDate).append("','YYYY-MM-dd')");
+        }
+        if (!"".equals(eCreateDate)) {
+            sql.append(" and TRUNC(a.CREATE_DATE)<= to_date('").append(eCreateDate).append("','YYYY-MM-dd')");
+        }
+        if (!"".equals(sSubmitDate)) {
+            sql.append(" and TRUNC(SUBMIT_DATE)>= to_date('").append(sSubmitDate).append("','YYYY-MM-dd')");
+        }
+        if (!"".equals(eSubmitDate)) {
+            sql.append(" and TRUNC(SUBMIT_DATE)<= to_date('").append(eSubmitDate).append("','YYYY-MM-dd')");
+        }
+
+        sql.append(" and a.STATE in ('").append(Constant.PART_PURCHASE_PLAN_CHECK_STATUS_02).append("','").append(Constant.PART_PURCHASE_PLAN_CHECK_STATUS_06).append("')");
+        sql.append(" order by a.submit_date DESC");
+        PageResult<Map<String, Object>> ps = pageQuery(sql.toString(), null, getFunName(), pageSize, curPage);
+        return ps;
+    }
+
+    /**
+     * @param : @param request
+     * @param : @return
+     * @return :
+     * @throws : LastDate    : 2013-4-16
+     * @Title :
+     * @Description: 查询
+     */
+    public List<Map<String, Object>> queryPartPlan(RequestWrapper request) {
+        StringBuffer sql = new StringBuffer();
+        String planCode = CommonUtils.checkNull(request.getParamValue("PLAN_CODE"));//计划单号
+        String year = CommonUtils.checkNull(request.getParamValue("MYYEAR"));//计划年
+        String month = CommonUtils.checkNull(request.getParamValue("MYMONTH"));//计划月
+        String planType = CommonUtils.checkNull(request.getParamValue("PLAN_TYPE"));//计划类型
+        String whId = CommonUtils.checkNull(request.getParamValue("WH_ID"));//库房
+        String state = CommonUtils.checkNull(request.getParamValue("STATE"));//状态
+        String createType = CommonUtils.checkNull(request.getParamValue("CREATE_TYPE"));//生成方式
+
+        String sCreateDate = CommonUtils.checkNull(request.getParamValue("SCREATE_DATE"));//制单开始日期
+        String eCreateDate = CommonUtils.checkNull(request.getParamValue("ECREATE_DATE"));//制单结束日期
+
+        String sSubmitDate = CommonUtils.checkNull(request.getParamValue("SSUBMIT_DATE"));//提交开始日期
+        String eSubmitDate = CommonUtils.checkNull(request.getParamValue("ESUBMIT_DATE"));//提交结束日期
+
+
+        sql.append(" select * from TT_PART_PLAN_MAIN a");
+        sql.append(" where 1=1 ");
+        //modify by yuan
+        if (!"".equals(year) && year != "") {
+            if (!"".equals(month) && month != "") {
+                sql.append(" AND to_char(a.year_month,'yyyy-mm')='" + year + "-" + month + "'");
+            } else {
+                sql.append("  AND to_char(a.year_month,'yyyy')='" + year + "'");
+            }
+        } else {
+            if (!"".equals(month) && month != "") {
+                sql.append(" AND to_char(a.year_month,'mm') ='" + month + "'");
+            }
+        }
+        if (!"".equals(planType)) {
+            sql.append(" and PLAN_TYPE='").append(planType).append("'");
+        }
+        if (!"".equals(whId)) {
+            sql.append(" and WH_ID='").append(whId).append("'");
+        }
+        if (!"".equals(state)) {
+            sql.append(" and STATE='").append(state).append("'");
+        }
+        if (!"".equals(createType)) {
+            sql.append(" and CREATE_TYPE='").append(createType).append("'");
+        }
+        if (!"".equals(planCode)) {
+            sql.append(" and PLAN_CODE='").append(planCode).append("'");
+        }
+        if (!"".equals(sCreateDate)) {
+            sql.append(" and a.CREATE_DATE>= to_date('").append(sCreateDate).append("','YYYY/MM/dd')");
+            sql.append(" and a.CREATE_DATE<= to_date('").append(eCreateDate).append("','YYYY/MM/dd')");
+        }
+        if (!"".equals(sSubmitDate)) {
+            sql.append(" and SUBMIT_DATE>= to_date('").append(sSubmitDate).append("','YYYY/MM/dd')");
+            sql.append(" and SUBMIT_DATE<= to_date('").append(eSubmitDate).append("','YYYY/MM/dd')");
+        }
+        sql.append(" and a.STATE in ('").append(Constant.PART_PURCHASE_PLAN_CHECK_STATUS_02).append("','").append(Constant.PART_PURCHASE_PLAN_CHECK_STATUS_06).append("')");
+        List<Map<String, Object>> list = this.pageQuery(sql.toString(), null, this.getFunName());
+        return list;
+    }
+
+    /**
+     * @param : @param type
+     * @param : @return
+     * @return :
+     * @throws : LastDate    : 2013-4-16
+     * @Title :
+     * @Description: 获取CODE
+     */
+    public Map<String, Object> getTcCodeMap(String type) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select CODE_ID,CODE_DESC from TC_CODE ");
+        sql.append(" where 1=1 ");
+        sql.append(" and TYPE='").append(type).append("'");
+        List<Map<String, Object>> list = this.pageQuery(sql.toString(), null, this.getFunName());
+        Map<String, Object> map = new HashMap();
+        for (Map<String, Object> dataMap : list) {
+            map.put(CommonUtils.checkNull(dataMap.get("CODE_ID")), CommonUtils.checkNull(dataMap.get("CODE_DESC")));
+        }
+        return map;
+    }
+}

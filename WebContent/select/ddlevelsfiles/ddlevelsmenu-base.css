@@ -1,0 +1,81 @@
+/* ######### Drop Down ULs CSS ######### */
+.ddsubmenustyle, .ddsubmenustyle ul{ /*topmost and sub ULs, respectively*/
+position: absolute;
+margin:0px;
+list-style-type: none;
+background: gray;
+font-family:arial, verdana, sans-serif;
+z-index: 100;
+padding:0 1px 1px 1px;
+}
+
+.ddsubmenustyle li{
+display:block;
+height:29px;
+background:#FFFFFF;
+margin-top:1px;
+text-decoration:none;
+}
+.ddsubmenustyle li .first_li{
+display:block;
+height:29px;
+background:#AEEEEE;
+margin-top:0px; 
+text-decoration:none;
+display: inline-block;
+}
+.ddsubmenustyle li a:link,.ddsubmenustyle li a:visited{
+height:24px;
+display:block;
+/*white-space:nowrap;*/
+width:120px;
+text-indent:0;/*5px*/
+color:black;
+text-decoration:none;
+display: inline-block;
+padding-top:5px;
+padding-left:5px;
+overflow:hidden;
+}
+
+* html .ddsubmenustyle li{ /*IE6 CSS hack*/
+display: inline-block; 
+width: 120px; /*width of menu (include side paddings of LI A*/
+overflow:hidden;
+} 
+.ddsubmenustyle li a:hover{
+padding-top:5px;
+background:silver;
+height:24px;
+display:block;
+/*white-space:nowrap;*/
+width:120px;
+text-indent:0;
+color:black;
+text-decoration:none;
+display: inline-block;
+overflow:hidden;
+}
+/* ######### Neutral CSS  ######### */
+
+.downarrowpointer{ /*CSS for "down" arrow image added to top menu items*/
+padding-left: 6px;
+border: 0;
+}
+
+.rightarrowpointer{ /*CSS for "right" arrow image added to drop down menu items*/
+position: absolute;
+padding-top: 4px;
+left: 100px;
+border: 0; 
+}
+
+.ddiframeshim{
+position: absolute;
+z-index: 500;
+background: transparent;
+border-width: 0;
+width: 0;
+height: 0;
+display: block;
+}

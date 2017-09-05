@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>   
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"  
+"http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+	<tlib-version>1.0</tlib-version><!-- 标签库的版本 -->
+	<jsp-version>1.2</jsp-version><!-- 这个标签库要求的JSP规范版本 -->
+	<short-name>mytag</short-name><!-- JSP页面编写工具可以用来创建助记名的可选名字 -->
+	<tag>
+		<name>change</name><!-- 唯一标签名 -->
+		<tag-class>com.infodms.dms.common.tag.ChangeTag</tag-class><!-- 标签类的完全限定名 -->
+		<body-content>empty</body-content><!-- 正文内容类型 -->
+		<attribute>
+			<name>val</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>type</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>select</name><!-- 唯一标签名 -->
+		<tag-class>com.infodms.dms.common.tag.SelectTag</tag-class><!-- 标签类的完全限定名 -->
+		<body-content>empty</body-content><!-- 正文内容类型 -->
+		<attribute>
+			<name>style</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>type</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>name</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>id</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>func</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>noExist</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>exist</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>value</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>noTop</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>sql</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>clazz</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>fieldCode</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>fieldName</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>conditional</name><!-- 唯一标签名 -->
+		<tag-class>com.infodms.yxdms.utils.tag.ConditionTag</tag-class>
+		<body-content>empty</body-content><!-- 正文内容类型 -->
+		<attribute>
+			<name>queryTitle</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>querySeq</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>checkBox</name><!-- 唯一标签名 -->
+		<tag-class>com.infodms.yxdms.utils.tag.CheckBoxTag</tag-class>
+		<body-content>复选标签</body-content><!-- 正文内容类型 -->
+		<attribute>
+			<name>name</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>className</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>value</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>valueName</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>radio</name><!-- 唯一标签名 -->
+		<tag-class>com.infodms.yxdms.utils.tag.RadioTag</tag-class>
+		<body-content>单选标签</body-content><!-- 正文内容类型 -->
+		<attribute>
+			<name>name</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>className</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>value</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>valueName</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>tcCode</name><!-- 唯一标签名 -->
+		<tag-class>com.infodms.yxdms.utils.tag.TcCodeTag</tag-class>
+		<body-content>单选标签</body-content><!-- 正文内容类型 -->
+		<attribute>
+			<name>value</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>showType</name>
+         	<required>false</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>btn</name><!-- 唯一标签名 -->
+		<tag-class>com.infodms.yxdms.utils.tag.BtnTag</tag-class>
+		<body-content>按钮标签</body-content><!-- 正文内容类型 -->
+		<attribute>
+			<name>mainTainSql</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>user</name><!-- 唯一标签名 -->
+		<tag-class>com.infodms.yxdms.utils.tag.UserTag</tag-class><!-- 标签类的完全限定名 -->
+		<body-content>empty</body-content><!-- 正文内容类型 -->
+		<attribute>
+			<name>value</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>showType</name>
+         	<required>true</required>
+         	<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>

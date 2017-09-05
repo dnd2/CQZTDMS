@@ -1,0 +1,43 @@
+.resizeColumnWidthClass {
+	text-align: right;
+	width: 3px;
+	margin: 0px 0 0px 0;
+	background: #fff;
+	border: 0px;
+	float: right;
+	cursor: e-resize;
+}
+
+.resizeColumnWidthClass img {
+	width: 2px;
+}
+
+.sortTableClass {
+	width:18px;
+	height:18px;
+	margin: 0 0 0 0;
+	background-color: transparent;
+	background-image:url(./easyuicss/unsort.png);
+	background-repeat:no-repeat;
+	float: left;
+	cursor: pointer;
+}
+
+.changeHeightSpan{
+	float: left;
+	margin-right:3px;
+	padding: 0 0 0 0;
+}
+
+.changeHeightBackgroundSpan{
+	background-color: #f7f7f7;
+}
+
+.changeHeightButtonLabel{
+	font-weight:bold;
+	font-size: 13px;
+	cursor: pointer;
+	width: 12px;
+	border:1px;
+	border-color: #dcdcdc;
+}

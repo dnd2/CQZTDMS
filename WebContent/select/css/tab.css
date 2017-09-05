@@ -1,0 +1,64 @@
+   #tabsF {
+      float:left;
+      width:100%;
+      white-space : nowrap;
+      font-size:93%;
+      font-weight:bold;
+      line-height:normal;
+      border-bottom:1px solid #0066C3;
+      }
+    #tabsF ul {
+        margin:0;
+        padding:0px 10px 0px 24px;
+        list-style:none; 
+      }
+    #tabsF li { 
+      white-space: nowrap;
+      display:inline;
+      margin:0;
+      padding:0;
+      } 
+    #tabsF a {
+      float:left;
+      background:url("/webschool/T/2/images/tableftF.gif") no-repeat left top;
+      margin:0;
+      padding:0 0 0 4px;
+      text-decoration:none;
+      }
+    #tabsF a span {
+      float:left;
+      display:block;
+      background:url("/webschool/T/2/images/tabrightF.gif") no-repeat right top;
+      padding:5px 15px 4px 6px;
+      color:#000000;
+    }    
+    #tabsF a span {float:none;} 
+    #tabsF a:hover span {
+      color:#FFFFFF;
+    }
+    #tabsF a:hover {
+      background-position:0% -42px;
+    }
+    #tabsF a:hover span {
+      background-position:100% -42px;
+    }
+    #tabsF #current a {
+      background-position:0% -42px;
+    }
+    #tabsF #current a span {
+      background-position:100% -42px;
+    }
+    .tabsFSpan{
+       font-size:14px;
+    }
+    #nobr li{
+       display:inline;
+    }
+    .ulNowrap{
+        width:840px;
+        white-space : nowrap;
+    }
+    .ulMenu{
+        width:100%;
+        white-space : nowrap;
+    }

@@ -1,0 +1,6 @@
+@charset "utf-8";
+/* Font CSS Document */
+body {
+	color: #5a5a5a;
+    font: 14px/1.14 'Microsoft YaHei','微软雅黑','宋体',helvetica,'Hiragino Sans GB';
+}

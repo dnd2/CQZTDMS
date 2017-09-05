@@ -1,0 +1,40 @@
+<div id="_page" style="margin-top:15px;display:none;"></div> <!-- 前台分页使用 -->
+<div id="myGrid"></div> <!-- 数据显示区域 -->
+<div class="paging"><div id="myPage" class="pages"></div></div> <!-- 数据分页显示区域 -->
+<script>
+	var flag;
+	var pageTemp;
+	var valflagTemp;
+	
+	// 默认查询方法
+	function __extQuery__(page,valflag, sFormName)
+	{   
+		var formName;
+		if(sFormName)
+			formName = sFormName;
+		else
+			formName = "fm";
+		
+		makeNomalFormCall(url+(url.lastIndexOf("?") == -1?"?":"&")+"curPage="+page,pageBack,formName);
+	}
+	
+	/*
+	 * 暂时屏蔽该段代码，如果功能上有使用，再具体分析 modify by wangsw
+	 *
+	function __extQueryAddFunction__(page,fun){
+		if(submitForm(formName)) makeNomalFormCall(url+(url.lastIndexOf("?") == -1?"?":"&")+"curPage="+page,callBack,formName,'queryBtn',fun); 
+	}
+	
+	function __extQueryAddFunction__(page,fun,new_formNames){
+		formName = new_formNames;
+		if(submitForm(formName)) makeNomalFormCall(url+(url.lastIndexOf("?") == -1?"?":"&")+"curPage="+page,callBack,formName,'queryBtn',fun); 
+	}
+	 */
+	$(document).ready(function(){
+		$(document).keydown(function(event){
+		 	if(event.keyCode==13){
+		 		__extQuery__(1);
+		 	}
+		});
+	});
+</script>

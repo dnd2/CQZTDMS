@@ -1,0 +1,27 @@
+/* CSS file */
+
+Application
+{
+	backgroundGradientAlphas: 1.0, 1.0;
+	backgroundGradientColors: #29D2EB, #236D78;
+}
+ApplicationControlBar
+{
+	fillAlphas: 1.0, 1.0;
+	fillColors: #000000, #000000;
+	paddingBottom: 5;
+	paddingTop: 5;
+	verticalAlign: bottom;
+}
+.headderText
+{
+	color: #FFFFFF;
+	fontSize: 28;
+	fontWeight: bold;
+}
+.headderTextBlue
+{
+	color: #00D2FF;
+	fontSize: 28;
+	fontWeight: bold;
+}
