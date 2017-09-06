@@ -19,10 +19,12 @@ import com.infodms.dms.common.Constant;
 import com.infodms.dms.common.DateUtil;
 import com.infodms.dms.common.ErrorCodeConstant;
 import com.infodms.dms.dao.parts.storageManager.partReturnManager.PartDlrReturnApplyDAO;
+import com.infodms.dms.dao.parts.storageManager.partReturnManager.PartDlrReturnChkrDao;
 import com.infodms.dms.exception.BizException;
 import com.infodms.dms.po.TmDealerPO;
 import com.infodms.dms.po.TmOrgPO;
 import com.infodms.dms.po.TtPartDefinePO;
+import com.infodms.dms.po.TtPartDlrInstockDtlPO;
 import com.infodms.dms.po.TtPartDlrReturnDtlPO;
 import com.infodms.dms.po.TtPartDlrReturnMainPO;
 import com.infodms.dms.po.TtPartLoactionDefinePO;
@@ -172,16 +174,16 @@ public class PartDlrReturnApplyQuery {
                         String normalPart = "";
                         String buyPart = "";
                         for (int i = 0; i < dtlList.size(); i++) {
-                            Map<String, Object> dltMap = dtlList.get(i);
+                            Map<String, Object> dtlMap = dtlList.get(i);
                             String partOldcode = dtlList.get(i).get("PART_OLDCODE").toString();
                             int applyQty = Integer.parseInt(dtlList.get(i).get("APPLY_QTY").toString());
-                            int normalQty = Integer.parseInt(dltMap.get("NORMAL_QTY").toString());
-                            int buyQty = Integer.parseInt(dltMap.get("BUY_QTY").toString());
+                            int normalQty = Integer.parseInt(dtlMap.get("NORMAL_QTY").toString());
+                            int buyQty = Integer.parseInt(dtlMap.get("BUY_QTY").toString());
                             if(normalQty < applyQty){
                                 normalPart += partOldcode + " ";                                
                             }
                             
-                            int returnQty = Integer.parseInt(dltMap.get("IN_RETURN_QTY").toString());
+                            int returnQty = Integer.parseInt(dtlMap.get("IN_RETURN_QTY").toString());
                             if(buyQty - returnQty < applyQty){
                                 buyPart += partOldcode + " ";                                
                             }
@@ -210,6 +212,15 @@ public class PartDlrReturnApplyQuery {
                             po.setVerifyLevel(Constant.PART_RETURN_CHK_LEVEL_01); // 审核等级
                             dao.update(spo, po);
 
+                            /*---------------------修改经销商入库明细记录的退货数量----------------------*/
+                            Map<String, String> paramMap = new HashMap<String, String>();
+                            paramMap.put("returnId", returnId); // 入库单主记录id
+                            paramMap.put("loginId", logonUser.getUserId().toString()); // 当前用户
+                            paramMap.put("sumColunm", "APPLY_QTY"); // 求和的字段 
+                            PartDlrReturnChkrDao chkrDao = PartDlrReturnChkrDao.getInstance();
+                            chkrDao.updateInStrockReturnQty(paramMap);
+                            /*---------------------修改经销商入库明细记录的退货数量----------------------*/
+                            
                             // 冻结出库单开票
                             if(mainPO.getSoId() != null){
                                 TtPartOutstockMainPO outstockPO = new TtPartOutstockMainPO();
@@ -596,7 +607,7 @@ public class PartDlrReturnApplyQuery {
             String partCname = CommonUtils.checkNull(request.getParamValue("PART_CNAME"));
 
             String soPara = CommonUtils.checkNull(request.getParamValue("soPara"));//是否强制检查销售单号
-            String soCode = CommonUtils.checkNull(request.getParamValue("soCode"));//销售单号
+            String inCode = CommonUtils.checkNull(request.getParamValue("inCode"));//销售单号
             String whId = CommonUtils.checkNull(request.getParamValue("WH_ID"));//仓库id
             String beginTime = CommonUtils.checkNull(request.getParamValue("beginTime"));//仓库id
             String endTime = CommonUtils.checkNull(request.getParamValue("endTime"));//仓库id
@@ -610,10 +621,10 @@ public class PartDlrReturnApplyQuery {
             Integer curPage = request.getParamValue("curPage") != null ? Integer
                     .parseInt(request.getParamValue("curPage"))
                     : 1; // 处理当前页
-            PageResult<Map<String, Object>> ps = dao.queryPartInfoList(po, childorgId, soPara, soCode, whId, beginTime, endTime, curPage, Constant.PAGE_SIZE);
+            PageResult<Map<String, Object>> ps = dao.queryPartInfoList(po, childorgId, soPara, inCode, whId, beginTime, endTime, curPage, Constant.PAGE_SIZE);
             //分页方法 end
             act.setOutData("ps", ps);
-            act.setOutData("soCode", soCode);
+            act.setOutData("inCode", inCode);
         } catch (Exception e) {//异常方法
             BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "配件信息");
             logger.error(logonUser, e1);
@@ -635,25 +646,23 @@ public class PartDlrReturnApplyQuery {
 
             String[] partIds = request.getParamValues("cb");//获取所有选中的配件id
             String returnCode = OrderCodeManager.getOrderCode(Constant.PART_CODE_RELATION_17);//退货单号
-            String soId = CommonUtils.checkNull(request.getParamValue("soId"));// 入库单号
-            String soCode = CommonUtils.checkNull(request.getParamValue("soCode"));// 入库单号-销售单号
+            String inCode = CommonUtils.checkNull(request.getParamValue("inCode"));// 入库单号id
             String whId = CommonUtils.checkNull(request.getParamValue("WH_ID"));//仓库
             String[] SALE_ORG = request.getParamValue("SALE_ORG").split(",");//销售单位信息
 
-            if (!"".equals(soCode)) {//如果销售单号不为空,可以到出库单主表中查询订单类型,并获取销售日期
+            //如果销售单号不为空,可以到出库单主表中查询订单类型,并获取销售日期
+            if (!"".equals(inCode)) {
                 String childorgId = CommonUtils.checkNull(request.getParamValue("childorgId"));
 //                Map<String, Object> map = dao.getSoInfoByCode(soCode);//通过销售单号从出库单主表中获取信息
-                Map<String, Object> map = dao.queryInCodeList(childorgId,SALE_ORG[0],soCode).get(0);//通过销售单号从出库单主表中获取信息
+                Map<String, Object> map = dao.queryInCodeList(childorgId,SALE_ORG[0],inCode).get(0);//通过销售单号从出库单主表中获取信息
                 
                 ttDlrReturnMainPO.setSoId(((BigDecimal) map.get("SO_ID")).longValue());
                 ttDlrReturnMainPO.setSoCode(map.get("SO_CODE").toString());
-//		    	ttDlrReturnMainPO.setOrderType(((BigDecimal)map.get("ORDER_TYPE")).intValue());
+		    	ttDlrReturnMainPO.setOrderType(((BigDecimal)map.get("ORDER_TYPE")).intValue());
                 ttDlrReturnMainPO.setSaleDate((Date) map.get("SALE_DATE"));
                 ttDlrReturnMainPO.setInId(((BigDecimal) map.get("IN_ID")).longValue());
-                ttDlrReturnMainPO.setInCode(soCode);
-                ttDlrReturnMainPO.setSoId(Long.parseLong(soId));
+                ttDlrReturnMainPO.setInCode(inCode);
                 ttDlrReturnMainPO.setInDate((Date) map.get("IN_DATE"));
-                
             }
             String[] RETURN_DEALER = request.getParamValue("RETURN_DEALER").split(",");//退货单位信息
             String REMARK = request.getParamValue("REMARK");//退货原因
@@ -832,8 +841,8 @@ public class PartDlrReturnApplyQuery {
         try {
             String returnId = CommonUtils.checkNull(request.getParamValue("returnId"));
             Map<String, Object> map = dao.getPartDlrReturnMainInfo(returnId);
-            String soCode = (String) map.get("SO_CODE");
-            List<Map<String, Object>> list = dao.queryPartDlrReturnDetailList1(returnId, soCode);
+            String inCode = (String) map.get("IN_CODE");
+            List<Map<String, Object>> list = dao.queryPartDlrReturnDetailList1(returnId, inCode);
             request.setAttribute("po", map);
             request.setAttribute("list", list);
             act.setOutData("returnId", returnId);

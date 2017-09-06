@@ -78,8 +78,7 @@
 	    {
 	    	if(parseFloat(record.data.NOTE_AMOUNT)>0){
 	    		return String.format("<a href='#' onclick=queryInfo01("+record.data.DEALER_ID+",'"+record.data.START_DATE+"','"+record.data.END_DATE+"','"+record.data.BALANCE_NO+"')>[查看]</a>"+
-	    				"<a href='#' onclick=queryInfoAdd("+record.data.DEALER_ID+",'"+record.data.START_DATE+"','"+record.data.END_DATE+"','"+record.data.BALANCE_NO+"')>[编辑]</a>"+
-	    				"<a href='#' onclick=report('"+record.data.ID+"')>[上报]</a>");
+	    				"<a href='#' onclick=queryInfoAdd("+record.data.DEALER_ID+",'"+record.data.START_DATE+"','"+record.data.END_DATE+"','"+record.data.BALANCE_NO+"')>[编辑]</a>");
 	    	}else{
 	    		 return String.format("<a href='#' onclick=queryInfo01("+record.data.DEALER_ID+",'"+record.data.START_DATE+"','"+record.data.END_DATE+"','"+record.data.BALANCE_NO+"')>[查看]</a>");
 	    	}
@@ -124,7 +123,8 @@
 		document.getElementById(a).value="";
 		document.getElementById(b).value="";
 	}
-	function report(id){			
+	//<a href='#' onclick=report('"+record.data.ID+"')>[上报]</a>
+	<%-- function report(id){			
 		MyConfirm("是否确认上报？",reportCommit,[id]);
 	}
 
@@ -138,7 +138,7 @@
 		}else{
 			MyAlert("存在相同已上报信息，请勿重复操作！");
 		}
-	}
+	} --%>
 	function Back(){
 		__extQuery__(1);
 	}

@@ -5882,6 +5882,17 @@ public interface Constant {
     public static final Integer AGREE_MAINTAIN_COST_01 = 80331001;//同意
     public static final Integer AGREE_MAINTAIN_COST_02 = 80331002;//不同意
     
+    //抵扣项目类型
+    public static final Integer DEDUCTION_OBJECT_TYPE = 1253;
+    public static final Integer DEDUCTION_OBJECT_TYPE_01 = 12531001;//维修配件抵扣
+    public static final Integer DEDUCTION_OBJECT_TYPE_02 = 12531002;//维修工时抵扣
+    public static final Integer DEDUCTION_OBJECT_TYPE_03 = 12531003;//其他费用抵扣
+    
+    //抵扣类型
+    public static final Integer DEDUCTION_TYPE = 1254;
+    public static final Integer DEDUCTION_TYPE_01 = 12541001;//一次抵扣
+    public static final Integer DEDUCTION_TYPE_02 = 12541002;//二次抵扣
+    
 }
 
 

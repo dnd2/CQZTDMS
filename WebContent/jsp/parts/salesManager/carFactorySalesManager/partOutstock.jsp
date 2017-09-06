@@ -35,7 +35,7 @@ function getCode(value) {
 }
 //获取序号
 function getIdx() {
-    document.write(document.getElementById("file").rows.length - 2);
+    document.write(document.getElementById("file").rows.length - 1);
 }
 function createPartOutstockOrderConfirm() {
 //     var pattern2 = /^[0-9][0-9]*$/;

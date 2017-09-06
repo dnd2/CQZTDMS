@@ -183,15 +183,15 @@ public class DlvWayBillManageDao extends BaseDao<PO>{
 			params.add(lastEndDate +" 23:59:59");
 		}
 		if(provinceId!=null&&!"".equals(provinceId)){
-			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
+			sql.append(" AND TSW.Dlv_Bal_Prov_Id =?\n");		
 			params.add(provinceId);
 		}
 		if(cityId!=null&&!"".equals(cityId)){
-			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
+			sql.append(" AND TSW.Dlv_Bal_City_Id=?\n");
 			params.add(cityId);
 		}
 		if(countyId!=null&&!"".equals(countyId)){
-			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
+			sql.append(" AND TSW.Dlv_Bal_County_Id=?\n");
 			params.add(countyId);
 		}
 		//sql.append("   ORDER BY TSW.BILL_CRT_DATE DESC");
@@ -426,6 +426,31 @@ public class DlvWayBillManageDao extends BaseDao<PO>{
 		return  pageQuery(sql.toString(), null, getFunName());
 		
 	}
+	
+	public List<Map<String, Object>> checkIsMatchWare(String flag) {
+		StringBuffer sql= new StringBuffer();
+		sql.append("SELECT TT.ROW_NUMBER\n" );
+		sql.append("  FROM TMP_TT_SALES_WAY_BILL TT,\n" );
+		sql.append("       TM_VEHICLE TV,\n" );
+		sql.append("       VW_MATERIAL_GROUP_MAT MAT,\n" );
+		sql.append("       (SELECT TSBD.ORDER_NO, TSB.BO_NO, TSBD.MAT_ID, TVD.DLV_WH_ID\n" );
+		sql.append("          FROM TT_SALES_BO_DETAIL TSBD, TT_SALES_BOARD TSB, TT_VS_DLVRY TVD\n" );
+		sql.append("         WHERE TSBD.ORDER_ID = TVD.ORD_ID\n" );
+		sql.append("           AND TSBD.BO_ID = TSB.BO_ID) TM\n" );
+		sql.append(" WHERE TT.BO_NO = TM.BO_NO\n" );
+		sql.append("   AND TT.ORDER_NO = TM.ORDER_NO\n" );
+		sql.append("   AND TT.MATERIAL_CODE = MAT.MATERIAL_CODE\n" );
+		sql.append("   AND MAT.MATERIAL_ID = TM.MAT_ID\n" );
+		
+		sql.append("   AND TM.DLV_WH_ID != tv.warehouse_id\n");
+		if(flag.equals("1")){//替换车架号
+			sql.append("   AND TT.New_Vin = TV.VIN\n" );
+		}else{//原车架号
+			sql.append("   AND TT.VIN = TV.VIN\n" );
+		}
+		return  pageQuery(sql.toString(), null, getFunName());
+		
+	}
 	/**
 	 * 校验组板号,返回错误行
 	 */
@@ -441,7 +466,8 @@ public class DlvWayBillManageDao extends BaseDao<PO>{
 		sql.append("                AND TSBD.ORDER_ID = TVD.ORD_ID\n" );
 		if(flag.equals("1")){//是否已生成发运计划
 			sql.append("				AND TSB.BO_STATUS='1'\n" );
-			sql.append("                AND TSB.handle_status=9710011\n" );
+			sql.append("AND (TSB.handle_status = 9710011 or\n" );
+			sql.append("                   TSB.handle_status = 9710006) --针对初次导入的为计划已发送，在途导入的为已生成运单\n");
 		}
 		sql.append("                ) TTB ON TTS.BO_NO =TTB.BO_NO\n");
 		sql.append(" WHERE TTB.BO_ID IS NULL");
@@ -546,17 +572,26 @@ public class DlvWayBillManageDao extends BaseDao<PO>{
 	 */
 	public List<Map<String, Object>> checkTmpSubNum(String userId) {
 		StringBuffer sql= new StringBuffer();
+		sql.append("--查询订单明细组板不等于交接数量\n" );
 		sql.append("SELECT TTS.ROW_NUMBER\n" );
 		sql.append("  FROM TMP_TT_SALES_WAY_BILL TTS\n" );
-		sql.append("  LEFT JOIN (SELECT COUNT(*) AS IM_NUM, TMP.BO_NO, TMP.MATERIAL_CODE\n" );
+		sql.append("  left JOIN (SELECT COUNT(*) AS IM_NUM,\n" );
+		sql.append("                    TMP.BO_NO,\n" );
+		sql.append("                    TMP.ORDER_NO,\n" );
+		sql.append("                    TMP.MATERIAL_CODE\n" );
 		sql.append("               FROM TMP_TT_SALES_WAY_BILL TMP\n" );
-		sql.append("              WHERE TMP.CREATE_BY = '"+userId+"'\n" );
+		sql.append("              WHERE TMP.CREATE_BY = "+userId+"\n" );
 		sql.append("                AND TMP.NEW_VIN IS NULL\n" );
-		sql.append("              GROUP BY TMP.BO_NO, TMP.MATERIAL_CODE) T1 ON TTS.BO_NO =\n" );
-		sql.append("                                                              T1.BO_NO\n" );
-		sql.append("                                                          AND TTS.MATERIAL_CODE =\n" );
-		sql.append("                                                              T1.MATERIAL_CODE\n" );
-		sql.append("  LEFT JOIN (SELECT TSBD.BOARD_NUM, TSB.BO_NO, MAT.MATERIAL_CODE\n" );
+		sql.append("              GROUP BY TMP.BO_NO, TMP.ORDER_NO, TMP.MATERIAL_CODE) T1 ON TTS.BO_NO =\n" );
+		sql.append("                                                                         T1.BO_NO\n" );
+		sql.append("                                                                     AND TTS.MATERIAL_CODE =\n" );
+		sql.append("                                                                         T1.MATERIAL_CODE\n" );
+		sql.append("                                                                     AND TTS.ORDER_NO =\n" );
+		sql.append("                                                                         T1.ORDER_NO\n" );
+		sql.append("  left JOIN (SELECT TSBD.BOARD_NUM,\n" );
+		sql.append("                    TSBD.ORDER_NO,\n" );
+		sql.append("                    TSB.BO_NO,\n" );
+		sql.append("                    MAT.MATERIAL_CODE\n" );
 		sql.append("               FROM TT_SALES_BO_DETAIL    TSBD,\n" );
 		sql.append("                    TT_SALES_BOARD        TSB,\n" );
 		sql.append("                    VW_MATERIAL_GROUP_MAT MAT\n" );
@@ -565,6 +600,22 @@ public class DlvWayBillManageDao extends BaseDao<PO>{
 		sql.append("                                                         T2.BO_NO\n" );
 		sql.append("                                                     AND T1.MATERIAL_CODE =\n" );
 		sql.append("                                                         T2.MATERIAL_CODE\n" );
+		sql.append("                                                     AND T1.ORDER_NO =\n" );
+		sql.append("                                                         T2.ORDER_NO\n" );
+		sql.append(" WHERE T1.IM_NUM <> T2.BOARD_NUM\n" );
+		sql.append("UNION ALL\n" );
+		sql.append("--查询组板总数不等于交接总数\n" );
+		sql.append("SELECT TTS.ROW_NUMBER\n" );
+		sql.append("  FROM TMP_TT_SALES_WAY_BILL TTS\n" );
+		sql.append("  left JOIN (SELECT COUNT(*) AS IM_NUM, TMP.BO_NO\n" );
+		sql.append("               FROM TMP_TT_SALES_WAY_BILL TMP\n" );
+		sql.append("              WHERE TMP.CREATE_BY = '"+userId+"'\n" );
+		sql.append("                AND TMP.NEW_VIN IS NULL\n" );
+		sql.append("              GROUP BY TMP.BO_NO) T1 ON TTS.BO_NO = T1.BO_NO\n" );
+		sql.append("  left JOIN (SELECT SUM(TSBD.BOARD_NUM) BOARD_NUM, TSB.BO_NO\n" );
+		sql.append("               FROM TT_SALES_BO_DETAIL TSBD, TT_SALES_BOARD TSB\n" );
+		sql.append("              WHERE TSB.BO_ID = TSBD.BO_ID\n" );
+		sql.append("              GROUP BY TSB.BO_NO) T2 ON T1.BO_NO = T2.BO_NO\n" );
 		sql.append(" WHERE T1.IM_NUM <> T2.BOARD_NUM");
 
 		return dao.pageQuery(sql.toString(), null, getFunName());
@@ -842,8 +893,8 @@ public class DlvWayBillManageDao extends BaseDao<PO>{
 		sql.append("       TVDD.MATERIAL_ID,\n" );
 		sql.append("       TVDD.ORD_ID,\n" );
 		sql.append("       TVDD.ORD_DETAIL_ID,\n" );
-		sql.append("       TSBD.BOARD_NUM,TVDD.REQ_DETAIL_ID,TVD.DLV_WH_ID,TVD.ZZ_WH_ID,\n" );
-		sql.append("       TVD.DLV_IS_SD,TVD.DLV_IS_ZZ,TVD.DLV_ZZ_PROV_ID,TVD.DLV_ZZ_CITY_ID,TVD.DLV_ZZ_COUNTY_ID\n" );
+		sql.append("       TSBD.BOARD_NUM,TVDD.REQ_DETAIL_ID,TVD.DLV_WH_ID,TSBD.ZZ_WH_ID,\n" );
+		sql.append("       TVD.DLV_IS_SD,TSBD.DLV_IS_ZZ,TSBD.DLV_ZZ_PROV_ID,TSBD.DLV_ZZ_CITY_ID,TSBD.DLV_ZZ_COUNTY_ID\n" );
 		sql.append("  FROM TT_SALES_BOARD        TSB,\n" );
 		sql.append("       TT_SALES_BO_DETAIL    TSBD,\n" );
 		sql.append("       TT_VS_DLVRY           TVD,\n" );

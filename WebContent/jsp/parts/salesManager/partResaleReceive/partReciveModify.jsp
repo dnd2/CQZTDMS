@@ -627,7 +627,7 @@ table.table_query td.bottom-button{padding-bottom: 10px}
 						<tr>
 							<td class="right">备注：</td>
 							<td colspan="5">
-								<textarea class="form-control align" style="width: 83.5%" id="remark" name="remark" cols="4" rows="4">${map.REMARK }</textarea>
+								<textarea class="form-control align" style="width: 84%" id="remark" name="remark" cols="4" rows="4">${map.REMARK }</textarea>
 							</td>
 						</tr>
 					</table>
@@ -735,7 +735,7 @@ table.table_query td.bottom-button{padding-bottom: 10px}
 						<input type="button" class="u-button" name="addPartViv" id="addPartViv" value="增 加" onclick="addPartDiv()" />
 					</th>
 				</LEGEND>
-				<div style="display: none;" id="partDiv" class="upload-divider">
+				<div style="display: none;" id="partDiv" class="upload-divider grid-resize">
 					<table class="table_query" width=100% border="0" align="center" cellpadding="1" cellspacing="1">
 						<tr>
 							<td class="right">配件编码：</td>

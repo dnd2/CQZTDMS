@@ -6,6 +6,7 @@ import com.infodms.dms.dao.common.BaseDao;
 import com.infodms.dms.po.TtPartDefinePO;
 import com.infodms.dms.po.TtPartWarehouseDefinePO;
 import com.infodms.dms.util.CommonUtils;
+import com.infoservice.mvc.component.loger.LogerManager;
 import com.infoservice.mvc.context.RequestWrapper;
 import com.infoservice.po3.bean.PO;
 import com.infoservice.po3.bean.PageResult;
@@ -385,7 +386,7 @@ public class PartDlrReturnApplyDAO extends BaseDao {
      * @throws Exception
      */
     public List<Map<String, Object>> queryPartDlrReturnDetailList1(
-            String returnId, String soCode) throws Exception {
+            String returnId, String inCode) throws Exception {
         List<Map<String, Object>> list;
         try {
             StringBuffer sql = new StringBuffer("");
@@ -393,6 +394,7 @@ public class PartDlrReturnApplyDAO extends BaseDao {
 //            sql.append("  FROM TT_PART_DLR_RETURN_DTL T \n");
 //            sql.append(" WHERE T.RETURN_ID= '"+returnId+"' \n");
             sql.append("SELECT T.DTL_ID,\n");
+            sql.append("       ITD.INLINE_ID,\n");
             sql.append("       T.PART_ID,\n");
             sql.append("       T.PART_CODE,\n");
             sql.append("       T.PART_OLDCODE,\n");
@@ -412,7 +414,7 @@ public class PartDlrReturnApplyDAO extends BaseDao {
             sql.append("    ON T2.RETURN_ID = T.RETURN_ID\n");
             sql.append(" INNER JOIN TT_PART_DLR_INSTOCK_DTL ITD\n");
             sql.append("    ON ITD.PART_ID = T.PART_ID\n");
-            sql.append("   AND ITD.IN_ID = T2.SO_ID\n");
+            sql.append("   AND ITD.IN_ID = T2.IN_ID\n");
             sql.append(" INNER JOIN TT_PART_BOOK T3\n");
             sql.append("    ON T3.PART_ID = T.PART_ID\n");
             sql.append("   AND T3.WH_ID = T2.STOCK_OUT\n");
@@ -440,11 +442,11 @@ public class PartDlrReturnApplyDAO extends BaseDao {
      * @throws Exception
      */
     public PageResult<Map<String, Object>> queryPartInfoList(TtPartDefinePO po, String childorgId,
-                                                             String soPara, String soCode, String whId, String beginTime, String endTime, Integer curPage, Integer pageSize) throws Exception {
+                                                             String soPara, String inCode, String whId, String beginTime, String endTime, Integer curPage, Integer pageSize) throws Exception {
         PageResult<Map<String, Object>> ps;
         try {
             StringBuffer sql = new StringBuffer("");
-            if (!"".equals(soCode) || !"".equals(beginTime) || !"".equals(endTime)) {//如果有销售单号或者销售日期
+            if (!"".equals(inCode) || !"".equals(beginTime) || !"".equals(endTime)) {//如果有销售单号或者销售日期
                 /*sql.append(" SELECT T.PART_ID, \n");
                 sql.append("        T.PART_CODE, \n");
 				sql.append("        T.PART_OLDCODE, \n");
@@ -479,19 +481,19 @@ public class PartDlrReturnApplyDAO extends BaseDao {
                 sql.append("  FROM TT_PART_DLR_INSTOCK_DTL  T,\n");
                 sql.append("       TT_PART_DLR_INSTOCK_MAIN IM,\n");
                 sql.append("       TT_PART_TRANS            S,\n");
-                sql.append("       TT_PART_OUTSTOCK_MAIN    OM,\n");
-                sql.append("       TT_PART_TRANS_PLAN       TP\n");
+                sql.append("       TT_PART_OUTSTOCK_MAIN    OM\n");
+                // sql.append("       TT_PART_TRANS_PLAN       TP\n");
                 sql.append(" WHERE T.IN_ID = IM.IN_ID\n");
                 sql.append("   AND IM.TRANS_ID = S.TRANS_ID\n");
                 sql.append("   AND S.OUT_ID = OM.OUT_ID\n");
-                sql.append("   AND OM.TRPLAN_ID = TP.TRPLAN_ID");
+                // sql.append("   AND OM.TRPLAN_ID = TP.TRPLAN_ID");
                 sql.append("   AND IM.DEALER_ID = ").append(childorgId);
 
 //                if (!"".equals(soCode)) {
 //                    sql.append("  AND TP.TRPLAN_CODE='").append(soCode).append("'");
 //                }
-                if (!"".equals(soCode)) {
-                    sql.append("  AND IM.IN_CODE ='").append(soCode).append("'");
+                if (!"".equals(inCode)) {
+                    sql.append("  AND IM.IN_CODE ='").append(inCode).append("'");
                 }
 
                 if (!"".equals(whId)) {
@@ -768,17 +770,21 @@ public class PartDlrReturnApplyDAO extends BaseDao {
 //			sql.append("SELECT DISTINCT T.DEALER_NAME,T.SELLER_NAME,T.SO_CODE FROM TT_PART_DLR_INSTOCK_MAIN T,");
 //			sql.append("TT_PART_DLR_INSTOCK_DTL T1,TT_PART_SO_MAIN T2 WHERE T.IN_ID=T1.IN_ID AND T.SO_ID=T2.SO_ID");
 
-            sql.append("SELECT DISTINCT T.DEALER_NAME, T.SELLER_NAME, TP.TRPLAN_CODE SO_CODE, T.IN_ID, T.IN_CODE \n");
+            sql.append("SELECT DISTINCT T.DEALER_NAME,\n");
+            sql.append("                T.SELLER_NAME,\n");
+            sql.append("                T2.SO_ID,\n");
+            sql.append("                T2.SO_CODE,\n");
+            sql.append("                T.IN_ID,\n");
+            sql.append("                T.IN_CODE\n");
             sql.append("  FROM TT_PART_DLR_INSTOCK_MAIN T,\n");
             sql.append("       TT_PART_DLR_INSTOCK_DTL  T1,\n");
             sql.append("       TT_PART_TRANS            T2,\n");
-            sql.append("       TT_PART_OUTSTOCK_MAIN    OM,\n");
-            sql.append("       TT_PART_TRANS_PLAN       TP\n");
+            sql.append("       TT_PART_OUTSTOCK_MAIN    OM\n");
             sql.append(" WHERE T.IN_ID = T1.IN_ID\n");
             sql.append("   AND T.TRANS_ID = T2.TRANS_ID\n");
             sql.append("   AND T2.OUT_ID = OM.OUT_ID\n");
-            sql.append("   AND OM.TRPLAN_ID = TP.TRPLAN_ID");
-
+            sql.append("   AND T.DEALER_ID = 2014032494229552\n");
+            sql.append("   AND T.SELLER_ID = 2010010100070674\n");
             sql.append(" AND T.DEALER_ID=").append(childorgId + "\n");
             sql.append(" AND T.SELLER_ID=").append(saleOrgId + "\n");
             
@@ -826,21 +832,22 @@ public class PartDlrReturnApplyDAO extends BaseDao {
         StringBuffer sql = new StringBuffer("");
         sql.append(" SELECT T.DEALER_NAME, \n");
         sql.append("        T.SELLER_NAME, \n");
-        sql.append("        TP.TRPLAN_ID SO_ID, \n");
-        sql.append("        TP.TRPLAN_CODE SO_CODE, \n");
-        sql.append("        TP.CREATE_DATE SO_DATE, \n");
+        sql.append("        T2.SO_ID, \n");
+        sql.append("        T2.SO_CODE, \n");
+        sql.append("        T2.SALE_DATE, \n");
+        sql.append("        T2.ORDER_TYPE, \n");
         sql.append("        T.IN_ID, \n");
         sql.append("        T.IN_CODE, \n");
         sql.append("        T.CREATE_DATE  IN_DATE \n");
         sql.append("   FROM TT_PART_DLR_INSTOCK_MAIN T,\n");
 //        sql.append("        TT_PART_DLR_INSTOCK_DTL  T1,\n");
         sql.append("        TT_PART_TRANS            T2,\n");
-        sql.append("        TT_PART_OUTSTOCK_MAIN    OM,\n");
-        sql.append("        TT_PART_TRANS_PLAN       TP\n");
+        sql.append("        TT_PART_OUTSTOCK_MAIN    OM\n");
+//        sql.append("        TT_PART_TRANS_PLAN       TP\n");
 //        sql.append("  WHERE T.IN_ID = T1.IN_ID\n");
         sql.append("  WHERE T.TRANS_ID = T2.TRANS_ID\n");
         sql.append("    AND T2.OUT_ID = OM.OUT_ID\n");
-        sql.append("    AND OM.TRPLAN_ID = TP.TRPLAN_ID\n");
+//        sql.append("    AND OM.TRPLAN_ID = TP.TRPLAN_ID\n");
         sql.append("    AND T.DEALER_ID='" + childorgId + "' \n");
         sql.append("    AND T.SELLER_ID='" + saleOrgId + "'\n");
         sql.append("    AND T.IN_CODE='" + inCode + "'\n");
@@ -978,22 +985,28 @@ public class PartDlrReturnApplyDAO extends BaseDao {
         PageResult<Map<String, Object>> ps;
         try {
             StringBuffer sql = new StringBuffer("");
-            if (flag == 0) {//如果是车厂,就需要把销售单位是车厂的申请都查询出来
-                sql.append("SELECT T1.RETURN_ID,T1.RETURN_CODE,T1.DEALER_NAME,T2.NAME CREATE_NAME,T1.CREATE_DATE,T1.REMARK,T1.APPLY_DATE,T1.STATE,T1.CREATE_ORG,T1.CREATE_ORGNAME CREATE_DEALER,");
-                sql.append(" NVL((SELECT COUNT(RD.DTL_ID) FROM TT_PART_DLR_RETURN_DTL RD WHERE RD.OUT_QTY > 0 AND RD.RETURN_ID = T1.RETURN_ID ),0) AS OUT_QTYS ");
-                sql.append(" FROM TT_PART_DLR_RETURN_MAIN T1,TC_USER T2 WHERE T1.CREATE_BY=T2.USER_ID AND T1.SELLER_ID=");
-                sql.append(logonUser.getOrgId());
-            } else if (flag == 1) {//如果是供应中心,就需要把退货单位或销售单位是它的都查询出来
-                sql.append("SELECT T1.RETURN_ID,T1.RETURN_CODE,T1.DEALER_NAME,T2.NAME CREATE_NAME,T1.CREATE_DATE,T1.REMARK,T1.APPLY_DATE,T1.STATE,T1.CREATE_ORG,T1.CREATE_ORGNAME CREATE_DEALER,");
-                sql.append(" NVL((SELECT COUNT(RD.DTL_ID) FROM TT_PART_DLR_RETURN_DTL RD WHERE RD.OUT_QTY > 0 AND RD.RETURN_ID = T1.RETURN_ID ),0) AS OUT_QTYS ");
-                sql.append(" FROM TT_PART_DLR_RETURN_MAIN T1,TC_USER T2 WHERE T1.CREATE_BY=T2.USER_ID AND (T1.DEALER_ID=").append(logonUser.getDealerId());
-                sql.append(" OR T1.SELLER_ID=").append(logonUser.getDealerId()).append(")");
-            } else {//如果是一般服务商,就需要把退货单位是它自己的都查询出来
-                sql.append("SELECT T1.RETURN_ID,T1.RETURN_CODE,T1.DEALER_NAME,T2.NAME CREATE_NAME,T1.CREATE_DATE,T1.REMARK,T1.APPLY_DATE,T1.STATE,T1.CREATE_ORG,T1.CREATE_ORGNAME CREATE_DEALER,");
-                sql.append(" NVL((SELECT COUNT(RD.DTL_ID) FROM TT_PART_DLR_RETURN_DTL RD WHERE RD.OUT_QTY > 0 AND RD.RETURN_ID = T1.RETURN_ID ),0) AS OUT_QTYS ");
-                sql.append(" FROM TT_PART_DLR_RETURN_MAIN T1,TC_USER T2 WHERE T1.CREATE_BY=T2.USER_ID AND T1.DEALER_ID=");
-                sql.append(logonUser.getDealerId());
-            }
+//            if (flag == 0) {//如果是车厂,就需要把销售单位是车厂的申请都查询出来
+//                sql.append("SELECT T1.RETURN_ID,T1.RETURN_CODE,T1.DEALER_NAME,T2.NAME CREATE_NAME,T1.CREATE_DATE,T1.REMARK,T1.APPLY_DATE,T1.STATE,T1.CREATE_ORG,T1.CREATE_ORGNAME CREATE_DEALER,");
+//                sql.append(" NVL((SELECT COUNT(RD.DTL_ID) FROM TT_PART_DLR_RETURN_DTL RD WHERE RD.OUT_QTY > 0 AND RD.RETURN_ID = T1.RETURN_ID ),0) AS OUT_QTYS ");
+//                sql.append(" FROM TT_PART_DLR_RETURN_MAIN T1,TC_USER T2 WHERE T1.CREATE_BY=T2.USER_ID AND T1.SELLER_ID=");
+//                sql.append(logonUser.getOrgId());
+//            } else if (flag == 1) {//如果是供应中心,就需要把退货单位或销售单位是它的都查询出来
+//                sql.append("SELECT T1.RETURN_ID,T1.RETURN_CODE,T1.DEALER_NAME,T2.NAME CREATE_NAME,T1.CREATE_DATE,T1.REMARK,T1.APPLY_DATE,T1.STATE,T1.CREATE_ORG,T1.CREATE_ORGNAME CREATE_DEALER,");
+//                sql.append(" NVL((SELECT COUNT(RD.DTL_ID) FROM TT_PART_DLR_RETURN_DTL RD WHERE RD.OUT_QTY > 0 AND RD.RETURN_ID = T1.RETURN_ID ),0) AS OUT_QTYS ");
+//                sql.append(" FROM TT_PART_DLR_RETURN_MAIN T1,TC_USER T2 WHERE T1.CREATE_BY=T2.USER_ID AND (T1.DEALER_ID=").append(logonUser.getDealerId());
+//                sql.append(" OR T1.SELLER_ID=").append(logonUser.getDealerId()).append(")");
+//            } else {//如果是一般服务商,就需要把退货单位是它自己的都查询出来
+//                sql.append("SELECT T1.RETURN_ID,T1.RETURN_CODE,T1.DEALER_NAME,T2.NAME CREATE_NAME,T1.CREATE_DATE,T1.REMARK,T1.APPLY_DATE,T1.STATE,T1.CREATE_ORG,T1.CREATE_ORGNAME CREATE_DEALER,");
+//                sql.append(" NVL((SELECT COUNT(RD.DTL_ID) FROM TT_PART_DLR_RETURN_DTL RD WHERE RD.OUT_QTY > 0 AND RD.RETURN_ID = T1.RETURN_ID ),0) AS OUT_QTYS ");
+//                sql.append(" FROM TT_PART_DLR_RETURN_MAIN T1,TC_USER T2 WHERE T1.CREATE_BY=T2.USER_ID AND T1.DEALER_ID=");
+//                sql.append(logonUser.getDealerId());
+//            }
+            
+            Object orgId = flag == 0 ? logonUser.getOrgId() : logonUser.getDealerId();
+            sql.append("SELECT T1.RETURN_ID,T1.RETURN_CODE,T1.DEALER_NAME,T2.NAME CREATE_NAME,T1.CREATE_DATE,T1.REMARK,T1.APPLY_DATE,T1.STATE,T1.CREATE_ORG,T1.CREATE_ORGNAME CREATE_DEALER,");
+            sql.append(" NVL((SELECT COUNT(RD.DTL_ID) FROM TT_PART_DLR_RETURN_DTL RD WHERE RD.OUT_QTY > 0 AND RD.RETURN_ID = T1.RETURN_ID ),0) AS OUT_QTYS ");
+            sql.append(" FROM TT_PART_DLR_RETURN_MAIN T1,TC_USER T2 WHERE T1.CREATE_BY=T2.USER_ID AND T1.DEALER_ID=");
+            sql.append(orgId);
             if (!"".equals(returnCode)) {
                 sql.append(" AND T1.RETURN_CODE LIKE '%")
                         .append(returnCode).append("%'\n");

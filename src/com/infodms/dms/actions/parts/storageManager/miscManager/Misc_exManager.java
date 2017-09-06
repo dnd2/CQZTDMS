@@ -270,14 +270,12 @@ public class Misc_exManager extends BaseImport {
             String remark = CommonUtils.checkNull(req.getParamValue("textarea1")); //备注
             String departmentCode = CommonUtils.checkNull(req.getParamValue("department")); //部门编码
             String[] partIdArr = req.getParamValues("cb");
-            //String partBatch = Constant.PART_RECORD_BATCH;//配件批次
-            String partVenId = Constant.PART_RECORD_VENDER_ID;//供应商ID
 
             List<Map<String, Object>> partList = null;
             //1.验证出库是否已经锁定
             if (null != partIdArr) {
                 for (int i = 0; i < partIdArr.length; i++) {
-                    String partId = partIdArr[i].split(",")[0];
+                    String partId = partIdArr[i].substring(0, 16);
                     String partOldcode = CommonUtils.checkNull(req.getParamValue("partOldcode_" + partId));   //配件编码
 
                     String sqlStr = " AND VM.PART_ID = '" + partId + "' AND VM.WH_ID = '" + whId + "' ";
@@ -301,25 +299,24 @@ public class Misc_exManager extends BaseImport {
                 if (null != partIdArr) {
                     for (int i = 0; i < partIdArr.length; i++) {
                         insertRDPo = new TtPartsMiscDetailPO();
-
                         String partId = partIdArr[i];
-
                         Long dtlId = Long.parseLong(SequenceManager.getSequence(""));
                         String partCode = CommonUtils.checkNull(req.getParamValue("partCode_" + partId));//件号
                         String partOldcode = CommonUtils.checkNull(req.getParamValue("partOldcode_" + partId));   //配件编码
                         String partCname = CommonUtils.checkNull(req.getParamValue("partCname_" + partId)); //配件名称
                         String unit = CommonUtils.checkNull(req.getParamValue("unit_" + partId)); //单位
                         String returnQty = CommonUtils.checkNull(req.getParamValue("inQty_" + partId)); //出库数量
+                        String venderId = CommonUtils.checkNull(req.getParamValue("venderId_" + partId)); //出库数量
 
-                        String loc = CommonUtils.checkNull(req.getParamValue("locCode_" + partId)); //货位信息
-                        String pc = CommonUtils.checkNull(req.getParamValue("pcCode_" + partId)); //批次号
+                        String loc = CommonUtils.checkNull(req.getParamValue("loc_" + partId)); //货位信息
                         String[] locs = loc.trim().split(",");
-                        String locId = locs[0];
-                        String locCode = locs[1];
-                        String locName = locs[2];
+                        String locId = locs[1];
+                        String locCode = locs[2];
+                        String locName = locs[3];
+                        String batchNo = locs[4];
                         //2.判断出库数量是否正常
-                        partId = partIdArr[i].split(",")[0];
-                        List<Map<String, Object>> list = daoEx.checkItemQty(partId, whId, orgId, locId);
+                        partId = partId.substring(0, partId.indexOf("_RNUM"));
+                        List<Map<String, Object>> list = daoEx.checkItemQty(partId, whId, orgId, locId, batchNo);
                         if (list != null && list.size() > 0 && list.get(0) != null) {
                             String itemQty = list.get(0).get("ITEM_QTY").toString();//账面库存
                             String normalQty = list.get(0).get("NORMAL_QTY").toString();//可用库存
@@ -339,6 +336,7 @@ public class Misc_exManager extends BaseImport {
                         insertRDPo.setLocCode(locCode);
                         insertRDPo.setLocName(locName);
                         insertRDPo.setInQty(Long.parseLong(returnQty));
+                        insertRDPo.setBatchNo(batchNo);
                         insertRDPo.setCreateBy(userId);
                         insertRDPo.setCreateDate(date);
                         dao.insert(insertRDPo);
@@ -360,8 +358,8 @@ public class Misc_exManager extends BaseImport {
                         insertPRPo.setPartCode(partCode);
                         insertPRPo.setPartOldcode(partOldcode);
                         insertPRPo.setPartName(partCname);
-                        insertPRPo.setPartBatch(pc);
-                        insertPRPo.setVenderId(Long.parseLong(partVenId));
+                        insertPRPo.setPartBatch(batchNo);
+                        insertPRPo.setVenderId(Long.parseLong(venderId));
                         insertPRPo.setPartNum(Long.parseLong(returnQty));//出库数量
                         insertPRPo.setConfigId(Long.parseLong(configId));
                         insertPRPo.setOrderId(changeId);//业务ID
@@ -383,7 +381,7 @@ public class Misc_exManager extends BaseImport {
                         dao.insert(insertPRPo);
 
                         //5.调用出出库逻辑
-                        List ins = new LinkedList<Object>();
+                        List<Object> ins = new LinkedList<Object>();
                         ins.add(0, changeId);
                         ins.add(1, configId);
                         //ins.add(2, 0);

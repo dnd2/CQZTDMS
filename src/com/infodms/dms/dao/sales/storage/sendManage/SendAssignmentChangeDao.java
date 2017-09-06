@@ -106,7 +106,7 @@ public class SendAssignmentChangeDao extends BaseDao<PO>{
 		String assStartDate =(String)map.get("assStartDate"); // 分配日期开始
 		String assEndDate = (String)map.get("assEndDate"); // 分派日期结束
 		String logiId = (String)map.get("logiName"); // 物流商
-		String isMiddleTurn = (String)map.get("isMiddleTurn"); //是否中转
+		//String isMiddleTurn = (String)map.get("isMiddleTurn"); //是否中转
 		String isSdan = (String)map.get("isSdan"); //是否散单
 		
 		String poseId = (String)map.get("poseId");
@@ -117,15 +117,15 @@ public class SendAssignmentChangeDao extends BaseDao<PO>{
 		sql.append("SELECT tvd.req_id,\n" );
 		sql.append("       tvd.dlv_is_sd sd_id,\n" );
 		sql.append("       st.code_desc sd_name,\n" );
-		sql.append("       tvd.dlv_is_zz,\n" );
-		sql.append("       (select tcd.code_desc\n" );
-		sql.append("          from tc_code tcd\n" );
-		sql.append("         where tcd.code_id = tvd.dlv_is_zz) zz_desc,\n" );
+//		sql.append("       tvd.dlv_is_zz,\n" );
+//		sql.append("       (select tcd.code_desc\n" );
+//		sql.append("          from tc_code tcd\n" );
+//		sql.append("         where tcd.code_id = tvd.dlv_is_zz) zz_desc,\n" );
 		sql.append("       nvl(TVD.DLV_BD_TOTAL, 0) DLV_BD_TOTAL,\n" );
-		sql.append("       TVD.DLV_ZZ_PROV_ID,\n" );
-		sql.append("       TVD.DLV_ZZ_CITY_ID,\n" );
-		sql.append("       TVD.DLV_ZZ_COUNTY_ID,\n" );
-		sql.append("       ZZ.PROV_NAME || ZZ.CITY_NAME || ZZ.COUNTY_NAME ZZ_ADDR_NAME,\n" );
+//		sql.append("       TVD.DLV_ZZ_PROV_ID,\n" );
+//		sql.append("       TVD.DLV_ZZ_CITY_ID,\n" );
+//		sql.append("       TVD.DLV_ZZ_COUNTY_ID,\n" );
+//		sql.append("       ZZ.PROV_NAME || ZZ.CITY_NAME || ZZ.COUNTY_NAME ZZ_ADDR_NAME,\n" );
 		sql.append("       TVD.DLV_BAL_PROV_ID,\n" );
 		sql.append("       TVD.DLV_BAL_CITY_ID,\n" );
 		sql.append("       TVD.DLV_BAL_COUNTY_ID,\n" );
@@ -143,17 +143,6 @@ public class SendAssignmentChangeDao extends BaseDao<PO>{
 		sql.append("       tvd.req_rec_addr,\n" );
 		sql.append("       to_char(tvd.req_date, 'yyyy-mm-dd') req_date,\n" );
 		sql.append("       to_char(tvd.dlv_date, 'yyyy-mm-dd') dlv_date,\n" );
-//		sql.append("DECODE(TVD.REQ_REC_COUNTY_ID,\n" );
-//		sql.append("              TVD.DLV_BAL_COUNTY_ID,\n" );
-//		sql.append("              tvd.req_no,\n" );
-//		sql.append("              DECODE(TVD.REQ_REC_CITY_ID,\n" );
-//		sql.append("                     TVD.DLV_BAL_CITY_ID,\n" );
-//		sql.append("                     tvd.req_no,\n" );
-//		sql.append("                     DECODE(TVD.REQ_REC_PROV_ID,\n" );
-//		sql.append("                            TVD.DLV_BAL_PROV_ID,\n" );
-//		sql.append("                            tvd.req_no,\n" );
-//		sql.append("                            '<font color=\\\"#FF0000\\\" style=\\\"font-weight:bold\\\">' ||\n" );
-//		sql.append("                            tvd.req_no || '</font>'))) req_no,\n");
 		sql.append("       DECODE(TVD.REQ_REC_COUNTY_ID,\n" );
 		sql.append("              TVD.DLV_BAL_COUNTY_ID,\n" );
 		sql.append("              tvd.req_no,\n" );
@@ -179,19 +168,19 @@ public class SendAssignmentChangeDao extends BaseDao<PO>{
 		sql.append("       tc_code st,\n" );
 		sql.append("       tm_pose_business_area pb,\n" );
 		sql.append("       tc_pose tp,\n" );
-		sql.append("       (SELECT RP2.REGION_CODE PROV_CODE,\n" );
-		sql.append("               RC2.REGION_CODE CITY_CODE,\n" );
-		sql.append("               RT2.REGION_CODE COUNTY_CODE,\n" );
-		sql.append("               RP2.REGION_NAME PROV_NAME,\n" );
-		sql.append("               RC2.REGION_NAME CITY_NAME,\n" );
-		sql.append("               RT2.REGION_NAME COUNTY_NAME\n" );
-		sql.append("          FROM tm_region rp2, tm_region rc2, tm_region rt2\n" );
-		sql.append("         where 1 = 1\n" );
-		sql.append("           AND rp2.region_id = rc2.parent_id\n" );
-		sql.append("           AND rc2.region_id = rt2.parent_id\n" );
-		sql.append("           AND rp2.region_type = 10541002\n" );
-		sql.append("           AND rc2.region_type = 10541003\n" );
-		sql.append("           AND rt2.region_type = 10541004) ZZ,\n" );
+//		sql.append("       (SELECT RP2.REGION_CODE PROV_CODE,\n" );
+//		sql.append("               RC2.REGION_CODE CITY_CODE,\n" );
+//		sql.append("               RT2.REGION_CODE COUNTY_CODE,\n" );
+//		sql.append("               RP2.REGION_NAME PROV_NAME,\n" );
+//		sql.append("               RC2.REGION_NAME CITY_NAME,\n" );
+//		sql.append("               RT2.REGION_NAME COUNTY_NAME\n" );
+//		sql.append("          FROM tm_region rp2, tm_region rc2, tm_region rt2\n" );
+//		sql.append("         where 1 = 1\n" );
+//		sql.append("           AND rp2.region_id = rc2.parent_id\n" );
+//		sql.append("           AND rc2.region_id = rt2.parent_id\n" );
+//		sql.append("           AND rp2.region_type = 10541002\n" );
+//		sql.append("           AND rc2.region_type = 10541003\n" );
+//		sql.append("           AND rt2.region_type = 10541004) ZZ,\n" );
 		sql.append("       (SELECT RP3.REGION_CODE PROV_CODE,\n" );
 		sql.append("               RC3.REGION_CODE CITY_CODE,\n" );
 		sql.append("               RT3.REGION_CODE COUNTY_CODE,\n" );
@@ -221,9 +210,9 @@ public class SendAssignmentChangeDao extends BaseDao<PO>{
 		sql.append("   AND rp.region_type = 10541002\n" );
 		sql.append("   AND rc.region_type = 10541003\n" );
 		sql.append("   AND rt.region_type = 10541004\n" );
-		sql.append("   AND TVD.DLV_ZZ_PROV_ID = ZZ.PROV_CODE(+)\n" );
-		sql.append("   AND tvd.DLV_ZZ_CITY_ID = ZZ.CITY_CODE(+)\n" );
-		sql.append("   AND tvd.DLV_ZZ_COUNTY_ID = ZZ.COUNTY_CODE(+)\n" );
+//		sql.append("   AND TVD.DLV_ZZ_PROV_ID = ZZ.PROV_CODE(+)\n" );
+//		sql.append("   AND tvd.DLV_ZZ_CITY_ID = ZZ.CITY_CODE(+)\n" );
+//		sql.append("   AND tvd.DLV_ZZ_COUNTY_ID = ZZ.COUNTY_CODE(+)\n" );
 		sql.append("   AND TVD.DLV_BAL_PROV_ID = JS.PROV_CODE(+)\n" );
 		sql.append("   AND TVD.DLV_BAL_CITY_ID = JS.CITY_CODE(+)\n" );
 		sql.append("   AND TVD.DLV_BAL_COUNTY_ID = JS.COUNTY_CODE(+)\n");
@@ -287,11 +276,11 @@ public class SendAssignmentChangeDao extends BaseDao<PO>{
 			sql.append("   AND TVD.Dlv_Logi_Id=?\n");
 			params.add(logiId);
 		}
-		if (isMiddleTurn != null && !"".equals(isMiddleTurn))//是否中转
-		{
-			sql.append("   AND TVD.DLV_IS_ZZ=?\n");
-			params.add(isMiddleTurn);
-		}
+//		if (isMiddleTurn != null && !"".equals(isMiddleTurn))//是否中转
+//		{
+//			sql.append("   AND TVD.DLV_IS_ZZ=?\n");
+//			params.add(isMiddleTurn);
+//		}
 		if (isSdan != null && !"".equals(isSdan))//是否散单
 		{
 			sql.append("   AND TVD.DLV_IS_SD=?\n");

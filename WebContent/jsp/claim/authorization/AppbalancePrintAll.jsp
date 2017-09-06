@@ -66,7 +66,7 @@ function PageSetup_Null()
   				<td colspan="2">服务站电话:${ps.PHONE } </td>
   			</tr>
   			<tr>
-  				<td colspan="7" style="border-right: 0px;" align="left">重庆北汽幻速汽车销售有限公司 :    </td>
+  				<td colspan="7" style="border-right: 0px;" align="left">重庆君马汽车销售有限公司 :    </td>
   				<td colspan="3" style="border-left: 0px;" align="right">一式三联，两联随发票寄出</td>
   			</tr>
   			<tr>
@@ -164,7 +164,7 @@ function PageSetup_Null()
   				<td align="left" valign="bottom" style="border: 0px;">备注:</td>
   				<td colspan="2" align="right" valign="top" style="border: 0px;"></td>
   				<td colspan="3" align="right" valign="top" style="border-left: 0px;">
-  				单位名称:阿萨德法师打发手动阀啊阿萨德发<%-- ${mapdel.DEALER_NAME} --%>
+  				单位名称:xxxxxxxxxxxxxxxxx<%-- ${mapdel.DEALER_NAME} --%>
   				(服务站盖发票专用章)
   				<div style="height: 60px;"></div>
   				&nbsp;&nbsp;&nbsp;&nbsp;年
@@ -173,7 +173,7 @@ function PageSetup_Null()
   				</td>
   			</tr>
   			<tr>
-  				<td colspan="3">北汽幻速签字确认:</td>
+  				<td colspan="3">君马签字确认:</td>
   				<td align="right" colspan="7">
   				&nbsp;&nbsp;&nbsp;&nbsp;年
   				&nbsp;&nbsp;&nbsp;&nbsp;月
@@ -182,23 +182,23 @@ function PageSetup_Null()
   			<tr>
   				<td align="center" rowspan="5">购货单位</td>
   				<td colspan="2">购货单位</td>
-  				<td colspan="7">重庆北汽幻速汽车销售有限公司</td>
+  				<td colspan="7">重庆君马汽车销售有限公司</td>
   			</tr>
   			<tr>
   				<td colspan="2">纳税人识别号</td>
-  				<td colspan="7">500117083059795</td>
+  				<td colspan="7">xxxxxxxxxxxxxx</td>
   			</tr>
   			<tr>
   				<td colspan="2">地 址 电 话</td>
-  				<td colspan="7">重庆市合川区土场镇三口村 023-42661188</td>
+  				<td colspan="7">重庆市xxx区xxx镇xxx村 xxx-xxxxxxxx</td>
   			</tr>
   			<tr>
   				<td colspan="2">开   户   行</td>
-  				<td colspan="7">中信银行重庆九龙坡支行</td>
+  				<td colspan="7">xxxxxxxxxxxxxxxxxxxxx</td>
   			</tr>
   			<tr>
   				<td colspan="2">账     号</td>
-  				<td colspan="7">7422410182600052664</td>
+  				<td colspan="7">xxxxxxxxxxxxxxxxxxx</td>
   			</tr>
   			<tr>
   				<td colspan="10"></td>
@@ -207,19 +207,19 @@ function PageSetup_Null()
   				<td align="center" rowspan="3">收件单位</td>
   				
   				<td colspan="2">单 位 名 称</td>
-  				<td colspan="7">重庆北汽幻速汽车销售有限公司</td>
+  				<td colspan="7">重庆君马汽车销售有限公司</td>
   			</tr>
   			<tr>
   				<td colspan="2">收件人姓名<input type="hidden" id="STATUS" name="STATUS" />  </td>
-  				<td colspan="7">重庆北汽幻速汽车销售有限公司索赔管理部</td>
+  				<td colspan="7">重庆君马汽车销售有限公司索赔管理部</td>
   			</tr>
   			<tr>
   				<td colspan="2">地址、电话</td>
-  				<td colspan="7">重庆市北碚区土场镇三口村北汽银翔（研发中心二楼） 023-42668160</td>
+  				<td colspan="7">重庆市xxx区xxx镇xxx村北xxxxxxxxxx xxx-xxxxxxxx</td>
   			</tr>
   			<tr>
   				<td colspan="3">邮 政 编 码</td>
-  				<td colspan="7">401520</td>
+  				<td colspan="7">xxxxxx</td>
   			</tr>
   		</table>
 			</div>
@@ -234,7 +234,7 @@ function PageSetup_Null()
 <table width="800px"; align="center"  border="0" class="bigTable">
 	<tr align="center">
 		<td align="center" height="40" width="100%" style="font-size: 24px; font-weight: bold;"><span class="STYLE1">
-			北汽幻速索赔${name}清单
+			君马索赔${name}清单
 		</span></td>
 	</tr>
     <tr>
@@ -304,7 +304,7 @@ function PageSetup_Null()
 <table width="800px"; align="center"  border="0" class="bigTable">
 	<tr align="center">
 		<td align="center" height="40" width="100%" style="font-size: 24px; font-weight: bold;"><span class="STYLE1">
-			北汽幻速索赔二次入库清单
+			君马索赔二次入库清单
 		</span></td>
 	</tr>
     <tr>

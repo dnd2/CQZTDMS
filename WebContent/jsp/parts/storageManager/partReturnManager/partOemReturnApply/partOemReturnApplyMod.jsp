@@ -12,6 +12,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
 <title>配件采购退货申请</title>
+<style>
+    table.table_query #headTable{background-color: transparent}
+    table.table_query .bottom-button,table .bottom-button{padding: 10px 0}
+</style>
 <script type="text/javascript">
 
 var myPage;
@@ -412,6 +416,14 @@ function showInCode(inCode) {
     OpenHtmlWindow("<%=contextPath%>/jsp/parts/storageManager/partReturnManager/partOemReturnApply/inCodeSelect.jsp", 730, 550);
 }
 
+$(function() {
+    var Fun = Common.FunHelper;
+    Fun.sizeArgs = [
+        { aEl: '#file', rEl: '.form-panel' },
+        { aEl: '#myGrid', rEl: '.form-panel', pos: 20 }
+    ];
+    Fun.setElSize( 'width', 0 );
+});
 </script>
 </head>
 <body>
@@ -455,7 +467,7 @@ function showInCode(inCode) {
 					</table>
 				</div>
 			</div>
-			<table id="file" class="table_list" style="border-bottom: 1px; min-width: 968px;">
+			<table id="file" class="table_list">
 				<caption>
 					<img class="panel-icon nav" src="<%=contextPath%>/img/subNav.gif" />退货明细
 				</caption>
@@ -537,13 +549,13 @@ function showInCode(inCode) {
 			</table>
 			<table style="width: 100%;">
 				<tr>
-					<td align="center">
+					<td class="bottom-button" align="center">
 						<input type="button" name="saveBtn" id="saveBtn" value="保存" onclick="fmsubmit();" class="u-button" />
 						<input type="button" name="saveBtn2" id="saveBtn2" value="返 回" onclick="javascript:goback();" class="u-button" />
 					</td>
 				</tr>
 			</table>
-			<FIELDSET>
+			<FIELDSET class="form-fieldset">
 				<LEGEND style="MozUserSelect: none; KhtmlUserSelect: none" unselectable="on">
 					<th colspan="6" style="background-color: #DAE0EE; font-weight: normal; color: #416C9B; padding: 2px; line-height: 1.5em; border: 1px solid #E7E7E7;">
 						<img src="<%=contextPath%>/img/subNav.gif" alt="" class="nav" /> <font color="blue">入库信息</font>
@@ -572,7 +584,7 @@ function showInCode(inCode) {
 						</tr>
 
 						<tr>
-							<td class="center" colspan="6">
+							<td class="center bottom-button" colspan="6">
 								<input class="u-button" type="button" name="BtnQuery" id="queryBtn" value="查 询" onclick="__extQuery__(1);" />
 								<input class="u-button" type="button" name="BtnQuery" id="queryBtn" value="添加" onclick="addCells()" />
 							</td>

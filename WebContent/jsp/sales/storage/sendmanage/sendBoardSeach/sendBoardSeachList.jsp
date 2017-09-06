@@ -35,12 +35,21 @@ String contextPath=request.getContextPath();
 				</c:if>
 	  		</select>
 	  </td>
+	  <!-- 
 	  <td class="right">发运结算省份：</td>  
 		    <td align="left">
 	  		<select class="u-select" id="txt1" name="jsProvince" onchange="_genCity(this,'txt2')"></select>
-     	 </td> 	  
+     	 </td> 	
+	   --> 
+	   <td class="right">组板号：</td> 
+	  <td align="left" >
+		  <input type="text" maxlength="20"  id=BO_NO name="BO_NO" datatype="1,is_digit_letter,30" maxlength="30" class="middle_txt" size="15" />
+	  </td>	
+	  	 
+	   
 </tr>
-  <tr class="csstr" align="center">     
+<tr class="csstr" align="center">  
+    
 	  <td class="right">发运方式：</td> 
 	  <td align="left">
 		   <label>
@@ -49,32 +58,20 @@ String contextPath=request.getContextPath();
 					</script>
 			</label>
 	  </td>	
+	  	 <!-- 
 	   <td class="right">发运结算城市：</td>  
 		    <td align="left">
 	  		<select class="u-select" id="txt2" name="jsCity" onchange="_genCity(this,'txt3')"></select>
-     	 </td> 
-</tr>
-<tr class="csstr" align="center">      	
-	<td class="right">组板号：</td> 
-	  <td align="left" >
-		  <input type="text" maxlength="20"  id=BO_NO name="BO_NO" datatype="1,is_digit_letter,30" maxlength="30" class="middle_txt" size="15" />
-	  </td>	
-     	 <td class="right">发运结算区县：</td>
-   	  <td align="left">
- 			<select class="u-select" id="txt3" name="jsCounty"></select>
-	 </td>
-</tr>
-<tr class="csstr" align="center">  
-    
-	  <td class="right" nowrap="true">组板日期：</td>
+     	 </td>-->
+     	  <td class="right" nowrap="true">组板日期：</td>
 		<td align="left" nowrap="true">
 			<input class="short_txt" readonly="readonly"  type="text" id="START_DATE" name="START_DATE" onFocus="WdatePicker({el:$dp.$('START_DATE'), maxDate:'#F{$dp.$D(\'END_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>&nbsp;至&nbsp;
 			<input class="short_txt" readonly="readonly"  type="text" id="END_DATE" name="END_DATE" onFocus="WdatePicker({el:$dp.$('END_DATE'), minDate:'#F{$dp.$D(\'START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>
-		</td>	
-	  	  <td class="right">&nbsp;&nbsp;</td>
-		<td align="left">
-			&nbsp;&nbsp;
 		</td>
+  <!-- <td class="right">发运结算区县：</td>
+   	  <td align="left">
+ 			<select class="u-select" id="txt3" name="jsCounty"></select>
+	 </td>-->
 	   
 </tr>
   <tr align="center">
@@ -115,7 +112,7 @@ String contextPath=request.getContextPath();
 				{header: "组板号",dataIndex: 'BO_NO',align:'center'},
 				{header: "发运方式",dataIndex: 'DLV_SHIP_TYPE',align:'center',renderer:getItemValue},
  				{header: "承运商",dataIndex: 'LOGI_NAME',align:'center'},
-				{header: "发运结算地",dataIndex: 'BAL_ADDR',align:'center'},
+				//{header: "发运结算地",dataIndex: 'BAL_ADDR',align:'center'},
 				{header: "组板日期",dataIndex: 'BO_DATE',align:'center'},
 				{header: "组板数量",dataIndex: 'BO_NUM',align:'center'},
 				//{header: "配车数量",dataIndex: 'ALLOCA_NUM',align:'center'},

@@ -26,7 +26,7 @@
 					<input type="text" id="malcode" name="malcode"/>
 				</td>
 				
-				<td class="right'>故障件名称：</td>
+				<td class="right">故障件名称：</td>
 				<td class="left" nowrap="true">
 					<input type="text" id="malname" name="malname"/>
 				</td>

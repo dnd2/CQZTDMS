@@ -21,9 +21,9 @@
 	var str = d.getFullYear() + "&nbsp;年&nbsp;" + (d.getMonth()+1) + "&nbsp;月&nbsp;" + d.getDate() + "&nbsp;日";
 </script>
 <title></title>
-<style media="print">
+<style>
 /* =================================运单打印网格==================================== */	
- table.tab_printBillTitle {
+table.tab_printBillTitle {
 	frame: void;
 }
 
@@ -68,11 +68,16 @@ table.tab_printBill td {
 	font-family: '宋体';
 	font-size: 14px;
 	height: 18px;
-} 
+}
 </style>
+
 <style media=print>
    .Noprint {
        display: none;
+   }
+
+   .p_next {
+       page-break-after: always;
    }
 </style>
 </head>
@@ -98,8 +103,8 @@ table.tab_printBill td {
 		</table>
 		<table width="800px" class="tab_BillContent" align="center">
 			<tr>
-				<td>发运方式：<%=CommonUtils.checkNull(veMap.get("TRANS_NAME"))%></td>
-				<td colspan="7">结算地：<%=CommonUtils.checkNull(veMap.get("BAL_ADDR"))%></td>
+				<td align="left">发运方式：<%=CommonUtils.checkNull(veMap.get("TRANS_NAME"))%></td>
+				<td colspan="7"><%-- 结算地：<%=CommonUtils.checkNull(veMap.get("BAL_ADDR"))%> --%></td>
 			</tr>
 		</table>
 		<table class="tab_printBill" style="border-top: none;" align="center">

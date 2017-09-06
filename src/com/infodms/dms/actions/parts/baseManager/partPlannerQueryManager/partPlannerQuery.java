@@ -1822,7 +1822,7 @@ public class partPlannerQuery extends BaseImport implements PTConstants {
 					    rowList.add(CommonUtils.checkNull(map.get("SP_DESC")));
 					    rowList.add(CommonUtils.checkNull(map.get("PRODUCE_FAC_NAME")));
 					    rowList.add(CommonUtils.checkNull(map.get("DELIVERY_CYCLE")));
-					    rowList.add(CommonUtils.checkNull(map.get("MIN_PACK1")));
+					    rowList.add(CommonUtils.checkNull(map.get("BUY_MIN_PKG")));
 					    rowList.add(CommonUtils.checkNull(map.get("MIN_PURCHASE")));
                         expExcelList.add(rowList);
 //						String[] detail = new String[15];

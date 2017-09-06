@@ -41,6 +41,7 @@ import com.infodms.dms.po.TtAsWrAuthPricePO;
 import com.infodms.dms.po.TtAsWrBarcodePartStockPO;
 import com.infodms.dms.po.TtAsWrOldReturnedDetailPO;
 import com.infodms.dms.po.TtAsWrOldReturnedPO;
+import com.infodms.dms.po.TtAsWrOldpartDeductionPO;
 import com.infodms.dms.po.TtAsWrPartsitemPO;
 import com.infodms.dms.po.TtAsWrReturnAuthitemPO;
 import com.infodms.dms.po.TtAsWrReturnedOrderPO;
@@ -4461,6 +4462,7 @@ try {
 	
 	public void signAmountChange(){
 		String id = CommonUtils.checkNull(request.getParamValue("id"));//旧件明细ID
+		String returnId = CommonUtils.checkNull(request.getParamValue("returnId"));//旧件清单ID
 		String signAmount = CommonUtils.checkNull(request.getParamValue("signAmount"));//签收数
 //		String deductRemark = CommonUtils.checkNull(request.getParamValue("deductRemark"));//抵扣原因
 //		String otherRemark = CommonUtils.checkNull(request.getParamValue("otherRemark"));//其他原因
@@ -4625,7 +4627,7 @@ try {
 			params.add(claimId);
 			params.add(claimId);
             dao.update(sql.toString(), params);
-            //根据工时、配件、外出费用，重新统计更新索赔表工时结算金额、配件结算金额、外出结算金额、结算总金额
+            //根据工时、配件、外出费用，重新统计更新索赔表工时结算金额、配件结算金额、外出结算金额
             sql.setLength(0);
 			sql.append("MERGE INTO TT_AS_WR_APPLICATION_CLAIM A\n") ;
 			sql.append("USING (SELECT TTCLAIM.ID,\n") ;
@@ -4652,6 +4654,119 @@ try {
 			params.add(claimId);
 			params.add(claimId);
             dao.update(sql.toString(), params);
+            //根据配件结算金额、工时结算金额、PDI结算金额、外出结算费用、保养结算金额、服务活动折扣后结算金额 重新计算 结算总金额
+            sql.setLength(0);
+			sql.append("UPDATE TT_AS_WR_APPLICATION_CLAIM A\n") ;
+			sql.append("   SET A.SETTLEMENT_TOTAL_AMOUNT = NVL(A.PART_SETTLEMENT_AMOUNT, 0) +\n") ;
+			sql.append("                                   NVL(A.HOURS_SETTLEMENT_AMOUNT, 0) +\n") ;
+			sql.append("                                   NVL(A.PDI_SETTLEMENT_AMOUNT, 0) +\n") ;
+			sql.append("                                   NVL(A.OUTWARD_SETTLEMENT_AMOUNT, 0) +\n") ;
+			sql.append("                                   NVL(A.FIRST_SETTLEMENT_AMOUNT, 0) +\n") ;
+			sql.append("                                   NVL(A.ACTIVITIE_SETTLEMENT_AMOUNT, 0)\n") ;
+			sql.append("WHERE A.ID = ?\n") ;
+			params.clear();
+			params.add(claimId);
+            dao.update(sql.toString(), params);
+            //写入、更新旧件抵扣通知单表
+            if(signAmount.equals("0")){//如果签收数是0,表示扣除
+            	String deductionNo = OrderCodeManager.getOrderCode(92291066);//售后服务工单编码
+            	sql.setLength(0);
+				sql.append("MERGE INTO TT_AS_WR_OLDPART_DEDUCTION A\n") ;
+				sql.append("USING (SELECT TAWAC.ID CLAIM_ID,\n") ;
+				sql.append("              TAWAC.DEALER_ID,\n") ;
+				sql.append("              NVL(TAWAC.PART_APPLY_AMOUNT, 0) -\n") ;
+				sql.append("              NVL(TAWAC.PART_SETTLEMENT_AMOUNT, 0) PART_DEDUCTION_AMOUNT,\n") ;
+				sql.append("              NVL(TAWAC.HOURS_APPLY_AMOUNT, 0) -\n") ;
+				sql.append("              NVL(TAWAC.HOURS_SETTLEMENT_AMOUNT, 0) HOURS_DEDUCTION_AMOUNT,\n") ;
+				sql.append("              NVL(TAWAC.OUTWARD_APPLY_AMOUNT, 0) -\n") ;
+				sql.append("              NVL(TAWAC.OUTWARD_SETTLEMENT_AMOUNT, 0) OUTWARD_DEDUCTION_AMOUNT\n") ;
+				sql.append("         FROM TT_AS_WR_APPLICATION_CLAIM TAWAC\n") ;
+				sql.append("        WHERE 1=1\n") ;
+				sql.append("              AND(NVL(TAWAC.PART_APPLY_AMOUNT, 0) -\n") ;
+				sql.append("              NVL(TAWAC.PART_SETTLEMENT_AMOUNT, 0) +\n") ;
+				sql.append("              NVL(TAWAC.HOURS_APPLY_AMOUNT, 0) -\n") ;
+				sql.append("              NVL(TAWAC.HOURS_SETTLEMENT_AMOUNT, 0) +\n") ;
+				sql.append("              NVL(TAWAC.OUTWARD_APPLY_AMOUNT, 0) -\n") ;
+				sql.append("              NVL(TAWAC.OUTWARD_SETTLEMENT_AMOUNT, 0)) > 0\n") ;
+				sql.append("          AND TAWAC.ID = ?) B\n") ;
+				sql.append("ON (A.CLAIM_ID = B.CLAIM_ID)\n") ;
+				sql.append("WHEN MATCHED THEN\n") ;
+				sql.append("  UPDATE\n") ;
+				sql.append("     SET A.PART_DEDUCTION_AMOUNT    = B.PART_DEDUCTION_AMOUNT,\n") ;
+				sql.append("         A.HOURS_DEDUCTION_AMOUNT   = B.HOURS_DEDUCTION_AMOUNT,\n") ;
+				sql.append("         A.OUTWARD_DEDUCTION_AMOUNT = B.OUTWARD_DEDUCTION_AMOUNT,\n") ;
+				sql.append("         A.UPDATE_BY                = ?,\n") ;
+				sql.append("         A.UPDATE_DATE              = SYSDATE\n") ;
+				sql.append("WHEN NOT MATCHED THEN\n") ;
+				sql.append("  INSERT\n") ;
+				sql.append("    (DEDUCTION_ID,\n") ;
+				sql.append("     DEDUCTION_NO,\n") ;
+				sql.append("     CLAIM_ID,\n") ;
+				sql.append("     DEALER_ID,\n") ;
+				sql.append("     PART_DEDUCTION_AMOUNT,\n") ;
+				sql.append("     HOURS_DEDUCTION_AMOUNT,\n") ;
+				sql.append("     OUTWARD_DEDUCTION_AMOUNT,\n") ;
+				sql.append("     CREATE_BY,\n") ;
+				sql.append("     CREATE_DATE)\n") ;
+				sql.append("  VALUES\n") ;
+				sql.append("    (F_GETID(),\n") ;
+				sql.append("     ?,\n") ;
+				sql.append("     B.CLAIM_ID,\n") ;
+				sql.append("     B.DEALER_ID,\n") ;
+				sql.append("     B.PART_DEDUCTION_AMOUNT,\n") ;
+				sql.append("     B.HOURS_DEDUCTION_AMOUNT,\n") ;
+				sql.append("     B.OUTWARD_DEDUCTION_AMOUNT,\n") ;
+				sql.append("     ?,\n") ;
+				sql.append("     SYSDATE)\n") ;
+				params.clear();
+				params.add(claimId);
+				params.add(loginUser.getUserId());
+				params.add(deductionNo);
+				params.add(loginUser.getUserId());
+	            dao.update(sql.toString(), params);
+            }else if(signAmount.equals("1")){//如果签收数是1,表示不扣除
+            	sql.setLength(0);
+            	sql.append("MERGE INTO TT_AS_WR_OLDPART_DEDUCTION A\n") ;
+				sql.append("USING (SELECT TAWAC.ID CLAIM_ID,\n") ;
+				sql.append("              TAWAC.DEALER_ID,\n") ;
+				sql.append("              NVL(TAWAC.PART_APPLY_AMOUNT, 0) -\n") ;
+				sql.append("              NVL(TAWAC.PART_SETTLEMENT_AMOUNT, 0) PART_DEDUCTION_AMOUNT,\n") ;
+				sql.append("              NVL(TAWAC.HOURS_APPLY_AMOUNT, 0) -\n") ;
+				sql.append("              NVL(TAWAC.HOURS_SETTLEMENT_AMOUNT, 0) HOURS_DEDUCTION_AMOUNT,\n") ;
+				sql.append("              NVL(TAWAC.OUTWARD_APPLY_AMOUNT, 0) -\n") ;
+				sql.append("              NVL(TAWAC.OUTWARD_SETTLEMENT_AMOUNT, 0) OUTWARD_DEDUCTION_AMOUNT\n") ;
+				sql.append("         FROM TT_AS_WR_APPLICATION_CLAIM TAWAC\n") ;
+				sql.append("        WHERE 1=1\n") ;
+				sql.append("          AND TAWAC.ID = ?) B\n") ;
+				sql.append("ON (A.CLAIM_ID = B.CLAIM_ID)\n") ;
+				sql.append("WHEN MATCHED THEN\n") ;
+				sql.append("  UPDATE\n") ;
+				sql.append("     SET A.PART_DEDUCTION_AMOUNT    = B.PART_DEDUCTION_AMOUNT,\n") ;
+				sql.append("         A.HOURS_DEDUCTION_AMOUNT   = B.HOURS_DEDUCTION_AMOUNT,\n") ;
+				sql.append("         A.OUTWARD_DEDUCTION_AMOUNT = B.OUTWARD_DEDUCTION_AMOUNT,\n") ;
+				sql.append("         A.UPDATE_BY                = ?,\n") ;
+				sql.append("         A.UPDATE_DATE              = SYSDATE\n") ;
+				sql.append("  DELETE\n") ;
+				sql.append("   WHERE NVL(A.PART_DEDUCTION_AMOUNT, 0) + NVL(A.HOURS_DEDUCTION_AMOUNT, 0) +\n") ;
+				sql.append("         NVL(A.OUTWARD_DEDUCTION_AMOUNT, 0) = 0\n") ;
+
+//            	sql.append("DELETE TT_AS_WR_OLDPART_DEDUCTION A\n") ;
+//                sql.append(" WHERE 1 = 1\n") ;
+//                sql.append("   AND A.CLAIM_ID = ?\n") ;
+//                sql.append("   AND EXISTS (SELECT 1\n") ;
+//                sql.append("          FROM TT_AS_WR_APPLICATION_CLAIM TAWAC\n") ;
+//                sql.append("         WHERE A.CLAIM_ID = TAWAC.ID\n") ;
+//                sql.append("           AND NVL(TAWAC.PART_APPLY_AMOUNT, 0) =\n") ;
+//                sql.append("               NVL(TAWAC.PART_SETTLEMENT_AMOUNT, 0)\n") ;
+//                sql.append("           AND NVL(TAWAC.HOURS_APPLY_AMOUNT, 0) =\n") ;
+//                sql.append("               NVL(TAWAC.HOURS_SETTLEMENT_AMOUNT, 0)\n") ;
+//                sql.append("           AND NVL(TAWAC.OUTWARD_APPLY_AMOUNT, 0) =\n") ;
+//                sql.append("               NVL(TAWAC.OUTWARD_SETTLEMENT_AMOUNT, 0))\n") ;
+				params.clear();
+				params.add(claimId);
+				params.add(loginUser.getUserId());
+	            dao.update(sql.toString(), params);
+            }
             act.setOutData("curPage", curPage);
         	act.setOutData("code", "succ");
 			act.setOutData("msg", "操作成功");

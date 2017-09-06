@@ -33,7 +33,7 @@ public class PartDaKuanDao extends BaseDao {
 	
 	
 	/**
-	 * 备件打款查询
+	 * 配件打款查询
 	 * @param condition
 	 * @param curPage
 	 * @param i
@@ -57,12 +57,14 @@ public class PartDaKuanDao extends BaseDao {
 		sbSql2.append("       a.histrory_id detail_id,\n");
 		sbSql2.append("       a.parentorg_code parentorg_code,\n");
 		sbSql2.append("       a.parentorg_id parentorg_id,\n");
-		sbSql2.append("       Decode(account_purpose,95631001,1,2) fin_type, --1 表示备件款 2 表示精品款\n");
+//		sbSql2.append("       Decode(account_purpose,95631001,1,2) fin_type, --1 表示配件款 2 表示精品款\n"); 
+		sbSql2.append("       account_purpose fin_type, --1 表示配件款 2 表示精品款\n");
 		sbSql2.append("       a.pz_no pz_no,\n");
 		sbSql2.append("       to_char(a.dk_date,'yyyy-mm-dd') dk_date,\n");
 		sbSql2.append("       a.amount amount,\n");
 		sbSql2.append("       a.remark remark,\n");
 		sbSql2.append("       a.childorg_name dealer_name,\n");
+		sbSql2.append("       a.CREATE_DATE,\n");
 		sbSql2.append("       parentorg_name,\n");
 		sbSql2.append("       decode(to_number(a.status), 1, 18801002, 18801003) status\n");
 		sbSql2.append("  from tt_part_account_import_history a\n");
@@ -94,7 +96,7 @@ public class PartDaKuanDao extends BaseDao {
 			params.add(orgId);
 		}
 		String sql = "select * from ( \n" + sbSql2.toString() + ") where 1 = 1 \n" + sbWhere.toString();
-				sql += " order by status";
+				sql += " order by CREATE_DATE desc";
 		return dao.pageQuery(sql, params, this.getFunName(), i, curPage);
 	}
 	

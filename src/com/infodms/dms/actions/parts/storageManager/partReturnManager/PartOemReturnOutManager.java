@@ -314,6 +314,7 @@ public class PartOemReturnOutManager implements PTConstants {
 							ttPartReturnRecordPO.setStockIn(po.getStockIn());
 							ttPartReturnRecordPO.setLocId(po.getLocId());
 							ttPartReturnRecordPO.setItemQty(po.getItemQty());
+							ttPartReturnRecordPO.setBatchNo(poInPO.getBatchNo());
 
 			                //插入出入库记录表 add by yuan 20130513
 			                TtPartRecordPO ttPartRecordPO  = new TtPartRecordPO();

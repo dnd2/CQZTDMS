@@ -48,7 +48,7 @@ var url = "<%=contextPath%>/parts/financeManager/dealerAccQueryManager/partDeale
             {header: "销售单位编码", dataIndex: 'PARENTORG_CODE', style: 'text-align:center; '},
             {header: "销售单位名称", dataIndex: 'PARENTORG_NAME', style: 'text-align:left; '},
             {header: "资金类型", dataIndex: 'ACCOUNT_KIND', renderer: getItemValue},
-            {header: "款项类型", dataIndex: 'ACCOUNT_PURPOSE', renderer: getItemValue},
+             {header: "款项类型", dataIndex: 'ACCOUNT_PURPOSE', renderer: getItemValue},
             {header: "总可用余额", dataIndex: 'USEABLEACCOUNT', style: 'text-align:right;', renderer: getAccountKyDetail},
 //            {header: "已扣款金额(元)", dataIndex: 'PREEMPTIONVALUE', style: 'text-align:right; ', renderer: getPreemptionDetail},
 //            {header: "现金可用余额(元)", dataIndex: 'CASH_KY', style: 'text-align:right;'},

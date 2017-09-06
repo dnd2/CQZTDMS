@@ -42,7 +42,7 @@ var columns = [
 							<td>${fatherCode}
 								<input type="hidden" name="FATHER_CODE" value="${fatherCode}" />
 							</td>
-							<td class="right">销售单位代码:</td>
+							<td class="right">销售单位名称:</td>
 							<td>${fatherName}
 								<input type="hidden" name="FATHER_NAME" value="${fatherName}" />
 								<input type="hidden" name="FATHER_ID" value="${fatherId}" />
@@ -51,11 +51,11 @@ var columns = [
 						<tr>
 							<td class="right">服务商代码:</td>
 							<td>
-								<input type="text" class="middle_txt" name="QUERY_DEALER_CODE" value="" />
+								<input type="text" class="middle_txt" name="DEALER_CODE" value="" />
 							</td>
-							<td class="right">服务商代码:</td>
+							<td class="right">服务商名称:</td>
 							<td>
-								<input type="text" style="width: 250px;" class="middle_txt" name="QUERY_DEALER_NAME" value="" />
+								<input type="text" style="width: 250px;" class="middle_txt" name="DEALER_NAME" value="" />
 							</td>
 						</tr>
 						<tr>

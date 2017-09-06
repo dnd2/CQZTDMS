@@ -4,9 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <%
     String contextPath = request.getContextPath();
-			String childorgId = request.getParameter("childorgId");
-			String saleOrgId = request.getParameter("saleOrgId");
-			String soCode = request.getParameter("soCode");
+	String childorgId = request.getParameter("childorgId");
+	String saleOrgId = request.getParameter("saleOrgId");
 %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -31,32 +30,22 @@
 
     function seled(value, meta, record) {
         var data = record.data;
-        var soCode = data.IN_CODE;
-        return "<input type='radio' name='singleSel' onclick='singleSelect(\"" + soCode + "\");' />";
+        var soId = data.SO_ID == null ? "" : data.SO_ID;
+        var soCode = data.SO_CODE == null ? "" : data.SO_CODE;
+        var inId = data.IN_ID == null ? "" : data.IN_ID;
+        var inCode = data.IN_CODE == null ? "" : data.IN_CODE;
+        return "<input type='radio' name='singleSel' onclick='singleSelect(\"" + soId + "\",\"" + soCode + "\",\"" + inId + "\",\"" + inCode + "\");' />";
     }
 
-    function singleSelect(soCode) {
+    function singleSelect(soId, soCode, inId, inId) {
     	document.getElementById('SO_CODE').value = soCode;
-    	parentDocument.getElementById("<%=soCode%>").value = soCode;
+    	parentDocument.getElementById("soId").value = soId;
+    	parentDocument.getElementById("soCode").value = soCode;
+    	parentDocument.getElementById("inId").value = inId;
+    	parentDocument.getElementById("inCode").value = inId;
+    	parentContainer.changeDiv();
         _hide();
 //         parentContainer.changeDiv();
-    }
-    //关闭弹出窗口的时候执行该方法
-    function doSupp() {
-        var soCode = "<%=soCode%>";
-        var soCode1 = document.getElementById("SO_CODE").value;
-        if (soCode1 && soCode1.length > 0) {
-            if (soCode1 == 'null') {
-                soCode1 = "";
-            }
-            if (parent.$('inIframe') == null) {//修复不在inIframe中时参数赋值问题
-                if (top.$(soCode)) {
-                    top.$(soCode).value = soCode1;
-                }
-            } else {
-                parentDocument.getElementById(soCode).value = soCode1;
-            }
-        }
     }
 
     Date.prototype.format = function (format) {
@@ -99,7 +88,7 @@
     });
 </script>
 </head>
-<body onbeforeunload="doSupp();">
+<body>
 	<div class="wbox">
 		<div class="navigation">
 			<img src="<%=request.getContextPath()%>/img/nav.gif" />&nbsp;当前位置： 选择入库单号
@@ -126,10 +115,10 @@
 							<td class="right">入库时间：</td>
 							<td>
 								<input name="beginTime" id="t1" value="" type="text" class="short_txt" datatype="1,is_date,10" group="t1,t2" style="width:80px;">
-								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" onclick="showcalendar(event, 't1', false);" />
+								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" />
 								&nbsp;至&nbsp;
 								<input name="endTime" id="t2" value="" type="text" class="short_txt" datatype="1,is_date,10" group="t1,t2" style="width:80px;">
-								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" onclick="showcalendar(event, 't2', false);" />
+								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" />
 							</td>
 						</tr>
 						<tr>

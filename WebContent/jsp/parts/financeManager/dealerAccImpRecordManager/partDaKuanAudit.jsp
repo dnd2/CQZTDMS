@@ -12,13 +12,13 @@
 %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=7">
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/web/jquery-1.7.2.min.js"></script>
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
-<title>备件打款审核</title>
+<title>配件打款审核</title>
 
 <script type="text/javascript" >
-$(function(){__extQuery__(1);});
+$(function(){
+	__extQuery__(1);
+});
 var myPage;
 var calculateConfig = {subTotalColumns:" |DEALER_NAME"};
 //查询路径           
@@ -29,7 +29,7 @@ var columns = [
     //{id:'action', dataIndex : 'STATUS',header : '<input type="checkbox" name="checkAll" onclick="selectAll(this,\'checkids\')"/>', renderer : mySelect}, 
     {header : "操作", sortable : false, dataIndex : 'STATUS', align : 'center', renderer : myLink}, 
     {header : "流水号",dataIndex : 'PZ_NO',align : 'center'}, 
-	{header : "汇款用途",dataIndex : 'FIN_TYPE',align : 'center',renderer: getAmountType}, 
+	{header : "汇款用途",dataIndex : 'FIN_TYPE',align : 'center',renderer: getItemValue}, 
 	{header : "经销商/经销商",dataIndex : 'DEALER_NAME',align : 'center', style: 'text-align: left'},
 	{header : "打款金额",dataIndex : 'AMOUNT',style : 'text-align:right',renderer: formatCurrency}, 
 	{header : "打款时间",dataIndex : 'DK_DATE'},
@@ -60,7 +60,7 @@ var t = document.getElementById("parentOrgId").value;
 			return "";
 		}else{
 		var link = "<a  href=\"#\" id='passAuditBtn' onclick=\"passAudit('"+ record.data.DETAIL_ID +"','"+ record.data.FIN_TYPE +"','"+ record.data.DEALER_ID +"','"+ record.data.AMOUNT +"');\">[审核通过]</a>";
-			link += "&nbsp;&nbsp;<a href=\"#\" id='unpassAuditBtn' onclick=\"rejectAudit('"+ record.data.DETAIL_ID +"','"+ record.data.FIN_TYPE +"','"+ record.data.DEALER_ID +"','"+ record.data.AMOUNT +"');\" />[审核驳回]</a>";
+			link += "&nbsp;&nbsp;<a href=\"#\" id='unpassAuditBtn' onclick=\"rejectAudit('"+ record.data.DETAIL_ID +"','"+ record.data.FIN_TYPE +"','"+ record.data.DEALER_ID +"','"+ record.data.AMOUNT +"');\">[审核驳回]</a>";
 		return String.format(link);
 		}
 	} else {
@@ -119,16 +119,6 @@ window.document.onkeydown = function (){
 	};
 }
 
-function getAmountType(value) {
-	if(value == "0") {
-		return "整车款";
-	} else if(value == "1") {
-		return "备件款";
-	}else{
-    	return "备件精品款";
-    }
-}
-
 function getStatus(value) {
 	if(value == "<%=Constant.TRANSFER_STATUS_02%>") {
 		return "待审核";
@@ -149,7 +139,7 @@ function clrTxt(id) {
 <body>
 	<div id="div1" class="wbox">
 		<div class=navigation>
-			<img src="<%=request.getContextPath()%>/img/nav.gif">&nbsp;当前位置： 备件财务管理 &gt; 备件打款登记审核
+			<img src="<%=request.getContextPath()%>/img/nav.gif">&nbsp;当前位置： 配件财务管理 &gt; 配件打款登记审核
 		</div>
 		<form method="post" name="fm" id="fm" enctype="multipart/form-data">
 			<!-- 查询条件 begin -->
@@ -172,10 +162,9 @@ function clrTxt(id) {
 							</td>
 							<td class="right">汇款用途：</td>
 							<td>
-								<select name="acount_kind" class="u-select">
-									<option value="1">备件款</option>
-									<option value="2">备件精品款</option>
-								</select>
+								<script type="text/javascript">
+									genSelBoxExp("acount_kind", <%=Constant.PART_ACCOUNT_PURPOSE_TYPE%>, "<%=Constant.PART_ACCOUNT_PURPOSE_TYPE_01%>", true, "u-select", "", "false", '');
+			                    </script>
 							</td>
 						</tr>
 						<tr>

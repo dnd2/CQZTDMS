@@ -10,8 +10,6 @@
 <head>
     <style>.table_query .middle_txt{width: 79px;margin-right:2px}</style>
     <script type="text/javascript">
-    	jQuery.noConflict();
-
         var myPage;
         var url = "<%=contextPath%>/parts/salesManager/carFactorySalesManager/report/PartTransRep/query.json";
         var title = null;
@@ -43,7 +41,7 @@
 </head>
 <body onload="__extQuery__(1);" enctype="multipart/form-data">
 <div class="wbox">
-    <div class="navigation"><img src="<%=contextPath %>/img/nav.gif" alt=""/>&nbsp;当前位置： 配件管理 > 配件销售管理 > 销售明细报表</div>
+    <div class="navigation"><img src="<%=contextPath %>/img/nav.gif" alt=""/>&nbsp;当前位置： 配件管理 > 配件销售管理 > 发运信息统计</div>
     <form name="fm" id="fm" method="post">
         <div class="form-panel">
             <h2><img src="/CQZTDMS/jmstyle/img/search-ico.png" class="panel-icon panel-query-title">查询条件</h2>
@@ -86,7 +84,7 @@
                     </tr>
                     <tr>
                         <td colspan="6" align="center" class="center">
-                            <input name="BtnQuery" id="queryBtn" class="normal_btn" type="button" value="查 询" onclick="MyAlert();"/>
+                            <input name="BtnQuery" id="queryBtn" class="normal_btn" type="button" value="查 询" onclick="__extQuery__(1);"/>
                         </td>
                     </tr>
                 </table>

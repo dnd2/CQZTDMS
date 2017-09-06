@@ -86,7 +86,7 @@ function exportDtl() {
 								<input class="time_ico" onclick="showcalendar(event, 'checkSDate', false);" value=" " type="button" />
 								&nbsp;至&nbsp;
 								<input id="checkEDate" style="width: 80px;" class="short_txt" name="checkEDate" datatype="1,is_date,10" maxlength="10" group="checkSDate,checkEDate" jset="para" />
-								<input class="time_ico" onclick="showcalendar(event, 'checkEDate', false);" value=" " type="button" />
+								<input class="time_ico" value=" " type="button" />
 							</td>
 						</tr>
 

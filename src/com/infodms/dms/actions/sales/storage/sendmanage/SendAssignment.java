@@ -115,7 +115,7 @@ public class SendAssignment {
 			String arrStartDate = CommonUtils.checkNull(request.getParamValue("ARR_START_DATE")); //最晚到货开始日期
 			String arrEndDate = CommonUtils.checkNull(request.getParamValue("ARR_END_DATE")); //最晚到货结束日期
 			String logiId = CommonUtils.checkNull(request.getParamValue("logiId")); //承运商ID
-			String isMiddleTurn = CommonUtils.checkNull(request.getParamValue("isMiddleTurn")); //是否中转
+			//String isMiddleTurn = CommonUtils.checkNull(request.getParamValue("isMiddleTurn")); //是否中转
 			String isSdan = CommonUtils.checkNull(request.getParamValue("isSdan")); //是否散单
 			String jsProvince = CommonUtils.checkNull(request.getParamValue("jsProvince")); //发运结算省份
 			String jsCity = CommonUtils.checkNull(request.getParamValue("jsCity")); //发运结算城市
@@ -138,7 +138,7 @@ public class SendAssignment {
 			map.put("arrStartDate", arrStartDate);
 			map.put("arrEndDate", arrEndDate);
 			map.put("logiId", logiId);
-			map.put("isMiddleTurn", isMiddleTurn);
+			//map.put("isMiddleTurn", isMiddleTurn);
 			map.put("isSdan", isSdan);
 			map.put("jsProvince", jsProvince);
 			map.put("jsCity", jsCity);
@@ -216,11 +216,11 @@ public class SendAssignment {
 			String jsProvince = CommonUtils.checkNull(request.getParamValue("JS_PROVINCE")); //结算省份
 			String jsCity = CommonUtils.checkNull(request.getParamValue("JS_CITY")); //结算城市
 			String jsCounty = CommonUtils.checkNull(request.getParamValue("JS_COUNTY")); //结算区县
-			String isMiddleTurn = CommonUtils.checkNull(request.getParamValue("isMiddleTurn")); //是否中转
-			String zzWareId = CommonUtils.checkNull(request.getParamValue("zzWareId")); //中转仓库
-			String zZProvince = CommonUtils.checkNull(request.getParamValue("zZProvinceM")); //中转省份
-			String zZCity = CommonUtils.checkNull(request.getParamValue("zZCityM")); //中转城市
-			String zZCounty = CommonUtils.checkNull(request.getParamValue("zZCountyM")); //中转区县
+			//String isMiddleTurn = CommonUtils.checkNull(request.getParamValue("isMiddleTurn")); //是否中转
+			//String zzWareId = CommonUtils.checkNull(request.getParamValue("zzWareId")); //中转仓库
+			//String zZProvince = CommonUtils.checkNull(request.getParamValue("zZProvinceM")); //中转省份
+			//String zZCity = CommonUtils.checkNull(request.getParamValue("zZCityM")); //中转城市
+			//String zZCounty = CommonUtils.checkNull(request.getParamValue("zZCountyM")); //中转区县
 			String isSand = CommonUtils.checkNull(request.getParamValue("isSand")); //是否散单
 			String logiName = CommonUtils.checkNull(request.getParamValue("logiName")); //承运商名称
 			String remark = CommonUtils.checkNull(request.getParamValue("remark")); //备注
@@ -255,13 +255,13 @@ public class SendAssignment {
 			tt.setDlvBalProvId(Long.parseLong(jsProvince));
 			tt.setDlvBalCityId(Long.parseLong(jsCity));
 			tt.setDlvBalCountyId(Long.parseLong(jsCounty));
-			tt.setDlvIsZz(Integer.parseInt(isMiddleTurn));
-			if(Integer.parseInt(isMiddleTurn)==Constant.IF_TYPE_YES){
-				tt.setZzWhId(Long.parseLong(zzWareId));
-				tt.setDlvZzProvId(Long.parseLong(zZProvince));
-				tt.setDlvZzCityId(Long.parseLong(zZCity));
-				tt.setDlvZzCountyId(Long.parseLong(zZCounty));
-			}
+//			tt.setDlvIsZz(Integer.parseInt(isMiddleTurn));
+//			if(Integer.parseInt(isMiddleTurn)==Constant.IF_TYPE_YES){
+//				tt.setZzWhId(Long.parseLong(zzWareId));
+//				tt.setDlvZzProvId(Long.parseLong(zZProvince));
+//				tt.setDlvZzCityId(Long.parseLong(zZCity));
+//				tt.setDlvZzCountyId(Long.parseLong(zZCounty));
+//			}
 			tt.setUpdateBy(logonUser.getUserId());
 			tt.setUpdateDate(new Date());
 			tt.setDlvIsSd(Integer.parseInt(isSand));//是否散单
@@ -560,7 +560,7 @@ public class SendAssignment {
 				//act.setOutData("valueMap", valueMap);	
 			}else if("2".equals(common)){//导出 调用(暂时无导出)
 				List<Map<String, Object>> mapList = reDao.getSendAssExport(map);
-				String [] head={"是否散单","来源类型","承运商","发运仓库","发运方式","经销商","基地仓库","发运地","分派量","未分派量","分派日期","批售单号","申请单号","申请量","申请发运仓库","申请发运方式","申请收货地","申请收货详细地址","申请时间"};//导出的字段表头
+				String [] head={"是否散单","来源类型","承运商","发运仓库","发运方式","经销商","基地仓库","发运结算地","分派量","未分派量","分派日期","批售单号","申请单号","申请量","申请发运仓库","申请发运方式","申请收货地","申请收货详细地址","申请时间"};//导出的字段表头
 				String [] cols={"SD_NAME","DLV_TYPE_NAME","LOGI_NAME","DLV_WH_NAME","DS_SHIP","DEALER_NAME","REC_WH_NAME","DLV_ADDR","DLV_FP_TOTAL","NO_FP_TOTAL","DLV_DATE","ORD_NO","REQ_NO","REQ_TOTAL","REQ_WH_NAME","REQ_SHIP","REQ_ADDR","REQ_REC_ADDR","REQ_DATE"};//导出的字段名称
 				ToExcel.toReportExcel(act.getResponse(),request, "发运分派管理信息.xls",head,cols,mapList);
 			}else{

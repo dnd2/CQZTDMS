@@ -107,6 +107,7 @@ th {
     border-right: 0px;
     border-bottom: 0px;
 }
+body, td {font-size: 16px}
 </style>
 <script language="javascript">
 var idx = 0;
@@ -122,7 +123,7 @@ function printpreview() {
 }
 </script>
 </head>
-	<body style="margin: 0px;padding: 0px;text-align: center;">
+	<body style="margin: 0px;padding: 0px;text-align: center;font-size:16px;color:#000">
 		<form name="fm" id="fm" method="post" enctype="multipart/form-data">
 			<OBJECT id=WebBrowser classid=CLSID:8856F961-340A-11D0-A96B-00C04FD705A2 style="display: none"> </OBJECT>
 			<input name="pickOrderId" id="pickOrderId" value="${dataMap.pickOrderId}" type="hidden" />
@@ -150,7 +151,7 @@ function printpreview() {
             </c:choose>
 					<div id="cen_mid_div">
 						<div id="top_cen_mid_div">
-							<img src="<%=request.getContextPath()%>/img/bq_log1.gif" style="float: left;height: 55px;width: 250px" />
+							<img src="<%=request.getContextPath()%>/img/bq_log1.gif" style="float: left;height: 55px;width: 250px;margin-bottom:5px" />
                             <span style="font-size:30px;margin-left:-120px;font-weight:bold">拣配单</span>
 						</div>
 						<div id="but_cen_mid_div">

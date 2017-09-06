@@ -408,7 +408,7 @@ public  Map<String, Object>  getCurStoreList01(RequestWrapper request,int curPag
 		sql.append(" and A.CLAIM_NO = D.CLAIM_NO\n");
 		sql.append("   and dd.dealer_id = r.dealer_id\n");
 		sql.append("   and r.id = d.return_id and (a.urgent = 0 or a.urgent = 2)\n"); //加入标识
-		sql.append("   AND d.is_main_code="+main+"\n");
+		/*sql.append("   AND d.is_main_code="+main+"\n");*/
 		sql.append("  and (r.status="+Constant.BACK_LIST_STATUS_05+" or (r.status="+Constant.BACK_LIST_STATUS_04+" and d.is_in_house="+Constant.IF_TYPE_YES+"))\n");
 		sql.append("   and d.sign_amount > 0\n");
 		sql.append("   and (d.is_cliam = 0 or d.is_cliam is null)\n");

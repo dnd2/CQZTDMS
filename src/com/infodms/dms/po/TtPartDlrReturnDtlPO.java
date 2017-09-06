@@ -38,6 +38,8 @@ public class TtPartDlrReturnDtlPO extends PO{
 	private String partCode;
 	private Long stockQty;
 	private Long checkQty;
+	private Long checkTwoQty;
+	private Long checkThreeQty;
 	private Long returnId;
 	private String partCname;
 	private Long outlocId;
@@ -52,6 +54,7 @@ public class TtPartDlrReturnDtlPO extends PO{
     private Long unlocQty;
     private Long kyQty;
     private Integer isUnloc;
+    private String inBatchNo;
     
 
 	public Long getUnlocQty() {
@@ -325,5 +328,29 @@ public class TtPartDlrReturnDtlPO extends PO{
 	public Long getLineNo(){
 		return this.lineNo;
 	}
+
+    public Long getCheckThreeQty() {
+        return checkThreeQty;
+    }
+
+    public void setCheckThreeQty(Long checkThreeQty) {
+        this.checkThreeQty = checkThreeQty;
+    }
+
+    public Long getCheckTwoQty() {
+        return checkTwoQty;
+    }
+
+    public void setCheckTwoQty(Long checkTwoQty) {
+        this.checkTwoQty = checkTwoQty;
+    }
+
+    public String getInBatchNo() {
+        return inBatchNo;
+    }
+
+    public void setInBatchNo(String inBatchNo) {
+        this.inBatchNo = inBatchNo;
+    }
 
 }

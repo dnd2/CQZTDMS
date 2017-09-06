@@ -1,5 +1,22 @@
 package com.infodms.dms.actions.parts.storageManager.miscManager;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
+
 import com.infodms.dms.actions.sales.planmanage.PlanUtil.BaseImport;
 import com.infodms.dms.bean.AclUserBean;
 import com.infodms.dms.bean.OrgBean;
@@ -13,9 +30,12 @@ import com.infodms.dms.dao.parts.salesManager.PartDlrInstockDao;
 import com.infodms.dms.dao.parts.salesManager.PartDlrOrderDao;
 import com.infodms.dms.dao.parts.storageManager.miscManager.MiscManagerDAO;
 import com.infodms.dms.dao.parts.storageManager.miscManager.MiscPrintDAO;
-import com.infodms.dms.dao.parts.storageManager.partDistributeMgr.PartDistributeMgrDao;
+import com.infodms.dms.dao.parts.storageManager.partReturnManager.PartDlrReturnInDao;
 import com.infodms.dms.exception.BizException;
-import com.infodms.dms.po.*;
+import com.infodms.dms.po.TmpPartUploadPO;
+import com.infodms.dms.po.TtPartRecordPO;
+import com.infodms.dms.po.TtPartsMiscDetailPO;
+import com.infodms.dms.po.TtPartsMiscMainPO;
 import com.infodms.dms.util.CommonUtils;
 import com.infodms.dms.util.OrderCodeManager;
 import com.infodms.dms.util.csv.CsvWriterUtil;
@@ -26,19 +46,11 @@ import com.infoservice.mvc.context.ResponseWrapper;
 import com.infoservice.po3.bean.PageResult;
 import com.infoservice.po3.core.context.DBService;
 import com.infoservice.po3.core.context.POContext;
+
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * <p>ClassName: MiscManager</p>
@@ -175,7 +187,7 @@ public class MiscManager extends BaseImport {
             String orgName = "";
             PartWareHouseDao dao = PartWareHouseDao.getInstance();
             List<OrgBean> beanList = dao.getOrgInfo(logonUser);
-            if (null != beanList || beanList.size() >= 0) {
+            if (null != beanList && beanList.size() >= 0) {
                 orgId = beanList.get(0).getOrgId() + "";
                 orgCode = beanList.get(0).getOrgCode();
                 orgName = beanList.get(0).getOrgName();
@@ -251,17 +263,13 @@ public class MiscManager extends BaseImport {
         act.getResponse().setContentType("application/json");
         RequestWrapper req = act.getRequest();
         String error = "";
-        String LockErr = "";
-        String nomUnLockErr = "";
-        String padUnlockErr = "";
         String success = "";
         try {
             String orgId = CommonUtils.checkNull(req.getParamValue("orgId")); //制单单位ID
             String orgCode = CommonUtils.checkNull(req.getParamValue("orgCode")); //制单单位编码
             String orgName = CommonUtils.checkNull(req.getParamValue("orgName")); //制单单位名称
-            String eiType = CommonUtils.checkNull(req.getParamValue("EI_TYPE")); //制单单位名称
-//			String changeCode = CommonUtils.checkNull(req.getParamValue("changeCode")); //制单单号
-            String orderCode = OrderCodeManager.getOrderCode(Constant.PART_CODE_RELATION_31);//获取制单单号
+            String eiType = CommonUtils.checkNull(req.getParamValue("EI_TYPE")); // 入库类型
+            String orderCode = CommonUtils.checkNull(req.getParamValue("orderCode"));//获取制单单号
             String configId = Constant.PART_CODE_RELATION_31 + "";//配置ID
             Long userId = logonUser.getUserId(); //制单人ID
             String name = logonUser.getName();
@@ -269,8 +277,6 @@ public class MiscManager extends BaseImport {
             String remark = CommonUtils.checkNull(req.getParamValue("textarea1")); //备注
             String department = CommonUtils.checkNull(req.getParamValue("department")); //部门
             String[] partIdArr = req.getParamValues("cb");
-            //String partBatch = Constant.PART_RECORD_BATCH;//配件批次
-            String partVenId = Constant.PART_RECORD_VENDER_ID;//供应商ID
 
             List<Map<String, Object>> partList = null;
 
@@ -323,9 +329,11 @@ public class MiscManager extends BaseImport {
                 TtPartsMiscDetailPO insertRDPo = null;
                 TtPartRecordPO insertPRPo = null;
 
+                PartDlrReturnInDao inDao = PartDlrReturnInDao.getInstance();
+                String batchNo = inDao.getBatchNo(changeId.toString());
+                String partVenId = Constant.PART_RECORD_VENDER_ID;//供应商ID
                 if (null != partIdArr) {
                     for (int i = 0; i < partIdArr.length; i++) {
-                        insertRDPo = new TtPartsMiscDetailPO();
 
                         String partId = partIdArr[i];
                         Long dtlId = Long.parseLong(SequenceManager.getSequence(""));
@@ -333,27 +341,31 @@ public class MiscManager extends BaseImport {
                         String partOldcode = CommonUtils.checkNull(req.getParamValue("partOldcode_" + partId));   //配件编码
                         String partCname = CommonUtils.checkNull(req.getParamValue("partCname_" + partId)); //配件名称
                         String unit = CommonUtils.checkNull(req.getParamValue("unit_" + partId)); //单位
-                        String loc_id = CommonUtils.checkNull(req.getParamValue("locId_" + partId)); //货位
-                        String locCode = CommonUtils.checkNull(req.getParamValue("locCode_" + partId)); //货位
-                        String pc = CommonUtils.checkNull(req.getParamValue("pc_" + partId)); //批次
+                        String loc_id = CommonUtils.checkNull(req.getParamValue("locId_" + partId)); //货位id
+                        String locCode = CommonUtils.checkNull(req.getParamValue("locCode_" + partId)); //货位编码
+                        String locName = CommonUtils.checkNull(req.getParamValue("locName_" + partId)); //货位名称
+                        String minPackage = CommonUtils.checkNull(req.getParamValue("minPackage_" + partId)); // 最小包装量
                         String returnQty = CommonUtils.checkNull(req.getParamValue("inQty_" + partId)); //入库数量
 //						String deRemark =  CommonUtils.checkNull(req.getParamValue("remark_"+partId)); //详细备注
 
+                        insertRDPo = new TtPartsMiscDetailPO();
 //                        String relocId = "";//实际货位ID
                         insertRDPo.setMiscDetailId(dtlId);
                         insertRDPo.setMiscOrderId(changeId);
                         insertRDPo.setPartId(Long.parseLong(partId));
                         insertRDPo.setUnit(unit);
+                        insertRDPo.setMinPackage(Long.parseLong(minPackage));
                         insertRDPo.setInQty(Long.parseLong(returnQty));
 //						insertRDPo.setRemark(deRemark);
                         insertRDPo.setCreateBy(userId);
                         insertRDPo.setCreateDate(date);
                         insertRDPo.setLocId(Long.valueOf(loc_id));
                         insertRDPo.setLocCode(locCode);
-                        insertRDPo.setLocName(locCode);
+                        insertRDPo.setLocName(locName);
+                        insertRDPo.setBatchNo(batchNo);
                         dao.insert(insertRDPo);
 
-                        //TtPartRecordPO
+                        //TtPartRecordPO 入库记录
                         insertPRPo = new TtPartRecordPO();
                         Long recId = Long.parseLong(SequenceManager.getSequence(""));
                         insertPRPo.setRecordId(recId);
@@ -362,7 +374,7 @@ public class MiscManager extends BaseImport {
                         insertPRPo.setPartCode(partCode);
                         insertPRPo.setPartOldcode(partOldcode);
                         insertPRPo.setPartName(partCname);
-                        insertPRPo.setPartBatch(pc);
+                        insertPRPo.setPartBatch(batchNo); // 批次号
                         insertPRPo.setVenderId(Long.parseLong(partVenId));
                         insertPRPo.setPartNum(Long.parseLong(returnQty));//出库数量
                         insertPRPo.setConfigId(Long.parseLong(configId));
@@ -389,7 +401,6 @@ public class MiscManager extends BaseImport {
                         List<Object> ins = new LinkedList<Object>();
                         ins.add(0, changeId);
                         ins.add(1, configId);
-
                         dao.callProcedure("PKG_PART.P_UPDATEPARTSTOCK", ins, null);
                     }
                 }
@@ -422,7 +433,7 @@ public class MiscManager extends BaseImport {
                 String partId = partIdArr[i];
                 String inQty = CommonUtils.checkNull(request.getParamValue("inQty_" + partId));
                 String unit = CommonUtils.checkNull(request.getParamValue("unit_" + partId));
-                PurchaseOrderInDao inDao = PurchaseOrderInDao.getInstance();
+//                PurchaseOrderInDao inDao = PurchaseOrderInDao.getInstance();
 //                Map<String, Object> map = inDao.queryPartAndLocationInfo(Long.parseLong(partId), dataObject.getLong("orgId"), dataObject.getLong("whId"));//查询当前配件信息及其货位信息
                 TtPartsMiscDetailPO po = new TtPartsMiscDetailPO();
                 po.setMiscDetailId(detailId);
@@ -464,7 +475,7 @@ public class MiscManager extends BaseImport {
                 logger.info("---记录表新增开始");
                 dao.insert(ttPartRecordPO);//新增出入库记录
                 logger.info("---记录表新增结束");
-                List ins = new LinkedList<Object>();
+                List<Object> ins = new LinkedList<Object>();
                 ins.add(0, dataObject.getLong("orderId"));
                 ins.add(1, Constant.PART_CODE_RELATION_31);
                 logger.info("---存储过程执行开始");
@@ -520,7 +531,7 @@ public class MiscManager extends BaseImport {
      * @return :
      * @throws : LastDate: 2013-7-6
      * @Title : 导出EXCEL模板
-     * @Description: TODO
+     * @Description: 
      */
     public void exportExcelTemplate() {
         ActionContext act = ActionContext.getContext();

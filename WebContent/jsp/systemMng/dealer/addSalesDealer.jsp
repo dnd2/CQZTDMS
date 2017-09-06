@@ -11,7 +11,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
 <title>经销商维护</title>
-
 <script type="text/javascript">
 var dealerLevel=<%=Constant.DEALER_LEVEL_01%>;
 function doInit()

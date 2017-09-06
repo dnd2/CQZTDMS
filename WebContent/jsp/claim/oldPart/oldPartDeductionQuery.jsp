@@ -24,21 +24,20 @@
        <tr>
          <td class="right" >通知日期： </td>
          <td align="left" nowrap="true">
-			<input name="report_start_date" type="text" class="middle_txt" id="report_start_date"  readonly="readonly" style="width: 80px;"/> 
-			<input name="button" value=" " type="button" class="time_ico" onclick="showcalendar(event, 'report_start_date', false);" />  	
-             &nbsp;至&nbsp; <input name="report_end_date" type="text" class="middle_txt" id="report_end_date"  readonly="readonly" style="width: 80px;"/> 
-			<input name="button" value=" " type="button" class="time_ico" onclick="showcalendar(event, 'report_end_date', false);" /> 
-		</td>	
+           <input id="updateDateStart" name="updateDateStart" readonly class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="display: inline-block;min-width: 60px;width: 150px;height: 30px;padding: 4px 5px;margin: 0 4px;border: #b8b8b8 solid 1px;border-radius: 3px;box-shadow: 0 1px 3px #ececec inset;background-color: #fefefe;color: #5a5a5a;outline: none;box-sizing: border-box;"/>	
+           &nbsp;至&nbsp; 
+		   <input id="updateDateEnd" name="updateDateEnd" readonly class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="display: inline-block;min-width: 60px;width: 150px;height: 30px;padding: 4px 5px;margin: 0 4px;border: #b8b8b8 solid 1px;border-radius: 3px;box-shadow: 0 1px 3px #ececec inset;background-color: #fefefe;color: #5a5a5a;outline: none;box-sizing: border-box;"/>
+		 </td>	
 		  <td class="right" >抵扣单状态：</td>
           <td >
             <script type="text/javascript">
-             genSelBoxExp("deductionStatus",<%=Constant.DEDUCTION_STATUS%>,"",true,"","","false",'');
+             genSelBoxExp("deductionStatus",<%=Constant.DEDUCTION_STATUS%>,"",true,"u-select","","false",'');
             </script>
           </td>  
       </tr>
        <tr>
          <td class="right" >抵扣单号：</td>
-          <td ><input id="deductionNo" name="deductionNo" value="${trans_no }" type="text" class="middle_txt">
+          <td ><input id="deductionNo" name="deductionNo" value="" type="text" class="middle_txt">
           </td>         
        </tr>
        <tr>
@@ -67,20 +66,21 @@
 
    var columns = [
   				{header: "序号",align:'center',renderer:getIndex},
-				{id:'action',header: "操作",sortable: false,dataIndex: 'ID',renderer:myLink,align:'center'},
+				{id:'action',header: "操作",sortable: false,dataIndex: 'DEDUCTION_ID',renderer:myLink,align:'center'},
   				{header: "抵扣单号",dataIndex: 'DEDUCTION_NO',align:'center'},
   				{header: "抵扣单状态", dataIndex: 'STATUS', align:'center',renderer:getItemValue},
-  				{header: "通知日期", dataIndex: 'CREATE_DATE', align:'center'},
-  				{header: "材料费扣款（元）", dataIndex: 'PART_PRICE', align:'center'},
-  				{header: "工时费扣款（元）", dataIndex: 'LABOUR_PRICE', align:'center'},
-  				{header: "其他项目扣款(元)", dataIndex: 'OTHER_PRICE', align:'center'},
-  				{header: "总计(元)", dataIndex: 'TOTAL_PRICE', align:'center'},
-  				{header: "开票单号", dataIndex: 'INVOICE_NO', align:'center'}
+  				{header: "通知日期", dataIndex: 'UPDATE_DATE', align:'center'},
+  				{header: "材料费扣款（元）", dataIndex: 'PART_DEDUCTION_AMOUNT', align:'center'},
+  				{header: "工时费扣款（元）", dataIndex: 'HOURS_DEDUCTION_AMOUNT', align:'center'},
+  				{header: "其他项目扣款(元)", dataIndex: 'OUTWARD_DEDUCTION_AMOUNT', align:'center'},
+  				{header: "总计(元)", dataIndex: 'TOTAL_DEDUCTION_AMOUNT', align:'center'},
+  				{header: "开票单号", dataIndex: 'BALANCE_NO', align:'center'}
   		      ];
   		      
    //超链接设置
    function myLink(value,meta,record){  
-	 return String.format("<a href='#' onclick=check("+value+")>[查看]</a>");
+	 var claimId = record.data.CLAIM_ID;
+	 return String.format("<a href='#' onclick=check("+claimId+")>[查看]</a>");
    }
 	
    /**
@@ -88,7 +88,7 @@
    * @param value
    */
    function check(value){
-   	var id ="?id="+value;
+   	var id ="?claimId="+value;
    	OpenHtmlWindow("<%=contextPath%>/claim/oldPart/ClaimBackPieceBackListOrdManager/oldPartDeductionCheck.do"+id,800,600);
    }
    function doInit(){

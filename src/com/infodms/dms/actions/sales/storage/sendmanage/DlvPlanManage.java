@@ -94,9 +94,9 @@ public class DlvPlanManage {
 			String boNo = CommonUtils.checkNull(request.getParamValue("BO_NO")); // 组板编号
 			String logiName = CommonUtils.checkNull(request.getParamValue("LOGI_NAME")); //物流商
 			String transportType = CommonUtils.checkNull(request.getParamValue("TRANSPORT_TYPE")); // 发运方式
-			String provinceId = CommonUtils.checkNull(request.getParamValue("jsProvince")); //结算省份
-			String cityId = CommonUtils.checkNull(request.getParamValue("jsCity")); // 结算城市
-			String countyId = CommonUtils.checkNull(request.getParamValue("jsCounty")); // 结算区县
+//			String provinceId = CommonUtils.checkNull(request.getParamValue("jsProvince")); //结算省份
+//			String cityId = CommonUtils.checkNull(request.getParamValue("jsCity")); // 结算城市
+//			String countyId = CommonUtils.checkNull(request.getParamValue("jsCounty")); // 结算区县
 			String isBill = CommonUtils.checkNull(request.getParamValue("isBill")); //是否已生成交接单
 			
 			String pFlag = CommonUtils.checkNull(request.getParamValue("pFlag")); // 不为空表示发运计划查询
@@ -109,9 +109,9 @@ public class DlvPlanManage {
 			map.put("logiName", logiName);
 			map.put("poseId", logonUser.getPoseId().toString());
 			map.put("transportType", transportType);
-			map.put("provinceId", provinceId);
-			map.put("cityId", cityId);
-			map.put("countyId", countyId);
+//			map.put("provinceId", provinceId);
+//			map.put("cityId", cityId);
+//			map.put("countyId", countyId);
 			map.put("isBill", isBill);
 			map.put("pFlag", pFlag);
 			//根据职位ID获取是否属于物流商以及物流商ID
@@ -120,8 +120,8 @@ public class DlvPlanManage {
 			map.put("logiId", (BigDecimal)pmap.get("LOGI_ID"));
 			if("1".equals(common)){//导出 调用
 				List<Map<String, Object>> list = reDao.getDlvPlanQueryExport(map);
-				String [] head={"计划装车日期","最晚发运日期","最晚到货日期","组板号","发运方式","承运商","发运结算地","组板申请日期","组板量"};
-				String [] cols={"PLAN_LOAD_DATE","DLV_FY_DATE","DLV_JJ_DATE","BO_NO","SHIP_NAME","LOGI_NAME","BAL_ADDR","BO_DATE","BO_NUM"};//导出的字段名称
+				String [] head={"计划装车日期","最晚发运日期","最晚到货日期","组板号","发运方式","承运商","组板申请日期","组板量"};
+				String [] cols={"PLAN_LOAD_DATE","DLV_FY_DATE","DLV_JJ_DATE","BO_NO","SHIP_NAME","LOGI_NAME","BO_DATE","BO_NUM"};//导出的字段名称
 				ToExcel.toReportExcel(act.getResponse(),request, "发运计划查询列表.xls",head,cols,list);
 			}else if("2".equals(common)){//明细导出
 				List<Map<String, Object>> list = reDao.getDlvPlanQueryExpDel(map);
@@ -297,7 +297,7 @@ public class DlvPlanManage {
 			if(mlist!=null&&mlist.size()>0){
 				for(int i=0;i<mlist.size();i++){
 					Map<String, Object> map=mlist.get(i);
-					List<Map<String, Object>> dlist=reDao.getDlvPlanPrintDetail(boId, map.get("DEALER_NAME").toString(), map.get("TRANS_NAME").toString(), map.get("BAL_ADDR").toString());
+					List<Map<String, Object>> dlist=reDao.getDlvPlanPrintDetail(boId, map.get("DEALER_NAME").toString(), map.get("TRANS_NAME").toString());
 					map.put("dlist", dlist);//添加明细列表
 				}
 			}

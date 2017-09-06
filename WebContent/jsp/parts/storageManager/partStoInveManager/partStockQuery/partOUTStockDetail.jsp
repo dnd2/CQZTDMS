@@ -27,8 +27,8 @@ var columns = [
     {header: "配件名称", dataIndex: 'PART_NAME', style: 'text-align:left;'},
     //{header: "件号", dataIndex: 'PART_CODE', style: 'text-align:left;'},
     {header: "出库数量", dataIndex: 'PART_NUM'},
-    // {header: "批次号", dataIndex: 'BATCH_CODE', style: 'text-align:left;'},
     {header: "货位", dataIndex: 'LOC_NAME', style: 'text-align:left;'},
+    {header: "批次", dataIndex: 'BATCH_NO', style: 'text-align:left;'},
     /* {header: "单价(元)", dataIndex: 'SALE_PRICE', style: 'text-align:right;'},
     {header: "金额(元)", dataIndex: 'SALE_AMOUNT', style: 'text-align:right;'}, 20170830 屏蔽*/
     {header: "出库日期", dataIndex: 'CREATE_DATE'}

@@ -26,6 +26,7 @@
 			padding: 4mm 5mm 1mm 5mm;
 			border: 0px solid black;
 		}
+		body, td{font-size: 16px;color:#000}
 	</style>
 	<script language="javascript">
 		function getBarCode(pkgNo){
@@ -35,7 +36,6 @@
 </head>
 <body style="margin: 0px;padding: 0px;text-align: center;">
 <form name="fm" id="fm" method="post"  enctype="multipart/form-data">
-	<OBJECT  id=WebBrowser  classid=CLSID:8856F961-340A-11D0-A96B-00C04FD705A2 style="display:none"> </OBJECT>
 	<TABLE border=0 cellpadding=0 cellspacing=0 class="Noprint page-print-buttons" align="center" width=100%>
 		<tr style="border: 0px;">
 			<td style="border: 0px;">

@@ -21,10 +21,11 @@ var columns = [
 		{id:'action',header: '<input type="checkbox" onclick="ckAllDtl(this);">',sortable: false,dataIndex: 'DTL_ID',renderer:myLink , style: 'text-align: center'},
 		{header: "退换单号",dataIndex:'RETURN_CODE', style:"text-align: center"},
 		{header: "销售单号",dataIndex:'SO_CODE', style:"text-align: center"},
-		{header: "入库单号",dataIndex:'SO_CODE', style:"text-align: center"},
+		{header: "入库单号",dataIndex:'IN_CODE', style:"text-align: center"},
 		{header: "配件编码",dataIndex:'PART_OLDCODE', style:"text-align: center"},
 		{header: "配件名称",dataIndex:'PART_CNAME', style:"text-align: center"},
 		{header: "单位",dataIndex:'UNIT', style:"text-align: center"},
+		{header: "批次号",dataIndex:'IN_BATCH_NO', style:"text-align: center"},
 		{header: "冻结总量",dataIndex:'IN_QTY', style:"text-align: center"},
 		{header: "可解封数量",dataIndex:'KY_QTY', style:"text-align: center"},
 		{header: "已解封数",dataIndex:'UNLOC_QTY', style:"text-align: center"},
@@ -38,13 +39,14 @@ function myLink(value,meta,record){
 	var partCode = record.data.PART_CODE == null ? "" : record.data.PART_CODE;
 	
 	var str = '<input type="hidden" id="RETURN_CODE_'+value+'" name="RETURN_CODE_'+value+'" value="'+record.data.RETURN_CODE+'" >';//退货单号
-		str += '<input type="hidden" id="SO_CODE_'+value+'" name="SO_CODE_'+value+'" value="'+soCode+'" >';//销售单号
-		str += '<input type="hidden" id="IN_CODE_'+value+'" name="IN_CODE_'+value+'" value="'+inCode+'" >';//销售单号
+		str += '<input type="hidden" id="SO_CODE_'+value+'" name="SO_CODE_'+value+'" value="'+soCode+'" >'; // 销售单号
+		str += '<input type="hidden" id="IN_CODE_'+value+'" name="IN_CODE_'+value+'" value="'+inCode+'" >'; // 入库单号
 		str += '<input type="hidden" id="PART_ID_'+value+'" name="PART_ID_'+value+'" value="'+record.data.PART_ID+'" >';//配件ID
 	    str += '<input type="hidden" id="PART_OLDCODE_'+value+'" name="PART_OLDCODE_'+value+'" value="'+record.data.PART_OLDCODE+'" >';//配件编码
 		str += '<input type="hidden" id="PART_CNAME_'+value+'" name="PART_CNAME_'+value+'" value="'+record.data.PART_CNAME+'" >';//配件名称
 		str += '<input type="hidden" id="PART_CODE_'+value+'" name="PART_CODE_'+value+'" value="'+record.data.PART_CODE+'" >';//件号
 		str += '<input type="hidden" id="UNIT_'+value+'" name="UNIT_'+value+'" value="'+record.data.UNIT+'" >';//单位
+		str += '<input type="hidden" id="BATCH_NO_'+value+'" name="BATCH_NO_'+value+'" value="'+record.data.IN_BATCH_NO+'" >';//单位
 		str += '<input type="hidden" id="IN_QTY_'+value+'" name="IN_QTY_'+value+'" value="'+record.data.IN_QTY+'" >';//总数量
 		str += '<input type="hidden" id="KY_QTY_'+value+'" name="KY_QTY_'+value+'" value="'+record.data.KY_QTY+'" >';//可用数量
 		str += '<input type="hidden" id="UNLOC_QTY_'+value+'" name="UNLOC_QTY_'+value+'" value="'+record.data.UNLOC_QTY+'" >';//已解封数
@@ -97,13 +99,13 @@ function saveReturnApply(){
 		
 	});
 }
-      //操作结果
+//操作结果
 function getResult(json){
 	var success = json.success;
 	var error = json.error;
 	var ex = json.Exception;
 	if(success!=null && success!='' && success!='null' && success!='undefined'){
-		MyAlert(success,goback());
+		MyAlert(success,goback);
 	}else if(error!=null && error!='' && error!='null' && error!='undefined'){
 		MyAlert(error);
 	}else if(ex!=null && ex!='' && ex!='null' && ex!='undefined'){
@@ -154,6 +156,7 @@ function addCells(){
 		var PART_CNAME = $('#PART_CNAME_'+dtlId).val();//配件名称
 		var PART_CODE = $('#PART_CODE_'+dtlId).val();//配件件号
 		var UNIT = $('#UNIT_'+dtlId).val();//单位
+		var BATCH_NO = $('#BATCH_NO_'+dtlId).val();//单位
 		var IN_QTY = $('#IN_QTY_'+dtlId).val();//总数量
 		var KY_QTY = $('#KY_QTY_'+dtlId).val();//可用数量
 		var UNLOC_QTY = $('#UNLOC_QTY_'+dtlId).val();//已解封数
@@ -171,13 +174,14 @@ function addCells(){
 		if(flag==true){
 			//不重复，写入保存信息块
 			var rsStr = '<input type="hidden" id="returnCode'+dtlId+'" name="returnCode'+dtlId+'" value="'+RETURN_CODE+'">';
-				rsStr += '<input type="hidden" id="soCode'+dtlId+'" name="soCode'+dtlId+'" value="'+SO_CODE+'">';
+				rsStr += '<input type="hidden" id="inCode'+dtlId+'" name="soCode'+dtlId+'" value="'+SO_CODE+'">';
 				rsStr += '<input type="hidden" id="inCode'+dtlId+'" name="inCode'+dtlId+'" value="'+IN_CODE+'">';
 				rsStr += '<input type="hidden" id="partId'+dtlId+'" name="partId'+dtlId+'" value="'+PART_ID+'">';
 				rsStr += '<input type="hidden" id="partOldcode'+dtlId+'" name="partOldcode'+dtlId+'" value="'+PART_OLDCODE+'">';
 				rsStr += '<input type="hidden" id="partCname'+dtlId+'" name="partCname'+dtlId+'" value="'+PART_CNAME+'">';
 				rsStr += '<input type="hidden" id="partCode'+dtlId+'" name="partCode'+dtlId+'" value="'+PART_CODE+'">';
 				rsStr += '<input type="hidden" id="unit'+dtlId+'" name="unit'+dtlId+'" value="'+UNIT+'">';
+				rsStr += '<input type="hidden" id="batchNo'+dtlId+'" name="batchNo'+dtlId+'" value="'+BATCH_NO+'">';
 				rsStr += '<input type="hidden" id="inQty'+dtlId+'" name="inQty'+dtlId+'" value="'+IN_QTY+'">';
 				rsStr += '<input type="hidden" id="kyQty'+dtlId+'" name="kyQty'+dtlId+'" value="'+KY_QTY+'">';
 				rsStr += '<input type="hidden" id="unlocQty'+dtlId+'" name="unlocQty'+dtlId+'" value="'+UNLOC_QTY+'">';
@@ -191,6 +195,7 @@ function addCells(){
 			    str += '<td>'+PART_OLDCODE+'</td>';
 			    str += '<td>'+PART_CNAME+'</td>';
 			    str += '<td>'+UNIT+'</td>';
+			    str += '<td>'+BATCH_NO+'</td>';
 			    str += '<td>'+KY_QTY+'</td>';
 			    str += '<td><input type="text" class="short_txt" style="background-color:#FFFFCC;text-align:center;color:#0000;" id="applyQty'+dtlId+'" name="applyQty'+dtlId+'" vlaue="" onblur="valiaApplyQty(\''+dtlId+'\')" /></td>';
 			    str += '<td>'+IN_QTY+'</td>';
@@ -221,16 +226,16 @@ function setStyleDom(){
 	var leng = $('input[name="ck"]').length;
 	
 	for(var i=0;i<leng;i++){
-		var trclass="";
+		/* var trclass="";
 		if((i+1)%2==0){
 			trclass = 'table_list_row2';
 		}else{
 			trclass = 'table_list_row1';
-		}
+		} */
 		var ckId = $('input[name="ck"]').eq(i).val();
 		$('#delete_'+ckId).removeClass('table_list_row2');
 		$('#delete_'+ckId).removeClass('table_list_row1');
-		$('#delete_'+ckId).addClass(trclass);
+		// $('#delete_'+ckId).addClass(trclass);
 		$('#applyQty'+ckId).attr('tabindex',(i+1));//按tab快捷到下一个输入框
 		var kyQty = $('#kyQty'+ckId).val();
 		if($('#applyQty'+ckId).val()==''){
@@ -254,6 +259,7 @@ function valiaApplyQty(id){
 		$('#label'+id).html('0');
 		return;
 	}else{
+		var kyQty = $('#kyQty'+id).val();
 		if(isNaN(applyQty)){
 			MyAlert('请输入大于 0 小于等于 '+kyQty+' 数字！');
 			$('#applyQty'+id).val('');
@@ -336,27 +342,24 @@ function getSumAmount(){
 			</div>
 
 			<table id="savefile" class="table_list" style="border-bottom: 1px;">
+				<caption><img src="<%=contextPath%>/img/nav.gif" />&nbsp;配件解封明细</caption>
 				<tr>
-					<th colspan="15" align="left">
-						<img src="<%=contextPath%>/img/nav.gif" />&nbsp;配件解封明细
-					</th>
-				</tr>
-				<tr class="table_list_row0">
-					<td>
+					<th>
 						<input type="checkbox" checked="checked" onclick="ckAlls(this)" />
-					</td>
-					<td>序号</td>
-					<td>退换单编码</td>
-					<td>销售单号</td>
-					<td>入库单号</td>
-					<td>配件编码</td>
-					<td>配件名称</td>
-					<td>单位</td>
-					<td>可解封数量</td>
-					<td>申请数量</td>
-					<td>冻结总量</td>
-					<td>已解封数</td>
-					<td>操作</td>
+					</th>
+					<th>序号</th>
+					<th>退换单编码</th>
+					<th>销售单号</th>
+					<th>入库单号</th>
+					<th>配件编码</th>
+					<th>配件名称</th>
+					<th>单位</th>
+					<th>批次号</th>
+					<th>可解封数量</th>
+					<th>申请数量</th>
+					<th>冻结总量</th>
+					<th>已解封数</th>
+					<th>操作</th>
 				</tr>
 			</table>
 			<table style="width: 100%;">
@@ -377,13 +380,13 @@ function getSumAmount(){
 				<div id="partDiv" style="display: none; heigeht: 5px;">
 					<table class="table_query" width=100% border="0" align="center" cellpadding="1" cellspacing="1">
 						<tr>
-							<td class="right">配件编码：</td>
+							<td class="right">退换单号：</td>
 							<td>
-								<input type="text" class="middle_txt" id="partOldcode" name="partOldcode" value="" />
+								<input type="text" class="middle_txt" id="returnCode" name="returnCode" value="" />
 							</td>
-							<td class="right">配件名称：</td>
+							<td class="right">入库单号：</td>
 							<td>
-								<input type="text" class="middle_txt" id="partCname" name="partCname" value="" />
+								<input type="text" class="middle_txt" id="inCode" name="inCode" value="" />
 							</td>
 							<td class="right">仓库：</td>
 							<td>
@@ -400,8 +403,28 @@ function getSumAmount(){
 							</td>
 						</tr>
 						<tr>
+							<td class="right">配件编码：</td>
+							<td>
+								<input type="text" class="middle_txt" id="partOldcode" name="partOldcode" value="" />
+							</td>
+							<td class="right">配件名称：</td>
+							<td>
+								<input type="text" class="middle_txt" id="partCname" name="partCname" value="" />
+							</td>
+							<td class="right">单位：</td>
+							<td>
+								<select class="u-select" id="unit" name="unit">
+									<option value="">-请选择-</option>
+									<c:forEach items="${unitList}" var="unit" varStatus="v">
+										<option value="${unit.fixName }" >${unit.fixName }</option>
+									</c:forEach>
+								</select>
+							</td>
+						</tr>
+						<tr>
 							<td class="center" colspan="6">
 								<input class="u-button" type="button" name="BtnQuery" id="queryBtn" value="查 询" onclick="__extQuery__(1);" />
+								<input class="u-button" type="reset">
 								<input class="u-button" type="button" name="BtnQuery" id="queryBtn" value="添 加" onclick="addCells();" />
 							</td>
 						</tr>

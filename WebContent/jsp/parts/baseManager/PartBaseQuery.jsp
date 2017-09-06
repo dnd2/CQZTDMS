@@ -43,7 +43,7 @@ var url = "<%=contextPath%>/parts/baseManager/PartBaseQuery/queryPartBaseInfo.js
         {header: "停止装车日期", dataIndex: 'STOP_LOAD_DATE', style: "text-align: center", width: '5%'},
         {header: "配件种类", dataIndex: 'PRODUCE_STATE', style: "text-align: center", width: '5%', renderer: getItemValue},
         {header: "装配", dataIndex: 'PART_FIT', style: "text-align: center", width: '5%', renderer: getItemValue},
-        {header: "备件类别", dataIndex: 'PART_CATEGORY', style: "text-align: center", width: '5%', renderer: getItemValue},
+        {header: "配件类别", dataIndex: 'PART_CATEGORY', style: "text-align: center", width: '5%', renderer: getItemValue},
         {header: "车系", dataIndex: 'MODEL_CODE', style: "text-align: center", width: '5%'},
         {header: "适用车型", dataIndex: 'MODEL_NAME', style: "text-align: center", width: '5%'},
         {header: "第一次入库时间", dataIndex: 'FIRST_WARNHOUSE_DATE', style: "text-align: center", width: '5%'},
@@ -130,14 +130,14 @@ var url = "<%=contextPath%>/parts/baseManager/PartBaseQuery/queryPartBaseInfo.js
 //详细页面
 function view(value) {
     disableAllClEl();
-    OpenHtmlWindow('<%=contextPath%>/parts/baseManager/PartBaseQuery/queryPartBaseDetail.do?flag=view&&partId=' + value, 1100, 440, '配件主数据维护');
+    OpenHtmlWindow('<%=contextPath%>/parts/baseManager/PartBaseQuery/queryPartBaseDetail.do?flag=view&&partId=' + value, 1100, 500, '配件主数据维护');
     enableAllClEl();
 }
 
 //修改页面
 function Mod(value) {
     disableAllClEl();
-    OpenHtmlWindow('<%=contextPath%>/parts/baseManager/PartBaseQuery/queryPartBaseDetail.do?flag=mod&&partId=' + value, 1100, 400, '配件主数据维护');
+    OpenHtmlWindow('<%=contextPath%>/parts/baseManager/PartBaseQuery/queryPartBaseDetail.do?flag=mod&&partId=' + value, 1100, 500, '配件主数据维护');
     enableAllClEl();
 }
 function detailHis(value) {

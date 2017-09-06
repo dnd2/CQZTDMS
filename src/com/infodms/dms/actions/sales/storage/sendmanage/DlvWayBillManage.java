@@ -565,7 +565,34 @@ public class DlvWayBillManage  extends BaseImport {
 					errorList.add(errors);
 			 	}
 			}
-			
+			//检查原车架号对应仓库与订单的发运仓库是否匹配
+			List<Map<String, Object>> hlist=reDao.checkIsMatchWare("");
+			if(hlist!=null&&hlist.size()>0){//获取错误行号
+			 	isError = true;
+			 	errorInfo2="原车架号所属仓库与订单发运仓库不匹配；";
+			 	for(int i=0;i<hlist.size();i++){
+			 		errors = new ExcelErrors();
+			 		Map<String,Object> map=hlist.get(i);
+				 	String info = errorInfo2;
+					errors.setRowNum(new Integer(map.get("ROW_NUMBER").toString()));
+					errors.setErrorDesc(info);
+					errorList.add(errors);
+			 	}
+			}
+			//检查替换车架号对应仓库与订单的发运仓库是否匹配
+			List<Map<String, Object>> mlist=reDao.checkIsMatchWare("1");
+			if(mlist!=null&&mlist.size()>0){//获取错误行号
+			 	isError = true;
+			 	errorInfo2="替换车架号所属仓库与订单发运仓库不匹配；";
+			 	for(int i=0;i<mlist.size();i++){
+			 		errors = new ExcelErrors();
+			 		Map<String,Object> map=mlist.get(i);
+				 	String info = errorInfo2;
+					errors.setRowNum(new Integer(map.get("ROW_NUMBER").toString()));
+					errors.setErrorDesc(info);
+					errorList.add(errors);
+			 	}
+			}
 			for (int i = 0; i < pos.size(); i++) {
 				errors = new ExcelErrors();
 				po = (TmpTtSalesWayBillPO) pos.get(i);
@@ -738,7 +765,8 @@ public class DlvWayBillManage  extends BaseImport {
 					act.setOutData("eMsg", "存在"+map.get("RENUM")+"条<组板号为"+map.get("BO_NO")+",订单号为"+map.get("ORDER_NO")+",物料代码为"+map.get("MATERIAL_CODE")+",车架号为"+map.get("VIN")+">相同的数据");
 					return;
 			}
-			
+			List bIdList=new ArrayList();
+			List dtIdList=new ArrayList();
 			/**
 			 * 交接单导入判断逻辑：
 			 * 1.每个组板号只初始化一次，初始化完毕后，更新处理状态为已发运(9710006)，二次导入时，只会存在替换车情况
@@ -818,6 +846,7 @@ public class DlvWayBillManage  extends BaseImport {
 							tsw.setBalCountyId(Long.parseLong(bmap.get("DLV_BAL_COUNTY_ID").toString()));
 							tsw.setDlvShipType(Integer.parseInt(bmap.get("DLV_SHIP_TYPE").toString()));
 							reDao.insert(tsw);
+							bIdList.add(billId);
 							String logiId=bmap.get("DLV_LOGI_ID").toString();
 							String dealerId=bmap.get("ORD_PUR_DEALER_ID").toString();
 							String shipType=bmap.get("DLV_SHIP_TYPE").toString();
@@ -831,7 +860,8 @@ public class DlvWayBillManage  extends BaseImport {
 								for(int k=0;k<dlist.size();k++){
 									Map<String, Object> tmap=dlist.get(k);
 									TtSalesWayBillDtlPO tswb=new TtSalesWayBillDtlPO();
-									tswb.setDtlId(Long.parseLong(SequenceManager.getSequence(null)));//明细ID
+									String dtlId=SequenceManager.getSequence(null);
+									tswb.setDtlId(Long.parseLong(dtlId));//明细ID
 									tswb.setBillId(Long.parseLong(billId));
 									tswb.setVehicleId(Long.parseLong(tmap.get("VEHICLE_ID").toString()));
 									tswb.setCreateBy(logonUser.getUserId());
@@ -857,6 +887,7 @@ public class DlvWayBillManage  extends BaseImport {
 										tswb.setDlvZzCountyId(Long.parseLong(tmap.get("DLV_ZZ_COUNTY_ID").toString()));
 									}
 									reDao.insert(tswb);
+									dtIdList.add(dtlId);
 									//更新车辆状态为出库
 									TmVehiclePO tvp=new TmVehiclePO();
 									tvp.setVin(tmap.get("VIN").toString());
@@ -1081,7 +1112,15 @@ public class DlvWayBillManage  extends BaseImport {
 				}
 				//count++;
 			}
-			
+			//将本次交接单记录存入日志表
+			for(int m=0;m<bIdList.size();m++){
+				String billId=(String) bIdList.get(m);
+				reDao.insert(insertTsiWayBillPo(billId,logonUser.getUserId()));
+			}
+			for(int m=0;m<dtIdList.size();m++){
+				String dtlId=(String) dtIdList.get(m);
+				reDao.insert(insertTsiWayBillDtlPo(dtlId,logonUser.getUserId()));
+			}
 			act.setOutData("eMsg", "success");
 
 		} catch (Exception e) {
@@ -1089,6 +1128,229 @@ public class DlvWayBillManage  extends BaseImport {
 			logger.error(logonUser, e1);
 			act.setException(e1);
 		}
+	}
+	
+	public String insertTsiWayBillPo(String billId,long userId){
+		StringBuffer sql= new StringBuffer();
+		sql.append("insert into tsi_tt_sales_waybill\n" );
+		sql.append("  (BILL_ID,\n" );
+		sql.append("   BILL_NO,\n" );
+		sql.append("   BAL_ID,\n" );
+		sql.append("   LOGI_ID,\n" );
+		sql.append("   BO_NUM,\n" );
+		sql.append("   VEH_NUM,\n" );
+		sql.append("   SEND_DEALER_ID,\n" );
+		sql.append("   OR_DEALER_ID,\n" );
+		sql.append("   INVOICE,\n" );
+		sql.append("   BILL_CRT_DATE,\n" );
+		sql.append("   BILL_CRT_PER,\n" );
+		sql.append("   BILL_PRINT_DATE,\n" );
+		sql.append("   BILL_PRINT_PER,\n" );
+		sql.append("   STATUS,\n" );
+		sql.append("   BACK_CRM_DATE,\n" );
+		sql.append("   BACK_CRM_PER,\n" );
+		sql.append("   ARR_DATE,\n" );
+		sql.append("   REMARK,\n" );
+		sql.append("   CREATE_BY,\n" );
+		sql.append("   CREATE_DATE,\n" );
+		sql.append("   UPDATE_BY,\n" );
+		sql.append("   UPDATE_DATE,\n" );
+		sql.append("   AREA_ID,\n" );
+		sql.append("   ADDRESS_ID,\n" );
+		sql.append("   SEND_STATUS,\n" );
+		sql.append("   IS_CONFIRM,\n" );
+		sql.append("   CHEPAI_NO,\n" );
+		sql.append("   SIJI,\n" );
+		sql.append("   TEL,\n" );
+		sql.append("   IS_STATUS,\n" );
+		sql.append("   W_LOGI_ID,\n" );
+		sql.append("   W_LOGI_NAME,\n" );
+		sql.append("   SEND_DEALER_NAME,\n" );
+		sql.append("   OR_DEALER_NAME,\n" );
+		sql.append("   SEND_SHORTDEALER_NAME,\n" );
+		sql.append("   OR_SHORTDEALER_NAME,\n" );
+		sql.append("   SCP_REMARK,\n" );
+		sql.append("   SCP_ISYS,\n" );
+		sql.append("   INTERFACE_DATE,\n" );
+		sql.append("   ADDRESS_INFO,\n" );
+		sql.append("   PCDATETIME,\n" );
+		sql.append("   FPDATETIME,\n" );
+		sql.append("   CONFIRM_DATE,\n" );
+		sql.append("   INVOICE_DATE,\n" );
+		sql.append("   INVOICE_STATUS,\n" );
+		sql.append("   INVOICE_USER,\n" );
+		sql.append("   IS_ACC,\n" );
+		sql.append("   LAST_CAR_DATE,\n" );
+		sql.append("   PRINT_COUNT,\n" );
+		sql.append("   DLV_BAL_PROV_ID,\n" );
+		sql.append("   DLV_BAL_CITY_ID,\n" );
+		sql.append("   DLV_BAL_COUNTY_ID,\n" );
+		sql.append("   DLV_SHIP_TYPE,\n" );
+		sql.append("   BILL_AMOUNT,\n" );
+		sql.append("   BAL_PROV_ID,\n" );
+		sql.append("   BAL_CITY_ID,\n" );
+		sql.append("   BAL_COUNTY_ID,\n" );
+		sql.append("   SUPPLY_MONEY,\n" );
+		sql.append("   DEDUCT_MONEY,\n" );
+		sql.append("   IS_CHANGE,\n" );
+		sql.append("   OTHER_MONEY,\n" );
+		sql.append("   APPLY_ID,\n" );
+		sql.append("   APPLY_REMARK)\n" );
+		sql.append("  SELECT BILL_ID,\n" );
+		sql.append("         BILL_NO,\n" );
+		sql.append("         BAL_ID,\n" );
+		sql.append("         LOGI_ID,\n" );
+		sql.append("         BO_NUM,\n" );
+		sql.append("         VEH_NUM,\n" );
+		sql.append("         SEND_DEALER_ID,\n" );
+		sql.append("         OR_DEALER_ID,\n" );
+		sql.append("         INVOICE,\n" );
+		sql.append("         BILL_CRT_DATE,\n" );
+		sql.append("         BILL_CRT_PER,\n" );
+		sql.append("         BILL_PRINT_DATE,\n" );
+		sql.append("         BILL_PRINT_PER,\n" );
+		sql.append("         STATUS,\n" );
+		sql.append("         BACK_CRM_DATE,\n" );
+		sql.append("         BACK_CRM_PER,\n" );
+		sql.append("         ARR_DATE,\n" );
+		sql.append("         REMARK,\n" );
+		sql.append("         '"+userId+"',\n" );
+		sql.append("         SYSDATE,\n" );
+		sql.append("         '',\n" );
+		sql.append("         NULL,\n" );
+		sql.append("         AREA_ID,\n" );
+		sql.append("         ADDRESS_ID,\n" );
+		sql.append("         SEND_STATUS,\n" );
+		sql.append("         IS_CONFIRM,\n" );
+		sql.append("         CHEPAI_NO,\n" );
+		sql.append("         SIJI,\n" );
+		sql.append("         TEL,\n" );
+		sql.append("         IS_STATUS,\n" );
+		sql.append("         W_LOGI_ID,\n" );
+		sql.append("         W_LOGI_NAME,\n" );
+		sql.append("         SEND_DEALER_NAME,\n" );
+		sql.append("         OR_DEALER_NAME,\n" );
+		sql.append("         SEND_SHORTDEALER_NAME,\n" );
+		sql.append("         OR_SHORTDEALER_NAME,\n" );
+		sql.append("         SCP_REMARK,\n" );
+		sql.append("         SCP_ISYS,\n" );
+		sql.append("         INTERFACE_DATE,\n" );
+		sql.append("         ADDRESS_INFO,\n" );
+		sql.append("         PCDATETIME,\n" );
+		sql.append("         FPDATETIME,\n" );
+		sql.append("         CONFIRM_DATE,\n" );
+		sql.append("         INVOICE_DATE,\n" );
+		sql.append("         INVOICE_STATUS,\n" );
+		sql.append("         INVOICE_USER,\n" );
+		sql.append("         IS_ACC,\n" );
+		sql.append("         LAST_CAR_DATE,\n" );
+		sql.append("         PRINT_COUNT,\n" );
+		sql.append("         DLV_BAL_PROV_ID,\n" );
+		sql.append("         DLV_BAL_CITY_ID,\n" );
+		sql.append("         DLV_BAL_COUNTY_ID,\n" );
+		sql.append("         DLV_SHIP_TYPE,\n" );
+		sql.append("         BILL_AMOUNT,\n" );
+		sql.append("         BAL_PROV_ID,\n" );
+		sql.append("         BAL_CITY_ID,\n" );
+		sql.append("         BAL_COUNTY_ID,\n" );
+		sql.append("         SUPPLY_MONEY,\n" );
+		sql.append("         DEDUCT_MONEY,\n" );
+		sql.append("         IS_CHANGE,\n" );
+		sql.append("         OTHER_MONEY,\n" );
+		sql.append("         APPLY_ID,\n" );
+		sql.append("         APPLY_REMARK\n" );
+		sql.append("    FROM TT_SALES_WAYBILL T\n" );
+		sql.append("   WHERE T.BILL_ID = '"+billId+"'\n");
+		return sql.toString();
+	}
+	public String insertTsiWayBillDtlPo(String dtlId,long userId){
+		StringBuffer sql= new StringBuffer();
+		sql.append("insert into TSI_TT_SALES_WAY_BILL_DTL\n" );
+		sql.append("  (DTL_ID,\n" );
+		sql.append("   BILL_ID,\n" );
+		sql.append("   VEHICLE_ID,\n" );
+		sql.append("   CREATE_DATE,\n" );
+		sql.append("   CREATE_BY,\n" );
+		sql.append("   ORDER_NO,\n" );
+		sql.append("   VIN,\n" );
+		sql.append("   IS_ACC,\n" );
+		sql.append("   MAT_ID,\n" );
+		sql.append("   IS_STATUS,\n" );
+		sql.append("   ERP_MATERIAL_CODE,\n" );
+		sql.append("   IS_STATUS1,\n" );
+		sql.append("   ASS_DATE,\n" );
+		sql.append("   ALLOCA_DATE,\n" );
+		sql.append("   ORDER_ID,\n" );
+		sql.append("   ORDER_DETAIL_ID,\n" );
+		sql.append("   IS_TC,\n" );
+		sql.append("   STATUS,\n" );
+		sql.append("   UPDATE_BY,\n" );
+		sql.append("   UPDATE_DATE,\n" );
+		sql.append("   DRIVER_USER_ID,\n" );
+		sql.append("   DRIVER_BIND_DATE,\n" );
+		sql.append("   DRIVER_PHONE,\n" );
+		sql.append("   REPORT_ADDRESS,\n" );
+		sql.append("   REPORT_DATE,\n" );
+		sql.append("   DLV_WH_ID,\n" );
+		sql.append("   PRICE,\n" );
+		sql.append("   PRICE_FACTOR,\n" );
+		sql.append("   MILEAGE,\n" );
+		sql.append("   ONE_BILL_AMOUNT,\n" );
+		sql.append("   DLV_IS_SD,\n" );
+		sql.append("   DLV_IS_ZZ,\n" );
+		sql.append("   DLV_ZZ_PROV_ID,\n" );
+		sql.append("   DLV_ZZ_CITY_ID,\n" );
+		sql.append("   DLV_ZZ_COUNTY_ID,\n" );
+		sql.append("   NEW_PRICE,\n" );
+		sql.append("   NEW_MILEAGE,\n" );
+		sql.append("   NEW_AMOUNT,\n" );
+		sql.append("   ZZ_WH_ID,\n" );
+		sql.append("   PRICE_ZZ,\n" );
+		sql.append("   MILEAGE_ZZ)\n" );
+		sql.append("  SELECT DTL_ID,\n" );
+		sql.append("         BILL_ID,\n" );
+		sql.append("         VEHICLE_ID,\n" );
+		sql.append("         SYSDATE,\n" );
+		sql.append("         '"+userId+"',\n" );
+		sql.append("         ORDER_NO,\n" );
+		sql.append("         VIN,\n" );
+		sql.append("         IS_ACC,\n" );
+		sql.append("         MAT_ID,\n" );
+		sql.append("         IS_STATUS,\n" );
+		sql.append("         ERP_MATERIAL_CODE,\n" );
+		sql.append("         IS_STATUS1,\n" );
+		sql.append("         ASS_DATE,\n" );
+		sql.append("         ALLOCA_DATE,\n" );
+		sql.append("         ORDER_ID,\n" );
+		sql.append("         ORDER_DETAIL_ID,\n" );
+		sql.append("         IS_TC,\n" );
+		sql.append("         STATUS,\n" );
+		sql.append("         '',\n" );
+		sql.append("         NULL,\n" );
+		sql.append("         DRIVER_USER_ID,\n" );
+		sql.append("         DRIVER_BIND_DATE,\n" );
+		sql.append("         DRIVER_PHONE,\n" );
+		sql.append("         REPORT_ADDRESS,\n" );
+		sql.append("         REPORT_DATE,\n" );
+		sql.append("         DLV_WH_ID,\n" );
+		sql.append("         PRICE,\n" );
+		sql.append("         PRICE_FACTOR,\n" );
+		sql.append("         MILEAGE,\n" );
+		sql.append("         ONE_BILL_AMOUNT,\n" );
+		sql.append("         DLV_IS_SD,\n" );
+		sql.append("         DLV_IS_ZZ,\n" );
+		sql.append("         DLV_ZZ_PROV_ID,\n" );
+		sql.append("         DLV_ZZ_CITY_ID,\n" );
+		sql.append("         DLV_ZZ_COUNTY_ID,\n" );
+		sql.append("         NEW_PRICE,\n" );
+		sql.append("         NEW_MILEAGE,\n" );
+		sql.append("         NEW_AMOUNT,\n" );
+		sql.append("         ZZ_WH_ID,\n" );
+		sql.append("         PRICE_ZZ,\n" );
+		sql.append("         MILEAGE_ZZ\n" );
+		sql.append("    FROM TT_SALES_WAY_BILL_DTL TT\n" );
+		sql.append("  WHERE TT.DTL_ID = '"+dtlId+"'");
+		return sql.toString();
 	}
 	/**
 	 * 新增出库记录

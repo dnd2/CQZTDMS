@@ -967,8 +967,8 @@ function OpenHtmlWindow2(url,width,height,st){
 	 }
 }
 
-jQuery(function() {
-	jQuery('.u-main').on('click', '.close-win', function() {
+jQuery(function($) {
+	$('.u-main').on('click', '.close-win', function() {
 		_hide && _hide();
 	});
 

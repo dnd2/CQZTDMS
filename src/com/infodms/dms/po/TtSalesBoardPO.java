@@ -46,9 +46,9 @@ public class TtSalesBoardPO extends PO{
 	private String boStatus;
 	private Integer dlvShipType;
 	private Long dlvLogiId;
-	private Long dlvBalProvId;
-	private Long dlvBalCityId;
-	private Long dlvBalCountyId;
+//	private Long dlvBalProvId;
+//	private Long dlvBalCityId;
+//	private Long dlvBalCountyId;
 	private Date dlvFyDate;
 	private Date dlvJjDate;
 	private Date planLoadDate;
@@ -120,29 +120,6 @@ public class TtSalesBoardPO extends PO{
 		this.dlvLogiId = dlvLogiId;
 	}
 
-	public Long getDlvBalProvId() {
-		return dlvBalProvId;
-	}
-
-	public void setDlvBalProvId(Long dlvBalProvId) {
-		this.dlvBalProvId = dlvBalProvId;
-	}
-
-	public Long getDlvBalCityId() {
-		return dlvBalCityId;
-	}
-
-	public void setDlvBalCityId(Long dlvBalCityId) {
-		this.dlvBalCityId = dlvBalCityId;
-	}
-
-	public Long getDlvBalCountyId() {
-		return dlvBalCountyId;
-	}
-
-	public void setDlvBalCountyId(Long dlvBalCountyId) {
-		this.dlvBalCountyId = dlvBalCountyId;
-	}
 
 	public String getBoStatus() {
 		return boStatus;

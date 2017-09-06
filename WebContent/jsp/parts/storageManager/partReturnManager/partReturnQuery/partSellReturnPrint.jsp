@@ -5,6 +5,7 @@
 <%@taglib prefix="fmt" uri="/jstl/fmt" %>
 <head>
     <title>退货单</title>
+    <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
     <style media=print>
         .Noprint {
             display: none;
@@ -47,7 +48,8 @@
             padding: 10mm 15mm 10mm 15mm;
             border: 0px solid blue;
         }
-
+        body, td{font-size: 16px;color:#000}
+        table caption{margin-bottom: 5px;padding:0;border:0;background-color:transparent;font-weight: normal;background-image: none;text-align:center}
 
     </style>
 </head>
@@ -70,7 +72,7 @@
         for (var i = 0; i < mian_div.length; i++) {
             mian_div[i].style.cssText = "width:210mm;height:297mm;";
         }
-        document.all.WebBrowser.ExecWB(6, 1);//打印
+       // document.all.WebBrowser.ExecWB(6, 1);//打印
     }
     function printpreview() {
         document.all.WebBrowser.ExecWB(7, 1);// 打印页面预览
@@ -80,26 +82,25 @@
         for (var i = 0; i < mian_div.length; i++) {
             mian_div[i].style.cssText = "width:241mm;height:280mm;";
         }
-        document.all.WebBrowser.ExecWB(6, 1);//打印
+       // document.all.WebBrowser.ExecWB(6, 1);//打印
     }
     function printpreviewToA4() {
         var mian_div = document.getElementsByName("mian_div");
         for (var i = 0; i < mian_div.length; i++) {
             mian_div[i].style.cssText = "width:210mm;height:297mm;";
         }
-        document.all.WebBrowser.ExecWB(7, 1);// 打印页面预览
+       // document.all.WebBrowser.ExecWB(7, 1);// 打印页面预览
     }
 
 </script>
 <body onload="">
-<TABLE border=0 cellpadding=0 cellspacing=0 class="Noprint" align="center" width=100%>
+<TABLE border=0 cellpadding=0 cellspacing=0 class="Noprint page-print-buttons" align="center" width=100%>
     <tr style="border: 0px;">
         <td style="border: 0px;" align="center">
-            <OBJECT id="WebBrowser" classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" style="display:none"></OBJECT>
-            <input type=button class="txtToolBarButton" value="打印" onClick="printOrder()">
-            <input type=button class="txtToolBarButton" value="A4打印" onClick="changeToA4()">
-            <input type=button class="txtToolBarButton" value="预览" onClick="printpreview()">
-            <input type=button class="txtToolBarButton" value="A4预览" onClick="printpreviewToA4()">
+            <input type=button class="txtToolBarButton" value="打印" data-before="printOrder">
+            <input type=button class="txtToolBarButton" value="A4打印" data-before="changeToA4">
+            <input type=button class="txtToolBarButton" value="预览">
+            <input type=button class="txtToolBarButton" value="A4预览" data-before="printpreviewToA4">
         </td>
     </tr>
 </TABLE>

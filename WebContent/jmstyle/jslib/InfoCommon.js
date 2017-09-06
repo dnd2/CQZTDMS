@@ -350,7 +350,7 @@ function genTextBoxStr(paramTxtId, paramTxtName, paramHidId, paramHidName, param
  */
 var BrowserVersion = {
 	version: null,
-	limitedVer: {'Chrome': 45, 'Firefox': 45, 'Opera' : 40, 'MSIE': 7, 'IE': 7},
+	limitedVer: {'Chrome': 45, 'Firefox': 48, 'Opera' : 40, 'MSIE': 10, 'IE': 10},
 	/**
 	 * - IE 10
      * ua = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
@@ -385,7 +385,7 @@ var BrowserVersion = {
 		};
 	},
 	/**
-	 * The browser is satisfied with your applicaiont or not.
+	 * The browser is satisfied with your application or not.
 	 * 
 	 * @param {Object} params  {'Chrome': 50, 'Firefox': 50, 'IE': 8}
 	 */
@@ -432,7 +432,7 @@ var Common = {
  * @version 1.0.0
  * @date 2017.8.24
  */
-(function( window, undefined ) {
+(function( $, undefined ) {
 	'use strict';
 	var self;
 	var query = function() {
@@ -619,7 +619,7 @@ var Common = {
 	};
 
 	Common.QueryBlockShow = query;
-})( window );
+})( jQuery );
 
 /**
  * Method to provide a simple way of print the page
@@ -647,7 +647,7 @@ var Common = {
 						hKeyRoot = 'HKEY_CURRENT_USER',
 						hKeyPath = '\\Software\\Microsoft\\Internet Explorer\\PageSetup\\',
 						// 设置网页打印的页眉的值
-						hKeyHeader = 'header';
+						hKeyHeader = 'header',
 						hKeyFooter = 'footer'; 
 
 						control.id  = "webBrower";
@@ -761,32 +761,39 @@ var Common = {
  */
 (function( $, undefined ) {
 	var general = {
-		sizeArgs: {aEl: '.grid-resize #myGrid', rEl: '.form-panel'},
+		sizeArgs: [{aEl: '.grid-resize #myGrid', rEl: '.form-panel', aElDom: null, rElDom: null}],
 		/**
 		 * Method to set the size of the element
 		 * 
-		 * @param {String} applyEl  The element which need to be changed 
-		 * @param {String} refEl	The element which need to referenced 
 		 * @param {String} sizeType Method which need to call
 		 * @param {Integer} pos		Size offset	
 		 * @return {Boolean}
 		 */
-		setElSize: function( applyEl, refEl, sizeType, pos ) {
-			applyEl  = applyEl || this.sizeArgs.aEl;
-			refEl    = refEl || this.sizeArgs.rEl;
-			pos      = pos || 26;
+		setElSize: function( sizeType, pos ) {
+			pos      = pos !== void(0) && parseInt( pos ) !== NaN ? pos : 26;
 			sizeType = sizeType || 'width';
-			applyEl  = $( applyEl );
-			refEl    = $( refEl );
 
-			if ( applyEl.length <= 0 || refEl.length <= 0 ) {
+			try {
+				this.sizeArgs.forEach( function( item ) {
+					var elPos = item.pos || pos;
+
+					if ( ! item.aElDom ) {
+						item.aElDom = $( item.aEl );
+						item.rElDom = $( item.rEl );
+					} 
+
+					item.aElDom[sizeType]( item.rElDom[sizeType]() - elPos );
+				});
+			} catch ( e ) {
+				console.log(e);
 				return false;
 			}
 
-			applyEl[sizeType]( refEl[sizeType]() - pos );
-			
 			$(window).resize(function() {
-				applyEl[sizeType]( refEl[sizeType]() - pos );
+				general.sizeArgs.forEach( function( item ) {
+					var elPos = item.pos || pos;
+					item.aElDom[sizeType]( item.rElDom[sizeType]() - elPos );
+				});
 			});
 
 			return true;

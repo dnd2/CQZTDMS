@@ -105,10 +105,10 @@ $(function(){
 							<td class="right">入库时间：</td>
 							<td>
 								<input name="beginTime" id="t1" value="" type="text" class="short_txt" datatype="1,is_date,10" group="t1,t2" style="width:80px;">
-								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" onclick="showcalendar(event, 't1', false);" />
+								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" />
 								&nbsp;至&nbsp;
 								<input name="endTime" id="t2" value="" type="text" class="short_txt" datatype="1,is_date,10" group="t1,t2" style="width:80px;">
-								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" onclick="showcalendar(event, 't2', false);" />
+								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" />
 							</td>
 						</tr>
 						<tr>

@@ -30,8 +30,9 @@ var columns = [
     {header: "审核数量", dataIndex: 'CHECK_QTY', align: 'center', renderer: insertChkQtyInput},
     {header: "回运数量", dataIndex: 'CHECK_QTY', align: 'center'},
     {header: "已验收数量", dataIndex: 'IN_QTY', align: 'center'},
-    {header: "待验收数量", dataIndex: 'MAX_QTY', align: 'center', renderer: insertInQtyInput},
-    {header: "退入货位", dataIndex: 'LOC_CODE', style: 'text-align:left', renderer: choice},
+    {header: "待验收数量", dataIndex: 'MAX_QTY', align: 'center'},
+    {header: "入库数量", dataIndex: 'IN_QTY', align: 'center', renderer: insertInQtyInput},
+    {header: "退入货位", dataIndex: 'LOC_CODE', align: 'center', renderer: choice},
     {header: "备注", dataIndex: 'REMARK', align: 'center'}
 ];
 
@@ -57,6 +58,7 @@ function choice(value, meta, record) {
     html += '<input readonly name="LOC_CODE_'+partId+'" id="LOC_CODE_'+partId+'" class="middle_txt" type="text"';
     html += 'onchange="checkCode(this, \''+partId+'\', \"'+partId+'\', \''+whId+'\', \''+whName+'\');"/>';
     html += '<input name="LOC_ID_'+partId+'" id="LOC_ID_'+partId+'" type="hidden" value=""/>';
+    html += '<input name="LOC_NAME_'+partId+'" id="LOC_NAME_'+partId+'" type="hidden" value=""/>';
     html += '<input class="mini_btn" type="button" value="..."';
     html += 'onclick="codeChoice2(\''+partId+'\', \''+partId+'\',\''+code+'\', \''+partName+'\');"/>';           
 //  var text = "<input name='LOC_CODE_" + id + "' id='LOC_CODE_" + id + "' class='middle_txt' type='text' value='' onchange='checkCode(this,\"" + id + "\",\"" + whId + "\",\"" + whName + "\");'/>";
@@ -110,10 +112,9 @@ function insertInQtyInput(value, meta, record) {
 }
 
 function check(obj, dtlId) {
-	MyAlert(obj.value);
     var pattern1 = /^[1-9][0-9]*$/;
     if (!pattern1.exec(obj.value)) {
-        //MyAlert("请录入正整数且必须大于0！");
+//         MyAlert("请录入正整数且必须大于0！");
         obj.value = obj.value.replace(/\D/g, '');
         obj.focus();
     }
@@ -125,6 +126,13 @@ function check(obj, dtlId) {
             return;
         }
 
+    }
+    var maxQty = $('#MAX_QTY'+dtlId).val();
+    if(parseInt(maxQty) < parseInt(obj.value)){
+        MyAlert("入库数量不能大于待验收数量：" + maxQty + "！");
+        obj.value = "";
+        obj.focus();
+        return;
     }
     $("ck" + dtlId).checked = true;
     chkPart();
@@ -175,7 +183,7 @@ function inPartDlrReturn() {
         return;
     }
     
-    MyAlert("确定入库?", function(){
+    MyConfirm("确定入库?", function(){
         btnDisable();
         var url = '<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnInManager/inPartDlrReturn.json';
         sendAjax(url, getResult, 'fm');
@@ -191,11 +199,13 @@ function getResult(jsonObj) {
         var dtlError = jsonObj.dtlError;
         var exceptions = jsonObj.Exception;
         if (success) {
-            MyAlert(success);
-            window.location.href = '<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnInManager/queryPartReturnApplyInit.do';
+            MyAlert(success, function(){
+	            window.location.href = '<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnInManager/queryPartReturnApplyInit.do';
+            });
         } else if (errors && errors != "") {
-            MyAlert(errors);
-            window.location.href = '<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnInManager/queryPartReturnApplyInit.do';
+            MyAlert(errors, function(){
+	            window.location.href = '<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnInManager/queryPartReturnApplyInit.do';
+            });
         } else if (dtlError && dtlError != "") {
             MyAlert(dtlError);
             __extQuery__(1);

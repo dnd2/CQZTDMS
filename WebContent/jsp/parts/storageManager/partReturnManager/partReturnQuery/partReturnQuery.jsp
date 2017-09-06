@@ -99,10 +99,10 @@ function PrintView(value,type){
 							<td class="right">退货日期：</td>
 							<td colspan="3">
 								<input name="startDate" id="t1" value="${old }" type="text" class="short_txt" datatype="1,is_date,10" group="t1,t2"  style="width:80px;"/>
-								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" onclick="showcalendar(event, 't1', false);" />
+								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" />
 								至
 								<input name="endDate" id="t2" value="${now }" type="text" class="short_txt" datatype="1,is_date,10" group="t1,t2"  style="width:80px;"/>
-								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" onclick="showcalendar(event, 't2', false);" />
+								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" />
 							</td>
 						</tr>
 						<tr>

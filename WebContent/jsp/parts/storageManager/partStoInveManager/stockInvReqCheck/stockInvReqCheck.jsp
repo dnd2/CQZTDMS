@@ -94,7 +94,7 @@ function exportPartStockExcel(){
 								<input class="middle_txt" type="text" name="inveCode" id="inveCode" />
 							</td>
 							<td class="right">盘点类型：</td>
-							<td width="22%">
+							<td >
 								<script type="text/javascript">
 									genSelBoxExp("inveType", <%=Constant.PART_STOCK_INVE_TYPE%>, "", true, "", "", "false", "");
 								</script>

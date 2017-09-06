@@ -1748,71 +1748,114 @@ sql.append(" group by  d.erpd_code,a.stock_id,a.stock_no,c.code_desc ,a.stock_da
 		String dealerId=ClaimTools.dealParamStr(params.get("dealerId"));//经销商ID
 		String deductionStatus=ClaimTools.dealParamStr(params.get("deductionStatus"));//抵扣状态
 		String deductionNo=ClaimTools.dealParamStr(params.get("deductionNo"));//抵扣单号
-		String return_start_date=ClaimTools.dealParamStr(params.get("report_start_date"));//通知开始日期
-		String return_end_date=ClaimTools.dealParamStr(params.get("report_end_date"));//通知结束日期
+		String updateDateStart=ClaimTools.dealParamStr(params.get("updateDateStart"));//通知开始日期
+		String updateDateEnd=ClaimTools.dealParamStr(params.get("updateDateEnd"));//通知结束日期
 		
 		StringBuffer sql=new StringBuffer();
-
-		sql.append(" \n");
-		sql.append(" SELECT T.ID,\n");
-		sql.append("        T.RETURNED_ID,\n");
-		sql.append("        T.DEDUCTION_NO,\n");
-		sql.append("        T.STATUS,\n");
-		sql.append("        T.LABOUR_PRICE,\n");
-		sql.append("        T.PART_PRICE,\n");
-		sql.append("        NVL(T.OTHER_PRICE,0) OTHER_PRICE,\n");
-		sql.append("        nvl(T.TOTAL_PRICE,0) TOTAL_PRICE,\n");
-		sql.append("        T.INVOICE_NO,\n");
-		sql.append("        TO_CHAR(T.CREATE_DATE, 'yyyy-mm-dd') CREATE_DATE\n");
-		sql.append("   FROM TT_AS_WR_OLDPART_DEDUCTION T\n");
+		sql.append(" SELECT A.DEDUCTION_ID,\n");
+		sql.append("        A.CLAIM_ID,\n");
+		sql.append("        A.DEDUCTION_NO,\n");
+		sql.append("        A.STATUS,\n");
+		sql.append("        NVL(A.PART_DEDUCTION_AMOUNT,0) PART_DEDUCTION_AMOUNT,\n");
+		sql.append("        NVL(A.HOURS_DEDUCTION_AMOUNT,0) HOURS_DEDUCTION_AMOUNT,\n");
+		sql.append("        NVL(A.OUTWARD_DEDUCTION_AMOUNT,0) OUTWARD_DEDUCTION_AMOUNT,\n");
+		sql.append("        NVL(A.PART_DEDUCTION_AMOUNT,0)+NVL(A.HOURS_DEDUCTION_AMOUNT,0)+NVL(A.OUTWARD_DEDUCTION_AMOUNT,0) TOTAL_DEDUCTION_AMOUNT,\n");
+		sql.append("        A.BALANCE_NO,\n");
+		sql.append("        TO_CHAR(NVL(A.UPDATE_DATE,A.CREATE_DATE), 'YYYY-MM-DD') UPDATE_DATE\n");
+		sql.append("   FROM TT_AS_WR_OLDPART_DEDUCTION A\n");
 		sql.append("  WHERE 1 = 1\n");
 		if(StringUtil.notNull(deductionNo)){
-		sql.append("    AND T.DEDUCTION_NO LIKE '%"+deductionNo+"%'\n");
-			}
+			sql.append("    AND A.DEDUCTION_NO LIKE '%"+deductionNo+"%'\n");
+		}
 		if(StringUtil.notNull(deductionStatus)){
-		sql.append("    AND T.STATUS = "+deductionStatus+"");
-			}
-		if(StringUtil.notNull(return_start_date)){
-			sql.append("     AND T.CREATE_DATE>= TO_DATE('"+return_start_date+"', 'YYYY-MM-DD')\n");
-			}
-		if(StringUtil.notNull(return_end_date)){
-			sql.append("     AND T.CREATE_DATE<=\n");
-			sql.append("      TO_DATE('"+return_end_date+" 23:59:59', 'YYYY-MM-DD HH24:MI:SS')\n");
-			}
-		sql.append("	AND T.DEALER_ID="+dealerId+"\n");
-		sql.append("	ORDER BY T.CREATE_DATE DESC");
+			sql.append("    AND A.STATUS = "+deductionStatus+"");
+		}
+		if(StringUtil.notNull(updateDateStart)){
+			sql.append("     AND NVL(A.UPDATE_DATE,A.CREATE_DATE)>= TO_DATE('"+updateDateStart+"', 'YYYY-MM-DD')\n");
+		}
+		if(StringUtil.notNull(updateDateEnd)){
+			sql.append("     AND NVL(A.UPDATE_DATE,A.CREATE_DATE)<= TO_DATE('"+updateDateEnd+" 23:59:59', 'YYYY-MM-DD HH24:MI:SS')\n");
+		}
+		sql.append("	AND A.DEALER_ID = "+dealerId+"\n");
+		sql.append("	ORDER BY A.CREATE_DATE DESC");
 		PageResult<Map<String, Object>> pr = pageQuery(sql.toString(), null,getFunName(), pageSize, curPage);
 		return pr;
 	}
 	
-	public List<Map<String, Object>> oldPartDeductionInfor(long id) {
+	public PageResult<Map<String, Object>> oldPartDeductionInfor(Map<String,Object> params,int curPage, int pageSize) {
+		String claimId = CommonUtils.checkNull(params.get("claimId"));
+		
 		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT ID,\n") ;
+		sql.append("       APP_CLAIM_ID,\n") ;
+		sql.append("       APP_CLAIM_NO,\n") ;
+		sql.append("       VIN,\n") ;
+		sql.append("       OBJ_TYPE,\n") ;
+		sql.append("       OBJ_CODE,\n") ;
+		sql.append("       OBJ_NAME,\n") ;
+		sql.append("       TO_CHAR(DEDUCTION_AMOUNT,'FM99999990.00') DEDUCTION_AMOUNT,\n") ;
+		sql.append("       DEDUCT_REMARK,\n") ;
+		sql.append("       OTHER_REMARK\n") ;
+		sql.append("  FROM (SELECT C.CLAIM_PART_ID ID,\n") ;
+		sql.append("               A.ID APP_CLAIM_ID,\n") ;
+		sql.append("               A.APP_CLAIM_NO,\n") ;
+		sql.append("               A.VIN,\n") ;
+		sql.append("               "+Constant.DEDUCTION_TYPE_01+" OBJ_TYPE,\n") ;
+		sql.append("               C.PART_CODE OBJ_CODE,\n") ;
+		sql.append("               C.PART_CNAME OBJ_NAME,\n") ;
+		sql.append("               NVL(C.SALE_PRICE, 0) DEDUCTION_AMOUNT,\n") ;
+		sql.append("               B.DEDUCT_REMARK, --抵扣原因\n") ;
+		sql.append("               B.OTHER_REMARK --抵扣备注\n") ;
+		sql.append("          FROM TT_AS_WR_APPLICATION_CLAIM A\n") ;
+		sql.append("          JOIN TT_AS_WR_RETURNED_ORDER_DETAIL B\n") ;
+		sql.append("            ON A.ID = B.CLAIM_ID\n") ;
+		sql.append("          JOIN TT_AS_WR_APP_PART C\n") ;
+		sql.append("            ON B.CLAIM_PART_ID = C.CLAIM_PART_ID\n") ;
+		sql.append("         WHERE 1 = 1\n") ;
+		sql.append("           AND B.SIGN_AMOUNT = 0\n") ;
+		sql.append("        UNION ALL\n") ;
+		sql.append("        SELECT B.CLAIM_PROJECT_ID,\n") ;
+		sql.append("               A.ID,\n") ;
+		sql.append("               A.APP_CLAIM_NO,\n") ;
+		sql.append("               A.VIN,\n") ;
+		sql.append("               "+Constant.DEDUCTION_TYPE_02+" OBJ_TYPE,\n") ;
+		sql.append("               B.LABOUR_CODE,\n") ;
+		sql.append("               B.CN_DES,\n") ;
+		sql.append("               NVL(B.HOURS_APPLY_AMOUNT, 0) -\n") ;
+		sql.append("               NVL(B.HOURS_SETTLEMENT_AMOUNT, 0),\n") ;
+		sql.append("               0 DEDUCT_REMARK,\n") ;
+		sql.append("               '' OTHER_REMARK\n") ;
+		sql.append("          FROM TT_AS_WR_APPLICATION_CLAIM A\n") ;
+		sql.append("          JOIN TT_AS_WR_APP_PROJECT B\n") ;
+		sql.append("            ON A.ID = B.APP_CLAIM_ID\n") ;
+		sql.append("         WHERE 1 = 1\n") ;
+		sql.append("           AND NVL(B.HOURS_APPLY_AMOUNT, 0) -\n") ;
+		sql.append("               NVL(B.HOURS_SETTLEMENT_AMOUNT, 0) > 0\n") ;
+		sql.append("        UNION ALL\n") ;
+		sql.append("        SELECT B.OUT_ID,\n") ;
+		sql.append("               A.ID,\n") ;
+		sql.append("               A.APP_CLAIM_NO,\n") ;
+		sql.append("               A.VIN,\n") ;
+		sql.append("               "+Constant.DEDUCTION_TYPE_03+" OBJ_TYPE,\n") ;
+		sql.append("               B.FEE_CODE,\n") ;
+		sql.append("               B.FEE_NAME,\n") ;
+		sql.append("               NVL(B.FEE_PRICE，0) - NVL(B.FEE_SETTLEMENT_PRICE, 0),\n") ;
+		sql.append("               0 DEDUCT_REMARK,\n") ;
+		sql.append("               '' OTHER_REMARK\n") ;
+		sql.append("          FROM TT_AS_WR_APPLICATION_CLAIM A\n") ;
+		sql.append("          JOIN TT_AS_WR_APP_OUT B\n") ;
+		sql.append("            ON A.ID = B.APPCLAIM_ID\n") ;
+		sql.append("         WHERE NVL(B.FEE_PRICE，0) - NVL(B.FEE_SETTLEMENT_PRICE, 0) > 0)\n") ;
+		sql.append(" WHERE 1=1\n") ;//APP_CLAIM_ID = 1
 
-		sql.append(" SELECT T3.VIN,\n");
-		sql.append("        T3.CLAIM_NO,\n");
-		sql.append("        NULL AS DEDUCT_REMARK,\n");
-		sql.append("        '维修项目' NAMES,\n");
-		sql.append("        T1.LABOUR_CODE,\n");
-		sql.append("        T1.LABOUR_NAME,\n");
-		sql.append("        T1.LABOUR_PRICE,\n");
-		sql.append("		T3.REMARK");
-		sql.append("   FROM TT_AS_WR_OLDPART_DEDUCTION T1, TT_AS_WR_OLD_RETURNED_DETAIL T3\n");
-		sql.append("  WHERE T3.ID = T1.RETURNED_ID\n");
-		sql.append("    AND T1.ID = "+id+"\n");
-		sql.append(" UNION ALL\n");
-		sql.append(" SELECT T3.VIN,\n");
-		sql.append("        T3.CLAIM_NO,\n");
-		sql.append("         F_GET_TC_CODE(T3.DEDUCT_REMARK) DEDUCT_REMARK,\n");
-		sql.append("        '维修材料' NAMES,\n");
-		sql.append("        T2.PART_CODE,\n");
-		sql.append("        T2.PART_NAME,\n");
-		sql.append("        T2.PART_PRICE,\n");
-		sql.append("		T3.REMARK");
-		sql.append("   FROM TT_AS_WR_OLDPART_DEDUCTION T2, TT_AS_WR_OLD_RETURNED_DETAIL T3\n");
-		sql.append("  WHERE T3.ID = T2.RETURNED_ID\n");
-		sql.append("    AND T2.ID = "+id+"");
-
-		return this.pageQuery(sql.toString(), null, null);
+        if(!claimId.equals("")){
+        	sql.append(" AND APP_CLAIM_ID = "+claimId+"\n");
+        }else{
+        	sql.append(" AND 1=2\n");
+        }
+		
+        PageResult<Map<String, Object>> pr = pageQuery(sql.toString(), null,getFunName(), pageSize, curPage);
+        return pr;
 	}
 
 }

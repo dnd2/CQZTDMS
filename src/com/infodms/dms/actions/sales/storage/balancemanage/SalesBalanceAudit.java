@@ -164,28 +164,31 @@ public class SalesBalanceAudit{
 							String balCountyId=jsCounty;//财务结算区县
 							String shipType=tsw.getDlvShipType().toString();//发运方式
 							//根据明细中是否中转计算金额-----start
-							//若为中转，挂账金额=中转仓库到结算省市县金额
-							if(tsww.getDlvIsZz().toString().equals(Constant.IF_TYPE_YES.toString())){
+							//若为中转，并且发运仓库=中转仓库，则挂账金额=中转仓库到结算省市县金额；否则，挂账金额=发运仓库到中转仓库金额+中转仓库到结算省市县金额
+							if(tsww.getDlvIsZz().toString().equals(Constant.IF_TYPE_YES.toString())){//中转
 								String zzCountyId=tsww.getDlvZzCountyId().toString();//中转区县
 								String zzWhId=tsww.getZzWhId().toString();//中转仓库ID
 								Double dSum=0d;//用于存放两段总金额
-								//根据发运仓库、中转区县、发运方式获取里程信息
-//								Map<String,Object> dmap=reDao.getDisInfo(dlvWhId, zzCountyId, shipType);
-//								Double handPrice=0d;
-//								Double distance=0d;
-//								Double singlePrice=0d;
-//								Double newPrice=0d;
-//								Double dprice=0d;
-//								if(null!=dmap&&!dmap.isEmpty()){
-//									handPrice=Double.valueOf(dmap.get("HAND_PRICE").toString());//手工运价
-//									distance=Double.valueOf(dmap.get("DISTANCE").toString());//里程
-//									singlePrice=Double.valueOf(dmap.get("SINGLE_PLACE").toString());//单价
-//									//运费系数*手工运价即等于新的结算金额
-//									//if(flag){//已调整
-//										newPrice=Double.valueOf(ratioNum)*handPrice;//新金额
-//									//}
-//									dprice=Double.valueOf(ratioNum)*handPrice;
-//								}
+								
+								Double newPrice=0d;
+								Double dprice=0d;
+								if(!dlvWhId.equals(zzWhId)){//发运仓库!=中转仓库
+									//根据发运仓库、中转区县、发运方式获取里程信息
+									Map<String,Object> dmap=reDao.getDisInfo(dlvWhId, zzCountyId, shipType);
+									Double distance=0d;
+									Double singlePrice=0d;
+									Double handPrice=0d;
+									if(null!=dmap&&!dmap.isEmpty()){
+										handPrice=Double.valueOf(dmap.get("HAND_PRICE").toString());//手工运价
+										distance=Double.valueOf(dmap.get("DISTANCE").toString());//里程
+										singlePrice=Double.valueOf(dmap.get("SINGLE_PLACE").toString());//单价
+										//运费系数*手工运价即等于新的结算金额
+										//if(flag){//已调整
+											newPrice=Double.valueOf(ratioNum)*handPrice;//新金额
+										//}
+										dprice=Double.valueOf(ratioNum)*handPrice;
+									}
+								}
 								//根据中转仓库、结算区县、发运方式获取城市里程信息
 								Map<String,Object> dmap2=reDao.getDisInfo(zzWhId, balCountyId, shipType);
 								Double handPrice2=0d;
@@ -204,7 +207,7 @@ public class SalesBalanceAudit{
 									//}
 									dprice2=Double.valueOf(ratioNum)*handPrice2;
 								}
-								dSum=newPrice2;//newPrice+newPrice2;
+								dSum=newPrice+newPrice2;
 								//更新新单价、新里程到交接单明细表
 								TtSalesWayBillDtlPO tswp=new TtSalesWayBillDtlPO();
 								tswp.setDtlId(tsww.getDtlId());
@@ -213,8 +216,8 @@ public class SalesBalanceAudit{
 								tswp2.setNewMileage(distance2);
 								tswp2.setUpdateBy(logonUser.getUserId());
 								tswp2.setUpdateDate(new Date());
-								tswp2.setNewAmount(dprice2);
-								//tswp2.setNewAmount(dprice+dprice2);
+								//tswp2.setNewAmount(dprice2);
+								tswp2.setNewAmount(dprice+dprice2);
 								reDao.update(tswp, tswp2);
 								sumPrice+=dSum;
 							}//若不为中转，挂账金额=发运仓库到结算省市县金额

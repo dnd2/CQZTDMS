@@ -51,9 +51,9 @@ public class DlvPlanManageDao extends BaseDao<PO>{
 		String poseId = CommonUtils.checkNull((String)map.get("poseId"));
 		String logiName = CommonUtils.checkNull((String)map.get("logiName")); //物流商
 		String transportType = CommonUtils.checkNull((String)map.get("transportType"));//发运方式
-		String provinceId = CommonUtils.checkNull((String)map.get("provinceId")); //结算省份
-		String cityId = CommonUtils.checkNull((String)map.get("cityId"));//结算城市
-		String countyId = CommonUtils.checkNull((String)map.get("countyId")); //结算区县
+//		String provinceId = CommonUtils.checkNull((String)map.get("provinceId")); //结算省份
+//		String cityId = CommonUtils.checkNull((String)map.get("cityId"));//结算城市
+//		String countyId = CommonUtils.checkNull((String)map.get("countyId")); //结算区县
 		String isBill = CommonUtils.checkNull((String)map.get("isBill")); //是否已生成交接单
 		String pFlag = CommonUtils.checkNull((String)map.get("pFlag")); //不为空表示发运计划查询
 		
@@ -125,18 +125,18 @@ public class DlvPlanManageDao extends BaseDao<PO>{
 			sql.append("  AND TSB.BO_DATE<=TO_DATE(?,'YYYY-MM-DD HH24:MI:SS')\n" );
 			params.add(raiseEndDate +" 23:59:59");
 		}
-		if(provinceId!=null&&!"".equals(provinceId)){
-			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
-			params.add(provinceId);
-		}
-		if(cityId!=null&&!"".equals(cityId)){
-			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
-			params.add(cityId);
-		}
-		if(countyId!=null&&!"".equals(countyId)){
-			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
-			params.add(countyId);
-		}
+//		if(provinceId!=null&&!"".equals(provinceId)){
+//			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
+//			params.add(provinceId);
+//		}
+//		if(cityId!=null&&!"".equals(cityId)){
+//			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
+//			params.add(cityId);
+//		}
+//		if(countyId!=null&&!"".equals(countyId)){
+//			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
+//			params.add(countyId);
+//		}
 		sql.append(" ORDER BY TSB.BO_NO, TVD.ORD_NO, VMGM.MATERIAL_CODE");
 		List<Map<String, Object>> list= dao.pageQuery(sql.toString(),params, getFunName());
 		return list;
@@ -149,31 +149,31 @@ public class DlvPlanManageDao extends BaseDao<PO>{
 	public List<Map<String, Object>> getDlvPlanPrintMain(String boId){
 		List<Object> params = new LinkedList<Object>();
 		StringBuffer sql= new StringBuffer();
-		sql.append("SELECT TT.DEALER_NAME, TT.TRANS_NAME, TT.BAL_ADDR\n" );
+		sql.append("SELECT TT.DEALER_NAME, TT.TRANS_NAME\n" );
 		sql.append("  FROM (SELECT DECODE(TM.DEALER_SHORTNAME, NULL, SH.WAREHOUSE_NAME, TM.DEALER_SHORTNAME) DEALER_NAME,\n" );
 		sql.append("               (SELECT TC.CODE_DESC\n" );
 		sql.append("                  FROM TC_CODE TC\n" );
-		sql.append("                 WHERE TC.CODE_ID = TSB.DLV_SHIP_TYPE) TRANS_NAME,\n" );
-		sql.append("               TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME || TVD.REQ_REC_ADDR BAL_ADDR\n" );
+		sql.append("                 WHERE TC.CODE_ID = TSB.DLV_SHIP_TYPE) TRANS_NAME\n" );
+//		sql.append("               TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME || TVD.REQ_REC_ADDR BAL_ADDR\n" );
 		sql.append("          FROM TT_SALES_BOARD     TSB,\n" );
 		sql.append("               TT_SALES_BO_DETAIL TSBD,\n" );
 		sql.append("               TT_VS_DLVRY        TVD,\n" );
 		sql.append("               TM_DEALER          TM,\n" );
-		sql.append("               TM_WAREHOUSE       SH,\n" );
-		sql.append("               TM_REGION          TR1,\n" );
-		sql.append("               TM_REGION          TR2,\n" );
-		sql.append("               TM_REGION          TR3\n" );
+		sql.append("               TM_WAREHOUSE       SH\n" );
+//		sql.append("               TM_REGION          TR1,\n" );
+//		sql.append("               TM_REGION          TR2,\n" );
+//		sql.append("               TM_REGION          TR3\n" );
 		sql.append("         WHERE TSB.BO_ID = TSBD.BO_ID\n" );
 		sql.append("           AND TVD.ORD_ID = TSBD.ORDER_ID\n" );
 		sql.append("           AND TVD.ORD_PUR_DEALER_ID = TM.DEALER_ID(+)\n" );
 		sql.append("           AND TVD.DLV_REC_WH_ID = SH.WAREHOUSE_ID(+)\n" );
-		sql.append("           AND TR1.REGION_ID = TR2.PARENT_ID\n" );
-		sql.append("           AND TR2.REGION_ID = TR3.PARENT_ID\n" );
-		sql.append("           AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
-		sql.append("           AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
-		sql.append("           AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
+//		sql.append("           AND TR1.REGION_ID = TR2.PARENT_ID\n" );
+//		sql.append("           AND TR2.REGION_ID = TR3.PARENT_ID\n" );
+//		sql.append("           AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
+//		sql.append("           AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
+//		sql.append("           AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
 		sql.append("           AND TSB.BO_ID = "+boId+") TT\n" );
-		sql.append(" GROUP BY TT.DEALER_NAME, TT.TRANS_NAME, TT.BAL_ADDR");
+		sql.append(" GROUP BY TT.DEALER_NAME, TT.TRANS_NAME");
 
 		List<Map<String, Object>> list= dao.pageQuery(sql.toString(),null, getFunName());
 		return list;
@@ -184,18 +184,21 @@ public class DlvPlanManageDao extends BaseDao<PO>{
 	 * @param dealerId
 	 * @return
 	 */
-	public List<Map<String, Object>> getDlvPlanPrintDetail(String boId,String dealerName,String transName,String balAddr){
+	public List<Map<String, Object>> getDlvPlanPrintDetail(String boId,String dealerName,String transName){
 		List<Object> params = new LinkedList<Object>();
 		StringBuffer sql= new StringBuffer();
 		sql.append("SELECT *\n" );
 		sql.append("  FROM (SELECT TSB.BO_NO,\n" );
 		sql.append("               TVD.ORD_NO,\n" );
 		sql.append("               TW.WAREHOUSE_NAME WH_NAME,\n" );
-		sql.append("               DECODE(TD.DEALER_SHORTNAME, NULL, SH.WAREHOUSE_NAME, TD.DEALER_SHORTNAME) DEALER_NAME,\n" );
+		sql.append("               DECODE(TD.DEALER_SHORTNAME,\n" );
+		sql.append("                      NULL,\n" );
+		sql.append("                      SH.WAREHOUSE_NAME,\n" );
+		sql.append("                      TD.DEALER_SHORTNAME) DEALER_NAME,\n" );
 		sql.append("               (SELECT TC.CODE_DESC\n" );
 		sql.append("                  FROM TC_CODE TC\n" );
 		sql.append("                 WHERE TC.CODE_ID = TSB.DLV_SHIP_TYPE) TRANS_NAME,\n" );
-		sql.append("               TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME || TVD.REQ_REC_ADDR BAL_ADDR,\n" );
+		sql.append("               TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME ||TVD.REQ_REC_ADDR BAL_ADDR,\n" );
 		sql.append("               VMGM.SERIES_NAME,\n" );
 		sql.append("               VMGM.MODEL_NAME,\n" );
 		sql.append("               VMGM.PACKAGE_NAME,\n" );
@@ -225,14 +228,14 @@ public class DlvPlanManageDao extends BaseDao<PO>{
 		sql.append("           AND TVD.DLV_REC_WH_ID = SH.WAREHOUSE_ID(+)\n" );
 		sql.append("           AND TR1.REGION_ID = TR2.PARENT_ID\n" );
 		sql.append("           AND TR2.REGION_ID = TR3.PARENT_ID\n" );
-		sql.append("           AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
-		sql.append("           AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
-		sql.append("           AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
-		sql.append("           AND TSBD.BO_ID = TSB.BO_ID\n" );
+		sql.append("           AND TR1.REGION_CODE = TSBD.DLV_BAL_PROV_ID\n" );
+		sql.append("           AND TR2.REGION_CODE = TSBD.DLV_BAL_CITY_ID\n" );
+		sql.append("           AND TR3.REGION_CODE = TSBD.DLV_BAL_COUNTY_ID\n" );
+		sql.append("           AND TSBD.BO_ID = TSB.BO_ID\n");
 		sql.append("           AND TSB.BO_ID = "+boId+") TT\n" );
 		sql.append(" WHERE TT.DEALER_NAME = '"+dealerName+"'\n" );
 		sql.append("   AND TT.TRANS_NAME = '"+transName+"'\n" );
-		sql.append("   AND TT.BAL_ADDR = '"+balAddr+"'");
+		//sql.append("   AND TT.BAL_ADDR = '"+balAddr+"'");
 		List<Map<String, Object>> list= dao.pageQuery(sql.toString(),null, getFunName());
 		return list;
 	}
@@ -258,9 +261,9 @@ public class DlvPlanManageDao extends BaseDao<PO>{
 		String poseId = CommonUtils.checkNull((String)map.get("poseId"));
 		String logiName = CommonUtils.checkNull((String)map.get("logiName")); //物流商
 		String transportType = CommonUtils.checkNull((String)map.get("transportType"));//发运方式
-		String provinceId = CommonUtils.checkNull((String)map.get("provinceId")); //结算省份
-		String cityId = CommonUtils.checkNull((String)map.get("cityId"));//结算城市
-		String countyId = CommonUtils.checkNull((String)map.get("countyId")); //结算区县
+//		String provinceId = CommonUtils.checkNull((String)map.get("provinceId")); //结算省份
+//		String cityId = CommonUtils.checkNull((String)map.get("cityId"));//结算城市
+//		String countyId = CommonUtils.checkNull((String)map.get("countyId")); //结算区县
 		String isBill = CommonUtils.checkNull((String)map.get("isBill")); //是否已生成交接单
 		String pFlag = CommonUtils.checkNull((String)map.get("pFlag")); //不为空表示发运计划查询
 		
@@ -276,7 +279,7 @@ public class DlvPlanManageDao extends BaseDao<PO>{
 		sql.append("          FROM TC_CODE TC\n" );
 		sql.append("         WHERE TC.CODE_ID = TSB.DLV_SHIP_TYPE) SHIP_NAME,\n" );
 		sql.append("       TSL.LOGI_NAME,\n" );
-		sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
+		//sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
 		sql.append("       to_char(TSB.BO_DATE, 'yyyy-mm-dd') BO_DATE,\n" );
 		sql.append("       NVL(TSB.BO_NUM, 0) BO_NUM,\n" );
 		sql.append("       DECODE(TSB.PLAN_LOAD_DATE,\n" );
@@ -288,20 +291,20 @@ public class DlvPlanManageDao extends BaseDao<PO>{
 		sql.append("       DECODE(TTS.BILL_ID, NULL, '否', '是') AS HAS_BILL\n" );
 		sql.append("  FROM TT_SALES_BOARD TSB,\n" );
 		sql.append("       TT_SALES_LOGI TSL,\n" );
-		sql.append("       TM_REGION TR1,\n" );
-		sql.append("       TM_REGION TR2,\n" );
-		sql.append("       TM_REGION TR3,\n" );
+//		sql.append("       TM_REGION TR1,\n" );
+//		sql.append("       TM_REGION TR2,\n" );
+//		sql.append("       TM_REGION TR3,\n" );
 		sql.append("       (SELECT TSBD.BO_ID, TSBD.BILL_ID\n" );
 		sql.append("          FROM TT_SALES_BO_DETAIL TSBD\n" );
 		sql.append("         GROUP BY TSBD.BO_ID, TSBD.BILL_ID) TTS\n" );
 		sql.append(" WHERE 1 = 1\n" );
 		sql.append("   AND TSB.BO_STATUS = '1'\n" );
 		sql.append("   AND TSB.DLV_LOGI_ID = TSL.LOGI_ID(+)\n" );
-		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
-		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
-		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
-		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
-		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
+//		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
+//		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
+//		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
+//		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
+//		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
 		sql.append("   AND TSB.BO_ID = TTS.BO_ID\n");
 		if(isBill.equals(Constant.IF_TYPE_YES.toString())){
 			sql.append("   AND TTS.BILL_ID IS NOT NULL\n");//已生成交接单
@@ -342,18 +345,18 @@ public class DlvPlanManageDao extends BaseDao<PO>{
 			sql.append("  AND TSB.BO_DATE<=TO_DATE(?,'YYYY-MM-DD HH24:MI:SS')\n" );
 			params.add(raiseEndDate +" 23:59:59");
 		}
-		if(provinceId!=null&&!"".equals(provinceId)){
-			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
-			params.add(provinceId);
-		}
-		if(cityId!=null&&!"".equals(cityId)){
-			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
-			params.add(cityId);
-		}
-		if(countyId!=null&&!"".equals(countyId)){
-			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
-			params.add(countyId);
-		}
+//		if(provinceId!=null&&!"".equals(provinceId)){
+//			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
+//			params.add(provinceId);
+//		}
+//		if(cityId!=null&&!"".equals(cityId)){
+//			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
+//			params.add(cityId);
+//		}
+//		if(countyId!=null&&!"".equals(countyId)){
+//			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
+//			params.add(countyId);
+//		}
 		sql.append("   ORDER BY TSB.BO_DATE DESC");
 		Object[] arr=new Object[2];
 		arr[0]=sql;

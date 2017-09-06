@@ -264,10 +264,10 @@ function check_addPose1(value){
 				hidProvice+=arr[i].value+",";
 			}
 		} 
-		if(!bo){
-			MyAlert("请选择负责的区域!");
-			return;
-		}
+		//if(!bo){
+		//	MyAlert("请选择负责的区域!");
+		//	return;
+		//}
 		document.getElementById("hidProvice").value=hidProvice;//给文本框赋值
 						
 		modfiPose(value);

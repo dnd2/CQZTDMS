@@ -9,7 +9,9 @@ import com.infoservice.po3.bean.PO;
 import com.infoservice.po3.bean.PageResult;
 import org.apache.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +33,27 @@ public class PartDlrReturnInDao extends BaseDao {
     protected PO wrapperPO(ResultSet rs, int idx) {
         return null;
     }
-
+    
+    /**
+     * <p>
+     * Description: 获取批次号
+     * </p>
+     * @param returnId
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public String getBatchNo(String returnId){
+        List<Object> ins0 = new LinkedList<Object>();
+        ins0.add(0, 1);
+        ins0.add(1, returnId);
+        ins0.add(2, "");
+        dao.callProcedure("PROC_TT_PART_BATCH", ins0, null);
+        String sql = "SELECT * FROM TT_PART_BATCH_RECORD WHERE ORDER_ID = '"+returnId+"'";
+        Map<String, Object> map = dao.pageQueryMap(sql, null, getFunName());
+        String batchNo = map.get("BATCH_NO").toString();
+        return batchNo;
+    }
+    
     public PageResult<Map<String, Object>> queryPartDlrReturnApplyList(String returnCode, String dealerName,
             String startDate, String endDate, boolean flag, AclUserBean logonUser, String dealerCode, Integer curPage,
             Integer pageSize, String state) throws Exception {
@@ -79,7 +101,7 @@ public class PartDlrReturnInDao extends BaseDao {
 
     }
 
-    public Map getPartDlrReturnMainInfo(String returnId) throws Exception {
+    public Map<String, Object> getPartDlrReturnMainInfo(String returnId) throws Exception {
         try {
             StringBuffer sql = new StringBuffer("");
             sql.append(
@@ -105,10 +127,10 @@ public class PartDlrReturnInDao extends BaseDao {
             sql.append("       T.PART_CNAME,\n");
             sql.append("       NVL(T.SALES_QTY, 0) BUY_QTY,\n");
             sql.append("       T.APPLY_QTY,\n");
-            sql.append("       T.CHECK_QTY,\n");
+            sql.append("       T.CHECK_THREE_QTY CHECK_QTY,\n");
             sql.append("       T.OUT_QTY,\n");
             sql.append("       NVL(T.IN_QTY, 0) IN_QTY,\n");
-            sql.append("       T.CHECK_QTY - NVL(T.IN_QTY, 0) MAX_QTY,\n");
+            sql.append("       T.CHECK_THREE_QTY - NVL(T.IN_QTY, 0) MAX_QTY,\n");
             sql.append("       T.REMARK\n");
             sql.append("  FROM TT_PART_DLR_RETURN_DTL T\n");
             sql.append(" WHERE T.STATUS = 1\n");
@@ -121,7 +143,7 @@ public class PartDlrReturnInDao extends BaseDao {
         return ps;
     }
 
-    public List getPartWareHouseList(AclUserBean logonUser, String whType) throws Exception {
+    public List<PO> getPartWareHouseList(AclUserBean logonUser, String whType) throws Exception {
         try {
             TtPartWarehouseDefinePO po = new TtPartWarehouseDefinePO();
             po.setState(Constant.STATUS_ENABLE);
@@ -134,7 +156,7 @@ public class PartDlrReturnInDao extends BaseDao {
             } else {
                 po.setOrgId(logonUser.getOrgId());
             }
-            List list = select(po);
+            List<PO> list = select(po);
             return list;
         } catch (Exception e) {
             throw e;
@@ -176,7 +198,11 @@ public class PartDlrReturnInDao extends BaseDao {
      * @return
      */
     public List<Map<String, Object>> getReturnPartDtl(String dtlId) {
+        
         StringBuffer sql = new StringBuffer();
+        
+        
+        
         sql.append(" SELECT DISTINCT \n");
         sql.append("        RD.DTL_ID, \n");
         sql.append("        RD.RETURN_ID, \n");

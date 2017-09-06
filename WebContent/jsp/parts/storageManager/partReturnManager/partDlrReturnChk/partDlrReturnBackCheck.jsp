@@ -25,11 +25,11 @@ var columns = [
     {header: "序号", align: 'center', renderer: getIndex},
     {id: 'action', header: "操作", sortable: false, dataIndex: 'RETURN_ID', renderer: myLink, align: 'center'},
     {header: "退货单号", dataIndex: 'RETURN_CODE', align: 'center'},
-    {header: "退货单位", dataIndex: 'DEALER_NAME', style: 'text-align: left;'},
+    {header: "退货单位", dataIndex: 'DEALER_NAME', align: 'center'},
     {header: "制单单位", dataIndex: 'CREATE_DEALER', align: 'center'},
-    {header: "制单人", dataIndex: 'CREATE_NAME', style: 'text-align: left;'},
+    {header: "制单人", dataIndex: 'CREATE_NAME', align: 'center'},
     {header: "制单日期", dataIndex: 'CREATE_DATE', align: 'center', renderer: formatDate},
-    {header: "退货原因", dataIndex: 'REMARK', style: 'text-align: left;'},
+    {header: "退货原因", dataIndex: 'REMARK', align: 'center'},
     {header: "状态", dataIndex: 'STATE', align: 'center', renderer: getItemValue},
     {header: "提交日期", dataIndex: 'APPLY_DATE', align: 'center', renderer: formatDate}
 ];
@@ -101,10 +101,10 @@ function getResult(jsonObj) {
 							<td class="right">制单日期：</td>
 							<td>
 								<input name="startDate" id="t1" value="${old }" type="text" style="width: 80px;" class="short_txt" datatype="1,is_date,10" group="t1,t2">
-								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" onclick="showcalendar(event, 't1', false);" />
+								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" />
 								&nbsp;至&nbsp;
 								<input name="endDate" id="t2" value="${now }" type="text" style="width: 80px;" class="short_txt" datatype="1,is_date,10" group="t1,t2">
-								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" onclick="showcalendar(event, 't2', false);" />
+								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" />
 							</td>
 
 						</tr>

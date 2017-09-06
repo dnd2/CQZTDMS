@@ -35,10 +35,20 @@ String contextPath=request.getContextPath();
 				</c:if>
 	  		</select>
 	  </td>
+	  <!--
 	  <td class="right">发运结算省份：</td>  
 		    <td align="left">
 	  		<select class="u-select" id="txt1" name="jsProvince" onchange="_genCity(this,'txt2')"></select>
      	 </td>
+	  -->
+	  <td class="right">组板号：</td> 
+	  <td align="left" >
+		  <input type="text" maxlength="20" id=BO_NO name="BO_NO" datatype="1,is_digit_letter,30" maxlength="30" class="middle_txt" size="15" />
+	  </td>	 
+     <!--	 <td class="right">发运结算区县：</td>
+   	  <td align="left">
+ 			<select class="u-select" id="txt3" name="jsCounty"></select>
+	 </td>-->
 </tr>
   <tr class="csstr" align="center">  
 	  <td class="right">发运方式：</td> 
@@ -49,20 +59,15 @@ String contextPath=request.getContextPath();
 					</script>
 			</label>
 	  </td>
-	  <td class="right">发运结算城市：</td>  
+	  <td class="right" nowrap="true">组板日期：</td>
+		<td align="left" nowrap="true">
+			<input class="short_txt" readonly="readonly"  type="text" id="START_DATE" name="START_DATE" onFocus="WdatePicker({el:$dp.$('START_DATE'), maxDate:'#F{$dp.$D(\'END_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>&nbsp;至&nbsp;
+			<input class="short_txt" readonly="readonly"  type="text" id="END_DATE" name="END_DATE" onFocus="WdatePicker({el:$dp.$('END_DATE'), minDate:'#F{$dp.$D(\'START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>
+		</td>
+	  <!--<td class="right">发运结算城市：</td>  
 		    <td align="left">
 	  		<select class="u-select" id="txt2" name="jsCity" onchange="_genCity(this,'txt3')"></select>
-     	 </td> 
-</tr>
-<tr class="csstr" align="center">  
-	<td class="right">组板号：</td> 
-	  <td align="left" >
-		  <input type="text" maxlength="20" id=BO_NO name="BO_NO" datatype="1,is_digit_letter,30" maxlength="30" class="middle_txt" size="15" />
-	  </td>	 
-     	 <td class="right">发运结算区县：</td>
-   	  <td align="left">
- 			<select class="u-select" id="txt3" name="jsCounty"></select>
-	 </td>
+     	 </td> -->
 </tr>
 <tr class="csstr" align="center">  
  	<td class="right">已生成交接单：</td>
@@ -73,14 +78,11 @@ String contextPath=request.getContextPath();
 				</script>
 			</label>
 		</td>
-	  <td class="right" nowrap="true">组板日期：</td>
-		<td align="left" nowrap="true">
-			<input class="short_txt" readonly="readonly"  type="text" id="START_DATE" name="START_DATE" onFocus="WdatePicker({el:$dp.$('START_DATE'), maxDate:'#F{$dp.$D(\'END_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>&nbsp;至&nbsp;
-			<input class="short_txt" readonly="readonly"  type="text" id="END_DATE" name="END_DATE" onFocus="WdatePicker({el:$dp.$('END_DATE'), minDate:'#F{$dp.$D(\'START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>
-		</td>	
+	 <td class="right" nowrap="true"></td>
+		<td align="left" nowrap="true"></td> 	
 </tr>
 <tr align="center">
-  <td colspan="6" class="table_query_4Col_input" style="text-align: center">
+  <td colspan="4" class="table_query_4Col_input" style="text-align: center">
   		  <input type="hidden" name="pFlag" id="pFlag" value="02"/><!-- 区别于发运计划发送查询 -->
     	  <input type="button" id="queryBtn" class="u-button u-query" value="查询" onclick="doQuery()" />
   		  <input type="reset"  id="resetButton" class="u-button u-reset" value="重置"/>
@@ -112,7 +114,7 @@ String contextPath=request.getContextPath();
 				{header: "承运商",dataIndex: 'LOGI_NAME',align:'center'},
 				{header: "组板量",dataIndex: 'BO_NUM',align:'center'},
 				{header: "组板日期",dataIndex: 'BO_DATE',align:'center'},
-				{header: "发运结算地",dataIndex: 'BAL_ADDR',align:'center'},
+				//{header: "发运结算地",dataIndex: 'BAL_ADDR',align:'center'},
 				{header: "已生成交接单",dataIndex: 'HAS_BILL',align:'center'}
 		      ];
 	//初始化    

@@ -86,15 +86,15 @@ import com.infoservice.po3.bean.PageResult;
  */
 public class ClaimOldPartOutStorageManager extends BaseAction{
 	private AclUserBean logonUserBean = null;
-	private ClaimOldPartOutStorageDao dao=null;
-	
+	private ClaimOldPartOutStorageDao dao=new ClaimOldPartOutStorageDao();
+	private int pageSize=Constant.PAGE_SIZE;//页面显示行数
 	private final String MAKER_PROBLEM = sendUrl(this.getClass(), "makerProblem");// 
 	private final String MAKER_PROBLEM_UPDATE = sendUrl(this.getClass(), "makerProblemUpdate");// 
 	private final String MAKER_PROBLEM_DETAIL = sendUrl(this.getClass(), "makerProblemDetail");//
 	private final String return_show = sendUrl(this.getClass(), "return_show");//
 	private final String  LogInfoByclaimNo = sendUrl(this.getClass(), "LogInfoByclaimNo");//
 	private final String Association_Line_add = "/jsp_new/claim/Association_Line_add.jsp";
-	
+	private final String OLD_PART_INT = "/jsp/claim/applicationClaim/oldPartList.jsp";// 旧件库存查询跳转
 	/**
 	 * Function：索赔旧件出库查询--初始化
 	 * @param  ：	
@@ -4508,6 +4508,130 @@ public void checkNotice(){
 		act.setOutData("ps", ps);
 
 	}
-	
+	/**
+	 * 旧件库存汇总查询跳转
+	 */
+	public void oldPartInt(){
+		try{
+		act.setForword(OLD_PART_INT);			
+		} catch (Exception e) {
+			BizException e1= new BizException(act,ErrorCodeConstant.FAILURE_CODE,e.getMessage());
+			e.printStackTrace();
+			act.setException(e1);
+		}
+	}
+	/**
+	 * 旧件库存汇总查询
+	 */
+	public void hzSelect(){
+		try{
+		//传入参数
+		Map<String,Object> paraMap=new HashMap<String,Object>();
+		String flag=request.getParamValue("flag");
+		if("t".equals(flag)){
+			//取得结果并返回
+			
+			Integer curPage = request.getParamValue("curPage") != null ? Integer
+					.parseInt(request.getParamValue("curPage"))
+					: 1; 
+			logger.debug("=====================================aaa");	
+			PageResult<Map<String,Object>> ps=dao.hzSelect(paraMap, curPage, pageSize);
+			act.setOutData("ps", ps);
+		}				
+		} catch (Exception e) {
+			BizException e1= new BizException(act,ErrorCodeConstant.FAILURE_CODE,e.getMessage());
+			e.printStackTrace();
+			act.setException(e1);
+		}
+	}
+	/**
+	 * 旧件库存单条查询
+	 */
+	public void dtSelect(){
+		try{
+		//传入参数
+		Map<String,Object> paraMap=new HashMap<String,Object>();
+		paraMap.put("dealerId", request.getParamValue("dealerId"));
+		paraMap.put("IS_MAIN_PART", request.getParamValue("IS_MAIN_PART"));
+		paraMap.put("partCode", request.getParamValue("partCode"));
+		paraMap.put("partName", request.getParamValue("partName"));
+		paraMap.put("CLAIM_SUPPLIER_CODE", request.getParamValue("CLAIM_SUPPLIER_CODE"));
+		paraMap.put("CLAIM_SUPPLIER_NAME", request.getParamValue("CLAIM_SUPPLIER_NAME"));
+		paraMap.put("PRODUCER_CODE", request.getParamValue("PRODUCER_CODE"));
+		paraMap.put("PRODUCER_NAME", request.getParamValue("PRODUCER_NAME"));
+		String flag=request.getParamValue("flag");
+		if("t".equals(flag)){
+			//取得结果并返回
+			
+			Integer curPage = request.getParamValue("curPage") != null ? Integer
+					.parseInt(request.getParamValue("curPage"))
+					: 1; 
+			logger.debug("=====================================aaa");	
+			PageResult<Map<String,Object>> ps=dao.dtSelect(paraMap, curPage, pageSize);
+			act.setOutData("ps", ps);
+		}
+		
+		} catch (Exception e) {
+			BizException e1= new BizException(act,ErrorCodeConstant.FAILURE_CODE,e.getMessage());
+			e.printStackTrace();
+			act.setException(e1);
+		}
+	}
+	/**
+	 * @description 责任供应商修改
+	 * @Date 2017-09-01
+	 * @author free.AI
+	 * @param void
+	 * @version 1.0
+	 * */
+	public void producerInfoSave(){
+//		String id = CommonUtils.checkNull(request.getParamValue("id"));//旧件明细ID
+		String claimId = CommonUtils.checkNull(request.getParamValue("claimId"));//索赔单ID
+		String partId = CommonUtils.checkNull(request.getParamValue("part_Id"));//配件ID
+		String venderCode = CommonUtils.checkNull(request.getParamValue("supplyCode"));//责任供应商编码
+		String venderName = CommonUtils.checkNull(request.getParamValue("supplyName"));//责任供应商名称
+		String curPage = CommonUtils.checkNull(request.getParamValue("curPage"));//当前页数
+		try{
+			StringBuffer sql = new StringBuffer("") ;
+			List<Object> params = new ArrayList<Object>();
+            //修改同一索赔单下所有相同配件责任供应商
+            sql.setLength(0);
+            sql.append("UPDATE TT_AS_WR_RETURNED_ORDER_DETAIL A\n") ;
+			sql.append("   SET A.PRODUCER_CODE = ?,\n") ;
+			sql.append("       A.PRODUCER_NAME = ?\n") ;
+			sql.append(" WHERE A.PART_ID = ?\n") ;//同一配件
+			sql.append("   AND A.CLAIM_ID = ?\n") ;//同一索赔单
+			sql.append("   AND A.is_main_code = "+Constant.IF_TYPE_YES+"\n") ;//主因件
+			params.clear();
+			params.add(venderCode);
+			params.add(venderName);
+			params.add(partId);
+			params.add(claimId);
+            dao.update(sql.toString(), params);
+            	//修改同一索赔单下主因件对应所有次因件责任供应商
+            	sql.setLength(0);
+                sql.append("UPDATE TT_AS_WR_RETURNED_ORDER_DETAIL A\n") ;
+    			sql.append("   SET A.PRODUCER_CODE = ?,\n") ;
+    			sql.append("       A.PRODUCER_NAME = ?\n") ;
+    			sql.append(" WHERE A.MAIN_PART_CODE = ?\n") ;//主因件
+    			sql.append("   AND A.CLAIM_ID = ?\n") ;//同一索赔单
+    			params.clear();
+    			params.add(venderCode);
+    			params.add(venderName);
+    			params.add(partId);
+    			params.add(claimId);
+                dao.update(sql.toString(), params);
+            /*act.setOutData("curPage", curPage);
+        	act.setOutData("code", "succ");*/
+			act.setOutData("msg", "0");
+		} catch (Exception e) {//异常方法
+            BizException e1 = new BizException(act, e, ErrorCodeConstant.SPECIAL_MEG, "保存售后服务工单信息保存数据异常.");
+            act.setException(e1);
+            act.setOutData("curPage", curPage);
+        	act.setOutData("code", "fail");
+			act.setOutData("msg", "保存失败!"+e1);
+			e.printStackTrace();
+        }
+	}
 	
 }

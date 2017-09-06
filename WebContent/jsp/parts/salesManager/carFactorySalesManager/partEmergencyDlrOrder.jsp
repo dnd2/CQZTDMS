@@ -290,18 +290,18 @@ $(document).ready(function(){
 			<div class="form-body">
 	        <table border="0" class="table_query">
 	            <tr>
-	                <td width="10%" align="right">订单号：</td>
+	                <td width="10%" class="right">订单号：</td>
 	                <td width="20%" align="left"><input class="middle_txt" type="text" id="ORDER_CODE" name="ORDER_CODE"/>
 	                </td>
-	                <td width="10%" align="right">订货单位：</td>
+	                <td width="10%" class="right">订货单位：</td>
 	                <td width="20%" align="left"><input class="middle_txt" type="text" id="DEALER_NAME" name="DEALER_NAME"/>
 	                </td>
-	                <td width="10%" align="right">销售单位：</td>
+	                <td width="10%" class="right">销售单位：</td>
 	                <td width="15%" align="left"><input class="middle_txt" type="text" id="SELLER_NAME" name="SELLER_NAME"/>
 	                </td>
 	                </tr>
 	            <tr>
-	             <td width="10%" align="right">订单状态：</td>
+	             <td width="10%" class="right">订单状态：</td>
 	                <td width="20%" align="left">
 	                    <select  name="state" id = "state" class="u-select">
 			                <option selected value=''>-请选择-</option>
@@ -310,7 +310,7 @@ $(document).ready(function(){
 			                </c:forEach>
 	            		</select>
 	                </td>
-	                <td width="10%" align="right">制单日期：</td>
+	                <td width="10%" class="right">制单日期：</td>
 	                <td width="20%" align="left">
 	                	<input class="short_txt" id="SCREATE_DATE" name="SCREATE_DATE"
 	                                                    datatype="1,is_date,10" maxlength="10" value="${old}" style="width:80px"
@@ -322,7 +322,7 @@ $(document).ready(function(){
 	                    <input class="time_ico" value=" " onclick="showcalendar(event, 'ECREATE_DATE', false);" type="button"/>
 	                </td>
 	                
-	                <td width="10%" align="right">提交日期：</td>
+	                <td width="10%" class="right">提交日期：</td>
 	                <td width="20%" align="left"><input class="short_txt" id="SSUBMIT_DATE" name="SSUBMIT_DATE" style="width:80px"
 	                                                    datatype="1,is_date,10" maxlength="10"
 	                                                    group="SSUBMIT_DATE,ESUBMIT_DATE"/>

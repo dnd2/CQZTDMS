@@ -501,8 +501,8 @@
         //提报并保存订单确认
         function repOrderConfirm() {
             var msg = '确定提报并保存订单?';
-            if (parseFloat(unFormatNum($('freight').value)) > parseFloat(0)) {
-                msg = "<font color='red'>运费：" + $('freight').value + "</font></br>" + msg;
+            if (parseFloat(unFormatNum($('#freight')[0].value)) > parseFloat(0)) {
+                msg = "<font color='red'>运费：" + $('#freight')[0].value + "</font></br>" + msg;
             }
             MyConfirm(msg, repOrder, []);
              
@@ -929,7 +929,7 @@
             var addPartViv = document.getElementById("addPartViv");
 
             if (partDiv.style.display == "block") {
-                if ($('SELLER_ID').value == "") {
+                if ($('#SELLER_ID')[0].value == "") {
                     MyAlert("请先选择销售单位");
                     addPartViv.value = "增加";
                     partDiv.style.display = "none";

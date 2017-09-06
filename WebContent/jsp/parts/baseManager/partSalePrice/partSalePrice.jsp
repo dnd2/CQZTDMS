@@ -91,77 +91,102 @@ $(document).ready(function(){
 		OpenHtmlWindow('<%=contextPath%>/parts/baseManager/partSalePrice/PartSalePrice/queryModifyHis.do?priceId='+value,1300,550);
 	}
 	//保存
-	function save(value)
-	{
-			var msg ="";
-		  	var PRICE_VALID_START_DATE=document.getElementById("PRICE_VALID_START_DATE"+value).value;
-		  	var PRICE_VALID_END_DATE=document.getElementById("PRICE_VALID_END_DATE"+value).value;
-		  	var SALE_PRICE_START_DATE=document.getElementById("SALE_PRICE_START_DATE"+value).value;
-		  	var SALE_PRICE_END_DATE=document.getElementById("SALE_PRICE_END_DATE"+value).value;
-		  	var SALE_PRICE1=document.getElementById("SALE_PRICE1"+'+'+value).value;
-			var SALE_PRICE2=document.getElementById("SALE_PRICE2"+'+'+value).value;
-			var SALE_PRICE3=document.getElementById("SALE_PRICE3"+'+'+value).value;
-			var SALE_PRICE4=document.getElementById("SALE_PRICE4"+'+'+value).value;
-			var SALE_PRICE5=document.getElementById("SALE_PRICE5"+'+'+value).value;
-			var SALE_PRICE6=document.getElementById("SALE_PRICE6"+'+'+value).value;
-			var SALE_PRICE7=document.getElementById("SALE_PRICE7"+'+'+value).value;
-			var SALE_PRICE8=document.getElementById("SALE_PRICE8"+'+'+value).value;
-			var SALE_PRICE9=document.getElementById("SALE_PRICE9"+'+'+value).value;
-			var SALE_PRICE10=document.getElementById("SALE_PRICE10"+'+'+value).value;
-			var SALE_PRICE11=document.getElementById("SALE_PRICE11"+'+'+value).value;
-			var SALE_PRICE12=document.getElementById("SALE_PRICE12"+'+'+value).value;
-			var SALE_PRICE13=document.getElementById("SALE_PRICE13"+'+'+value).value;
-			var SALE_PRICE14=document.getElementById("SALE_PRICE14"+'+'+value).value;
-			var SALE_PRICE15=document.getElementById("SALE_PRICE15"+'+'+value).value;
-		  if(isNaN(SALE_PRICE1)){
-             msg += "请输入正确格式的${map.prciceName1}! </br>";
-           }
-           if(isNaN(SALE_PRICE2)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE3)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE4)){
-              msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE5)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE6)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE7)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE8)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE9)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE10)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE11)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE12)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE13)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE14)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-           if(isNaN(SALE_PRICE15)){
-             msg += "请输入正确格式的${map.prciceName2}! </br>";
-           }
-          if(msg!=""){
-          	MyAlert(msg);
-          	return;
-          }
+	function save(value){
+		var msg ="";
+	  	var PRICE_VALID_START_DATE=document.getElementById("PRICE_VALID_START_DATE"+value).value;
+	  	var PRICE_VALID_END_DATE=document.getElementById("PRICE_VALID_END_DATE"+value).value;
+	  	var SALE_PRICE_START_DATE=document.getElementById("SALE_PRICE_START_DATE"+value).value;
+	  	var SALE_PRICE_END_DATE=document.getElementById("SALE_PRICE_END_DATE"+value).value;
+	  	var SALE_PRICE1=document.getElementById("SALE_PRICE1"+'+'+value).value;
+		var SALE_PRICE2=document.getElementById("SALE_PRICE2"+'+'+value).value;
+		var SALE_PRICE3=document.getElementById("SALE_PRICE3"+'+'+value).value;
+		var SALE_PRICE4=document.getElementById("SALE_PRICE4"+'+'+value).value;
+		var SALE_PRICE5=document.getElementById("SALE_PRICE5"+'+'+value).value;
+		var SALE_PRICE6=document.getElementById("SALE_PRICE6"+'+'+value).value;
+		var SALE_PRICE7=document.getElementById("SALE_PRICE7"+'+'+value).value;
+		var SALE_PRICE8=document.getElementById("SALE_PRICE8"+'+'+value).value;
+		var SALE_PRICE9=document.getElementById("SALE_PRICE9"+'+'+value).value;
+		var SALE_PRICE10=document.getElementById("SALE_PRICE10"+'+'+value).value;
+		var SALE_PRICE11=document.getElementById("SALE_PRICE11"+'+'+value).value;
+		var SALE_PRICE12=document.getElementById("SALE_PRICE12"+'+'+value).value;
+		var SALE_PRICE13=document.getElementById("SALE_PRICE13"+'+'+value).value;
+		var SALE_PRICE14=document.getElementById("SALE_PRICE14"+'+'+value).value;
+		var SALE_PRICE15=document.getElementById("SALE_PRICE15"+'+'+value).value;
+	  	if(isNaN(SALE_PRICE1)){
+            msg += "请输入正确格式的${map.prciceName1}! </br>";
+         }
+         if(isNaN(SALE_PRICE2)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE3)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE4)){
+            msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE5)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE6)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE7)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE8)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE9)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE10)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE11)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE12)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE13)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE14)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(isNaN(SALE_PRICE15)){
+           msg += "请输入正确格式的${map.prciceName2}! </br>";
+         }
+         if(msg!=""){
+        	MyAlert(msg);
+        	return;
+         }
+
+         if(PRICE_VALID_START_DATE!="" || PRICE_VALID_END_DATE!=""){
+        	 if( PRICE_VALID_START_DATE=="" && PRICE_VALID_END_DATE!="" ){
+            	 MyAlert("请设置调拨价有效开始日期！");
+            	 return;
+             }
+        	 if( PRICE_VALID_START_DATE!="" && PRICE_VALID_END_DATE=="" ){
+            	 MyAlert("请设置调拨价有效结束日期！");
+            	 return;
+             }
+        }
+        if(SALE_PRICE_START_DATE!="" || SALE_PRICE_END_DATE!=""){
+        	 if( SALE_PRICE_START_DATE=="" && SALE_PRICE_END_DATE!="" ){
+            	 MyAlert("请设置促销价有效开始日期！");
+            	 return;
+             }
+        	 if( SALE_PRICE_START_DATE!="" && SALE_PRICE_END_DATE=="" ){
+            	 MyAlert("请设置促销价有效结束日期！");
+            	 return;
+             }
+        } 
+
+        if( (PRICE_VALID_START_DATE=="" && PRICE_VALID_END_DATE=="") && (SALE_PRICE_START_DATE=="" && SALE_PRICE_END_DATE=="")){
+       	 	MyAlert("请设置价格有效期！");
+       	 	return;
+        }
 
 	  	var saveUrl = "<%=contextPath%>/parts/baseManager/partSalePrice/PartSalePrice/savePartSalePrice.json?PRICE_ID="+value
 						 +"&PRICE_VALID_START_DATE="+PRICE_VALID_START_DATE
@@ -207,13 +232,10 @@ $(document).ready(function(){
 	}
 	
 	function veiwPrices(jsonObj){
-		if(null != jsonObj.success && "ture" == jsonObj.success)
-		{
+		if(null != jsonObj.success && "ture" == jsonObj.success){
 			MyAlert("价格修改成功");
 			__extQuery__(jsonObj.curPage);
-		}
-		else
-		{
+		}else{
 			MyAlert("价格修改失败,请联系管理员!");
 		}
 	}

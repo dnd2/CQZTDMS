@@ -8,8 +8,6 @@
 %>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=8">
-    <script type="text/javascript" src="<%=request.getContextPath()%>/js/web/$-1.7.2.min.js"></script>
     <jsp:include page="${contextPath}/common/jsp_head_new.jsp"/>
     <title>计划明细修改</title>
 </head>
@@ -27,15 +25,15 @@
         <table class="table_query" >
             
             <tr>
-            	<td class="right">备件编码：</td>
+            	<td class="right">配件编码：</td>
                 <td >
                 	<input type="text" class="middle_txt" id="PART_OLDCODE" name="PART_OLDCODE" value="">
                 </td>
-            	<td class="right">备件名称：</td>
+            	<td class="right">配件名称：</td>
                 <td >
                 	<input type="text" class="middle_txt" id="PART_CNAME" name="PART_CNAME" value="">
                 </td>
-                <td class="right">备件件号：</td>
+                <td class="right">配件件号：</td>
                 <td >
                 	<input type="text" class="middle_txt" id="PART_CODE" name="PART_CODE" value="">
                 </td>
@@ -71,13 +69,13 @@
 				{header: "序号", renderer: getIndex},
 				{header: '<input type="checkbox" onclick="cksall(this)">',dataIndex:'PLINE_ID', style:"text-align: center",renderer:myLink},
 				{header: "计划单号",dataIndex:'PLAN_NO', style:"text-align: center"},
-				{header: "备件编码",dataIndex:'PART_OLDCODE', style:"text-align: center"},
-				{header: "备件名称",dataIndex:'PART_CNAME', style:"text-align: center"},
-				{header: "备件件号",dataIndex:'PART_CODE', style:"text-align: center"},
+				{header: "配件编码",dataIndex:'PART_OLDCODE', style:"text-align: center"},
+				{header: "配件名称",dataIndex:'PART_CNAME', style:"text-align: center"},
+				{header: "配件件号",dataIndex:'PART_CODE', style:"text-align: center"},
 				{header: "计划数量",dataIndex:'PLAN_NUM', style:"text-align: center",renderer:setPlanQty},
 				{header: "最小包装量",dataIndex:'BUY_MIN_PKG', style:"text-align: center"},
-				{header: "备件备注",dataIndex:'SALES_REMARK', style:"text-align: center",renderer:setRemark},
-				//{header: "备件类型",dataIndex:'PART_TYPE', style:"text-align: center",renderer:getItemValue},
+				{header: "配件备注",dataIndex:'SALES_REMARK', style:"text-align: center",renderer:setRemark},
+				//{header: "配件类型",dataIndex:'PART_TYPE', style:"text-align: center",renderer:getItemValue},
 				{header: "自制/配套",dataIndex:'PRODUCE_STATE', style:"text-align: center",renderer:getItemValue},
 				{header: "采购方式",dataIndex:'PRODUCE_FAC', style:"text-align: center",renderer:getItemValue},
 				{header: "上级单位",dataIndex:'SUPERIOR_PURCHASING', style:"text-align: center",renderer:getItemValue},

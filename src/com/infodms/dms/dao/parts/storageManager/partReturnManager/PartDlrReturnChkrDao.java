@@ -34,6 +34,48 @@ public class PartDlrReturnChkrDao extends BaseDao {
 
     /**
      * <p>
+     * Description: 更新经销商入库明细记录的退货数量
+     * </p>
+     * 
+     * @param paramMap 参数
+     */
+    @SuppressWarnings("unchecked")
+    public int updateInStrockReturnQty(Map<String, String> paramMap) {
+        String returnId = paramMap.get("returnId");  // 退货单id
+        StringBuffer sql = new StringBuffer();
+        sql.append("UPDATE TT_PART_DLR_INSTOCK_DTL T\n");
+        sql.append("   SET RETURN_QTY  = NVL(NVL((SELECT SUM(T2.APPLY_QTY)\n");
+        sql.append("                               FROM TT_PART_DLR_RETURN_DTL  T2,\n");
+        sql.append("                                    TT_PART_DLR_RETURN_MAIN T3\n");
+        sql.append("                              WHERE T2.RETURN_ID = T3.RETURN_ID\n");
+        sql.append("                                AND T3.IN_ID = T.IN_ID\n");
+        sql.append("                                AND T.PART_ID = T2.PART_ID\n");
+        sql.append("                                AND T3.STATE = '"+Constant.PART_DLR_RETURN_STATUS_02+"'\n");
+        sql.append("                              GROUP BY T2.PART_ID, T3.IN_ID),\n");
+        sql.append("                             0) + NVL((SELECT SUM(T2.CHECK_THREE_QTY)\n");
+        sql.append("                                        FROM TT_PART_DLR_RETURN_DTL  T2,\n");
+        sql.append("                                             TT_PART_DLR_RETURN_MAIN T3\n");
+        sql.append("                                       WHERE T2.RETURN_ID = T3.RETURN_ID\n");
+        sql.append("                                         AND T3.IN_ID = T.IN_ID\n");
+        sql.append("                                         AND T.PART_ID = T2.PART_ID\n");
+        sql.append("                                         AND T3.VERIFY_STATUS = '"+Constant.PART_ABJUSTMENT_CHECK_DEAL_STATUS_01+"'\n");
+        sql.append("                                       GROUP BY T2.PART_ID, T3.IN_ID),\n");
+        sql.append("                                      0),\n");
+        sql.append("                         0),\n");
+        sql.append("       UPDATE_DATE = SYSDATE\n");
+        sql.append(" WHERE EXISTS (SELECT 1\n");
+        sql.append("          FROM TT_PART_DLR_RETURN_DTL T2, TT_PART_DLR_RETURN_MAIN T3\n");
+        sql.append("         WHERE T2.RETURN_ID = T3.RETURN_ID\n");
+        sql.append("           AND T3.IN_ID = T.IN_ID\n");
+        sql.append("           AND T2.PART_ID = T.PART_ID\n");
+        sql.append("           AND T2.RETURN_ID = '" + returnId + "')\n");
+        
+        
+        return dao.update(sql.toString(), null);
+    }
+
+    /**
+     * <p>
      * Description: 获取查询配件销售退货sql字符串
      * </p>
      * 
@@ -61,7 +103,7 @@ public class PartDlrReturnChkrDao extends BaseDao {
         sql.append("        T1.REMARK, \n");
         sql.append("        T1.REMARK1, \n");
         sql.append("        T1.APPLY_DATE, \n");
-        
+
         // 一级审核通过或二级审核通过
         if ("2".equals(chkLevel) || "3".equals(chkLevel) || "all".equals(chkLevel)) {
             sql.append("        TU2.NAME          VL_ONE_BY_NAME, \n");
@@ -82,12 +124,12 @@ public class PartDlrReturnChkrDao extends BaseDao {
             sql.append("        T1.VERIFY_STATUS, \n");
             sql.append("        T1.VERIFY_DATE, \n");
         }
-        
+
         sql.append("        T1.STATE \n");
         sql.append("   FROM TT_PART_DLR_RETURN_MAIN T1 \n");
         sql.append("  INNER JOIN TC_USER TU1 \n");
         sql.append("     ON T1.CREATE_BY = TU1.USER_ID \n");
-        
+
         if ("2".equals(chkLevel) || "3".equals(chkLevel) || "all".equals(chkLevel)) {
             sql.append("   LEFT JOIN TC_USER TU2 \n");
             sql.append("     ON TU2.USER_ID = T1.VL_ONE_BY \n");
@@ -108,23 +150,23 @@ public class PartDlrReturnChkrDao extends BaseDao {
         if (verifyLevel != 0) {
             sql.append("   AND T1.VERIFY_LEVEL = " + verifyLevel + " \n");
         }
-//        sql.append("   AND T1.SELLER_ID=");
-//        if (logonUser.getDealerId() == null) {
-//            sql.append(logonUser.getOrgId());
-            //总部增加区域限制
-            sql.append(" AND EXISTS (SELECT 1\n");
-            sql.append("         FROM TT_PART_SALESSCOPE_DEFINE B\n");
-            sql.append("        WHERE T1.DEALER_ID = B.DEALER_ID\n");
-            if (!CommonUtils.isEmpty(paramMap.get("salerId"))) {
-                sql.append("     AND B.USER_ID = " + paramMap.get("salerId") + "");
-            }
-            sql.append(" )");
-//        } else {
-//            sql.append(logonUser.getDealerId());
-//        }
-//        sql.append(" and T1.STATE = ").append(Constant.PART_DLR_RETURN_STATUS_02);
+        //        sql.append("   AND T1.SELLER_ID=");
+        //        if (logonUser.getDealerId() == null) {
+        //            sql.append(logonUser.getOrgId());
+        //总部增加区域限制
+        sql.append(" AND EXISTS (SELECT 1\n");
+        sql.append("         FROM TT_PART_SALESSCOPE_DEFINE B\n");
+        sql.append("        WHERE T1.DEALER_ID = B.DEALER_ID\n");
+        if (!CommonUtils.isEmpty(paramMap.get("salerId"))) {
+            sql.append("     AND B.USER_ID = " + paramMap.get("salerId") + "");
+        }
+        sql.append(" )");
+        //        } else {
+        //            sql.append(logonUser.getDealerId());
+        //        }
+        //        sql.append(" and T1.STATE = ").append(Constant.PART_DLR_RETURN_STATUS_02);
         if (!CommonUtils.isEmpty(paramMap.get("state"))) {
-            sql.append(" AND T1.STATE = '"+paramMap.get("state")+"' \n");
+            sql.append(" AND T1.STATE = '" + paramMap.get("state") + "' \n");
         }
         if (!CommonUtils.isEmpty(paramMap.get("returnCode"))) {
             sql.append(" AND T1.RETURN_CODE LIKE '%").append(paramMap.get("returnCode")).append("%'\n");
@@ -171,6 +213,7 @@ public class PartDlrReturnChkrDao extends BaseDao {
      * <p>
      * Description: 查询
      * </p>
+     * 
      * @param paramMap
      * @param logonUser
      * @return
@@ -196,9 +239,20 @@ public class PartDlrReturnChkrDao extends BaseDao {
         PageResult<Map<String, Object>> ps;
         try {
             StringBuffer sql = new StringBuffer("");
-            sql.append(
-                    "select t.DTL_ID,t.part_id,t.part_code,t.part_oldcode,t.part_cname,nvl(t.SALES_QTY,0) BUY_QTY,t.apply_qty,t.CHECK_QTY,t.OUT_QTY,t.remark from tt_part_dlr_return_dtl t where t.return_id=")
-                    .append(CommonUtils.parseLong(returnId));
+            sql.append("SELECT T.DTL_ID,\n");
+            sql.append("       T.PART_ID,\n");
+            sql.append("       T.PART_CODE,\n");
+            sql.append("       T.PART_OLDCODE,\n");
+            sql.append("       T.PART_CNAME,\n");
+            sql.append("       NVL(T.SALES_QTY, 0) BUY_QTY,\n");
+            sql.append("       T.APPLY_QTY,\n");
+            sql.append("       T.CHECK_QTY,\n");
+            sql.append("       T.CHECK_TWO_QTY,\n");
+            sql.append("       T.CHECK_THREE_QTY,\n");
+            sql.append("       T.OUT_QTY,\n");
+            sql.append("       T.REMARK\n");
+            sql.append("  FROM TT_PART_DLR_RETURN_DTL T\n");
+            sql.append(" WHERE T.RETURN_ID = '" + returnId + "'\n");
             ps = pageQuery(sql.toString(), null, getFunName(), pageSize, curPage);
         } catch (Exception e) {
             throw e;

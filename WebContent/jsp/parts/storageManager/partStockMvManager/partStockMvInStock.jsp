@@ -282,6 +282,7 @@ function chkPart() {
 								<input name='LOC_CODE_${list.PART_IDS}${_seq.index+1}' id='LOC_CODE_${list.PART_IDS}${_seq.index+1}' class='middle_txt' type='text' 
 									onchange="checkCode(this, '${list.PART_IDS}${_seq.index+1}', '${list.PART_ID}','${main.TOWH_ID}','${main.TOWH_NAME}');" />
 								<input name='LOC_ID_${list.PART_IDS}${_seq.index+1}' id='LOC_ID_${list.PART_IDS}${_seq.index+1}' type='hidden' value='' />
+								<input name='LOC_NAME_${list.PART_IDS}${_seq.index+1}' id='LOC_NAME_${list.PART_IDS}${_seq.index+1}' type='hidden' value='' />
 								<input class='mini_btn' type='button' value='...' onclick="codeChoice('${list.PART_IDS}${_seq.index+1}', '${list.PART_ID}','${list.PART_OLDCODE}', '${list.PART_CNAME}');" />
 							</td>
 							<td align="center" nowrap>${list.REMARK}</td>

@@ -56,6 +56,7 @@ import com.infodms.dms.po.TtAsWrApplicationClaimPO;
 import com.infodms.dms.po.TtAsWrAuthCheckAppPO;
 import com.infodms.dms.po.TtAsWrBalanceAuthitemPO;
 import com.infodms.dms.po.TtAsWrBalanceBillPO;
+import com.infodms.dms.po.TtAsWrBalanceRecordPO;
 import com.infodms.dms.po.TtAsWrBqhsKpPO;
 import com.infodms.dms.po.TtAsWrCheckApplicationPO;
 import com.infodms.dms.po.TtAsWrCheckDetailPO;
@@ -71,6 +72,7 @@ import com.infodms.dms.po.TtInvoiceTaxratePO;
 import com.infodms.dms.util.CommonUtils;
 import com.infodms.dms.util.csv.CsvWriterUtil;
 import com.infodms.dms.util.sequenceUitl.SequenceManager;
+import com.infodms.yxdms.entity.maintain.TtAsWrEgressRecordPO;
 import com.infodms.yxdms.entity.special.TtAsWrSpeGoodwillClaimPO;
 import com.infodms.yxdms.entity.special.TtAsWrSpecialPO;
 import com.infodms.yxdms.service.InvoiceService;
@@ -2690,7 +2692,6 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 			balancePo.setId(banalceId);
 			balancePo=(TtAsWrClaimBalancePO)factory.select(balancePo).get(0);
 			TtAsDealerTypePO dealerType=new TtAsDealerTypePO();
-			dealerType.setYieldly(balancePo.getYieldly().toString());
 			dealerType.setDealerId(balancePo.getDealerId());
 			dealerType=(TtAsDealerTypePO)factory.select(dealerType).get(0);
 			Date balanceEnd=balancePo.getEndDate();
@@ -2712,7 +2713,6 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 				listPar.add(cale.getTime());
 				listPar.add(cale.getTime());
 				listPar.add(balancePo.getDealerId());
-				listPar.add(balancePo.getYieldly());
 				factory.update(sbSql.toString(), listPar);
 				
 				////////更改结算单状态
@@ -2884,16 +2884,9 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 					//回滚时间
 					DealerBalanceDao dao = new DealerBalanceDao();
 					String time2 = "";
-					String time1 = dao.getMaxDate1(logonUser.getDealerId(),balancePo.getYieldly());//得到时间
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					if(sdf.parse(time1).after(sdf.parse(Constant.FRIST_TIME))){
-						time2=time1;
-					}else{
-						time2=Constant.FRIST_TIME;
-					}
 					TtAsDealerCheckPO poCehck = new TtAsDealerCheckPO();
 					poCehck.setDealerId(Long.parseLong(logonUser.getDealerId()));
-					poCehck.setYieldly(balancePo.getYieldly());
 					TtAsDealerCheckPO poCehckValue = new TtAsDealerCheckPO();
 					poCehckValue.setLastCheckDate(sdf.parse(time2));
 					poCehckValue.setUpdateBy(logonUser.getUserId().toString());
@@ -2905,7 +2898,6 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 				act.setOutData("msg", "true");
 				/********Iverson 2012-02-24 调用开票信息下发接口下发删除的开票信息****************/
 				OSB34 osb34 = new OSB34();
-				osb34.sendDate(balancePo.getBalanceNo(),balancePo.getDealerCode(),0);
 			}else{//不可删除
 				act.setOutData("msg", "false");
 			}
@@ -4275,6 +4267,11 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 		try {
 			String flag = request.getParamValue("flag");
 			String banlanceNo = request.getParamValue("BALANCE_NO");
+			//查询详情
+			TtAsWrClaimBalancePO balance=new TtAsWrClaimBalancePO();
+			balance.setBalanceNo(banlanceNo);
+			TtAsWrClaimBalancePO seBalance=(TtAsWrClaimBalancePO) dao.select(balance).get(0);
+			
 			auditBean bean = new auditBean();
 			bean.setBalanceNo(banlanceNo);
 			//分页方法 begin
@@ -4337,6 +4334,9 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 				z_ids=z_ids.substring(0,z_ids.length()-1);
 			}
 			act.setOutData("z_ids",z_ids);
+			//审核记录
+			List<Map<String, Object>> rList=dao.balanceRecord(seBalance.getId().toString());
+			act.setOutData("rList", rList);
 			if("se".equals(flag)){
 				act.setForword(finViewUrl01);//查看
 			}else if("add".equals(flag)){
@@ -4356,64 +4356,11 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 	}
 	public void addBalanceBill() {
 		try {
+			//结算上报
 			String banlanceNo = request.getParamValue("balanecNo");
-			String[] id = DaoFactory.getParams(request, "id");
-			String[] PC_NO = DaoFactory.getParams(request, "PC_NO");
-			String[] BILL_NO = DaoFactory.getParams(request, "BILL_NO");
-			String[] MONEY = DaoFactory.getParams(request, "MONEY");
-			String[] TAX_MONEY = DaoFactory.getParams(request, "TAX_MONEY");
-			String[] TOTAL = DaoFactory.getParams(request, "TOTAL");
-			String[] REMARK = DaoFactory.getParams(request, "REMARK");
-			if(id.length<=0){//新增				
-				for(int i=0;i<BILL_NO.length-1;i++){
-					TtAsWrBalanceBillPO bill=new TtAsWrBalanceBillPO();
-					bill.setId(Long.parseLong(SequenceManager.getSequence("")));
-					bill.setBalanceNo(banlanceNo);
-					bill.setPcNo(PC_NO[i]);
-					bill.setBillNo(BILL_NO[i]);
-					bill.setMoney(Float.parseFloat(MONEY[i]));
-					bill.setTaxMoney(Float.parseFloat(TAX_MONEY[i]));
-					bill.setTotal(Float.parseFloat(TOTAL[i]));
-					bill.setRemark(REMARK[i]);
-					bill.setCreateBy(loginUser.getUserId());
-					bill.setCreateDate(new Date());
-					dao.insert(bill);
-				}				
-			}else{//修改				
-				//先删除
-				TtAsWrBalanceBillPO deBill=new TtAsWrBalanceBillPO();
-				deBill.setBalanceNo(banlanceNo);
-    	        dao.delete(deBill);
-    	        for(int i=0;i<BILL_NO.length-1;i++){
-    	        	TtAsWrBalanceBillPO bill=new TtAsWrBalanceBillPO();
-					bill.setId(Long.parseLong(SequenceManager.getSequence("")));
-					bill.setBalanceNo(banlanceNo);
-					bill.setPcNo(PC_NO[i]);
-					bill.setBillNo(BILL_NO[i]);
-					bill.setMoney(Float.parseFloat(MONEY[i]));
-					bill.setTaxMoney(Float.parseFloat(TAX_MONEY[i]));
-					bill.setTotal(Float.parseFloat(TOTAL[i]));
-					bill.setRemark(REMARK[i]);
-					bill.setCreateBy(loginUser.getUserId());
-					bill.setCreateDate(new Date());
-					dao.insert(bill);
-				}				
-			}
-			
-			act.setOutData("msg","0");				
-		} catch (Exception e) {// 异常方法
-			BizException e1 = new BizException(act, e,
-					ErrorCodeConstant.QUERY_FAILURE_CODE, "结算发票录入");
-			logger.error(loginUser, e1);
-			act.setException(e1);
-		}
-	}
-	public void reportBalanceBill() {
-		try {
-			String id = request.getParamValue("id");
-			if(!"".equals(id)){//上报			
+			if(!"".equals(banlanceNo)){//上报			
 				TtAsWrClaimBalancePO balance=new TtAsWrClaimBalancePO();
-				balance.setId(Long.parseLong(id));
+				balance.setBalanceNo(banlanceNo);
 				TtAsWrClaimBalancePO seBalance=(TtAsWrClaimBalancePO) dao.select(balance).get(0);
 				if(!seBalance.getStatus().equals(Constant.CLAIM_STAUTS_01) && !seBalance.getStatus().equals(Constant.CLAIM_STAUTS_04) ){
 					act.setOutData("msg","1");
@@ -4421,12 +4368,55 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 					TtAsWrClaimBalancePO upBalance=new TtAsWrClaimBalancePO();
 					upBalance.setStatus(Constant.CLAIM_STAUTS_02);
 					dao.update(balance, upBalance);
+					//发票号插入
+					String[] id = DaoFactory.getParams(request, "id");
+					String[] PC_NO = DaoFactory.getParams(request, "PC_NO");
+					String[] BILL_NO = DaoFactory.getParams(request, "BILL_NO");
+					String[] MONEY = DaoFactory.getParams(request, "MONEY");
+					String[] TAX_MONEY = DaoFactory.getParams(request, "TAX_MONEY");
+					String[] TOTAL = DaoFactory.getParams(request, "TOTAL");
+					String[] REMARK = DaoFactory.getParams(request, "REMARK");
+					if(id.length<=0){//新增				
+						for(int i=0;i<BILL_NO.length-1;i++){
+							TtAsWrBalanceBillPO bill=new TtAsWrBalanceBillPO();
+							bill.setId(Long.parseLong(SequenceManager.getSequence("")));
+							bill.setBalanceNo(banlanceNo);
+							bill.setPcNo(PC_NO[i]);
+							bill.setBillNo(BILL_NO[i]);
+							bill.setMoney(Float.parseFloat(MONEY[i]));
+							bill.setTaxMoney(Float.parseFloat(TAX_MONEY[i]));
+							bill.setTotal(Float.parseFloat(TOTAL[i]));
+							bill.setRemark(REMARK[i]);
+							bill.setCreateBy(loginUser.getUserId());
+							bill.setCreateDate(new Date());
+							dao.insert(bill);
+						}				
+					}else{//修改				
+						//先删除
+						TtAsWrBalanceBillPO deBill=new TtAsWrBalanceBillPO();
+						deBill.setBalanceNo(banlanceNo);
+		    	        dao.delete(deBill);
+		    	        for(int i=0;i<BILL_NO.length-1;i++){
+		    	        	TtAsWrBalanceBillPO bill=new TtAsWrBalanceBillPO();
+							bill.setId(Long.parseLong(SequenceManager.getSequence("")));
+							bill.setBalanceNo(banlanceNo);
+							bill.setPcNo(PC_NO[i]);
+							bill.setBillNo(BILL_NO[i]);
+							bill.setMoney(Float.parseFloat(MONEY[i]));
+							bill.setTaxMoney(Float.parseFloat(TAX_MONEY[i]));
+							bill.setTotal(Float.parseFloat(TOTAL[i]));
+							bill.setRemark(REMARK[i]);
+							bill.setCreateBy(loginUser.getUserId());
+							bill.setCreateDate(new Date());
+							dao.insert(bill);
+						}				
+					}					
 					act.setOutData("msg","0");
-				}
-			}							
+				}				
+			}											
 		} catch (Exception e) {// 异常方法
 			BizException e1 = new BizException(act, e,
-					ErrorCodeConstant.QUERY_FAILURE_CODE, "结算上报");
+					ErrorCodeConstant.QUERY_FAILURE_CODE, "结算发票录入");
 			logger.error(loginUser, e1);
 			act.setException(e1);
 		}
@@ -4450,7 +4440,8 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 					upBalance.setFunancialRemark(auditRemark);
 					dao.update(balance, upBalance);
 					act.setOutData("msg","0");
-				}
+					insertAuditRecord(Constant.CLAIM_STAUTS_03.toString(), loginUser.getUserId(), seBalance.getId().toString(),auditRemark);
+				}				
 			}else if("1".equals(commint)){	
 				TtAsWrClaimBalancePO balance=new TtAsWrClaimBalancePO();
 				balance.setBalanceNo(balanecNo);
@@ -4463,6 +4454,7 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 					upBalance.setFunancialRemark(auditRemark);
 					dao.update(balance, upBalance);
 					act.setOutData("msg","0");
+					insertAuditRecord(Constant.CLAIM_STAUTS_04.toString(), loginUser.getUserId(), seBalance.getId().toString(),auditRemark);
 				}
 			}
 		} catch (Exception e) {// 异常方法
@@ -4870,7 +4862,26 @@ private void addSpecialFeeToBalanceOrder(Long dealerId,Long balanceId,String sta
 			act.setOutData("list", list);
 			sendMsgByUrl("/jsp/claim/authorization/appprintSencondByNo.jsp", "二次入库明细");
 	}
-	
-	
-	
+	/**
+	 * 插入审核日志
+	 * @param status
+	 * @param userId
+	 * @param speId
+	 */
+	public void insertAuditRecord(String status, Long userId, String speId,String c) {
+		try {
+			TtAsWrBalanceRecordPO po=new TtAsWrBalanceRecordPO();
+			po.setAuditBy(userId);
+			po.setAuditDate(new Date());
+			po.setOperaStstus(Integer.parseInt(status));
+			po.setId(DaoFactory.getPkId());
+			po.setBalanceId(Long.parseLong(speId));
+			po.setAuditRecord(c);
+			dao.insert(po);
+		} catch (Exception e) {
+			BizException e1 = new BizException(act,ErrorCodeConstant.FAILURE_CODE, e.getMessage());
+			e.printStackTrace();
+			act.setException(e1);
+		}
+	}	
 }

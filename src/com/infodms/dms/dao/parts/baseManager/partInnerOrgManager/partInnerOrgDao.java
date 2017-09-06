@@ -54,7 +54,7 @@ public class partInnerOrgDao extends BaseDao {
             sql.append(" AND IO.PRT_ORG_ID = TD.DEALER_ID(+) ");
         }
         sql.append(sqlStr);
-        sql.append(" ORDER BY IO.IN_ORG_CODE, IO.IN_ORG_NAME ");
+        sql.append(" ORDER BY IO.IN_ORG_CODE DESC ,IO.IN_ORG_NAME DESC,IO.CREATE_DATE DESC  ");
         PageResult<Map<String, Object>> ps = pageQuery(sql.toString(), null,
                 getFunName(), pageSize, curPage);
         return ps;

@@ -107,9 +107,9 @@ public class SalesBalanceAction extends BaseAction {
 		try {
 			SalesBalanceService service = new SalesBalanceServiceImpl();
 			List<Map<String, Object>> list = service.getBalanceExportDtl(request);
-			String [] head={"对账单号","承运商","是否散单","交接单号","最后交车日期","发运仓库","经销商/收货仓库","订单收货地","发运结算地","是否中转","中转地","发运方式","车系","车型","配置","颜色","车架号","运送里程","里程单价","挂账运费"};
+			String [] head={"对账单号","承运商","是否散单","交接单号","最后交车日期","发运仓库","经销商/收货仓库","订单收货地","发运结算地","是否中转","中转地","发运方式","车系","车型","配置","颜色","车架号","里程(段1)","单价(段1)","里程(段2)","单价(段2)","挂账运费"};
 			String [] cols={"BAL_NO","LOGI_NAME","DLV_IS_SD","BILL_NO","LAST_CAR_DATE","WAREHOUSE_NAME","DEALER_NAME","ADDRESS_INFO","BAL_ADDR","DLV_IS_ZZ","ZZ_ADDR",
-					"DLV_SHIP_TYPE","SERIES_NAME","MODEL_NAME","PACKAGE_NAME","COLOR_NAME","VIN","MILEAGE","PRICE","ONE_BILL_AMOUNT"};//导出的字段名称
+					"DLV_SHIP_TYPE","SERIES_NAME","MODEL_NAME","PACKAGE_NAME","COLOR_NAME","VIN","MILEAGE","PRICE","MILEAGE_ZZ","PRICE_ZZ","ONE_BILL_AMOUNT"};//导出的字段名称
 			ToExcel.toReportExcel(act.getResponse(),request, "挂帐单明细列表.xls",head,cols,list);
 			
 		} catch (Exception e) {

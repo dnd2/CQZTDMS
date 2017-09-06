@@ -46,6 +46,7 @@ public class PartSalesRelationDao extends BaseDao<PO> {
         sql.append("select * from vw_PART_SALES_RELATION p  where 1=1 ");
         sql.append(conSql);
         /*sql.append(" ORDER BY p.parentorg_code DESC ");*/
+        sql.append(" order by create_date desc ");
         return pageQuery(sql.toString(), null, getFunName(), pageSize, curPage);
     }
     /**

@@ -25,8 +25,10 @@
 		<td align=left width="15%">${sendBoardMap.SHIP_NAME }</td>
 		<td noWrap class="right">承运商:</td>
 		<td align=left width="15%">${sendBoardMap.LOGI_NAME }</td>
-		<td noWrap class="right">发运结算地:</td>
-		<td align=left width="15%">${sendBoardMap.BAL_ADDR}</td>
+		<!-- <td noWrap class="right">发运结算地:</td>
+		<td align=left width="15%">${sendBoardMap.BAL_ADDR}</td> -->
+		<td noWrap class="right"></td>
+		<td align=left width="15%"></td>
 	</tr>
 	<tr>
 		<td noWrap class="right">组板号:</td>
@@ -64,11 +66,14 @@
 			<th noWrap align=middle>订单号</th>
 			<th noWrap align=middle>发运仓库</th>
 			<th noWrap align=middle>经销商或收货仓库</th>
-			<th noWrap align=middle>车系</th>
+			<!-- <th noWrap align=middle>车系</th> -->
 			<th noWrap align=middle>车型</th>
-			<th noWrap align=middle>配置</th>
+			<!--<th noWrap align=middle>配置</th>-->
 			<th noWrap align=middle>颜色</th>
 			<th noWrap align=middle>物料代码</th>
+			<th noWrap align=middle>发运结算地</th>
+			<th noWrap align=middle>是否中转</th>
+			<th noWrap align=middle>中转地</th>
 			<th noWrap align=middle>已组板量</th>
 			<th noWrap align=middle>本次组板量</th>
 			<th noWrap align=middle>发运数量</th>
@@ -83,16 +88,19 @@
 						<!-- 发运仓库 -->
 						<td>${list.DEALER_NAME}</td>
 						<!-- 经销商Name -->
-						<td>${list.SERIES_NAME}</td>
+						<!--<td>${list.SERIES_NAME}</td>-->
 						<!-- 车系名称 -->
 						<td>${list.MODEL_NAME}</td>
 						<!-- 车型名称 -->
-						<td>${list.PACKAGE_NAME}</td>
+						<!--<td>${list.PACKAGE_NAME}</td>-->
 						<!-- 配置名称 -->
 						<td>${list.COLOR_NAME}</td>
 						<!-- 颜色 -->
 						<td>${list.MATERIAL_CODE}</td>
 						<!-- 物料CODE-->
+						<td>${list.JS_ADDR_NAME}</td>
+						<td>${list.DLV_IS_ZZ}</td>
+						<td>${list.ZZ_ADDR_NAME}</td>
 						<td>${list.DLV_BD_TOTAL}</td>
 						<!-- 已组板数量 -->
 						<td>${list.BD_TOTAL}</td>

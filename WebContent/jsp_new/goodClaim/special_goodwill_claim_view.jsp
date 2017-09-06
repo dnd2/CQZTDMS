@@ -72,7 +72,7 @@
 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
 	<tr>
 		<td width="35%" nowrap="true" align="center" >
-     		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="北汽银翔" width="100px;"  height="60px;" src="<%=request.getContextPath()%>/img/bqyx.png">
+<%--      		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="北汽银翔" width="100px;"  height="60px;" src="<%=request.getContextPath()%>/img/bqyx.png"> --%>
      	</td>
      	<td width="35%" nowrap="true" align="center">
      		<span style="font-weight: bold;font-size: 25px;">善意索赔申请单</span>
@@ -337,7 +337,7 @@
 		<%}}%>
 	</table> 
 	</div>
-	</div>
+	</div><br>
 <!-- 添加附件 结束 -->
 <table width=100% border="0" cellspacing="0" cellpadding="0">
 		<tr>

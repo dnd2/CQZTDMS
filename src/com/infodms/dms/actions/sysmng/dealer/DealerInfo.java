@@ -18,6 +18,7 @@ import java.util.Map;
 
 import jxl.Workbook;
 import jxl.write.Label;
+import net.sf.json.JSONArray;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
@@ -450,7 +451,7 @@ public class DealerInfo {
                 tmBillingInfo.setAccount(SALE_ACCOUNT);
                 tmBillingInfo.setBillingAddress(SALE_BILLING_ADDRESS);
                 tmBillingInfo.setCreateDate(currTime);
-                tmBillingInfo.setStatus(10011001);
+                tmBillingInfo.setStatus(Constant.STATUS_ENABLE);
                 tmBillingInfo.setCreateBy(new Long(logonUser.getUserId()));
                 dao.insert(tmBillingInfo);
                 
@@ -476,7 +477,7 @@ public class DealerInfo {
                 tmBillingInfo.setAccount(AFTE_ACCOUNT);
                 tmBillingInfo.setBillingAddress(AFTE_BILLING_ADDRESS);
                 tmBillingInfo.setCreateDate(currTime);
-                tmBillingInfo.setStatus(10011002);
+                tmBillingInfo.setStatus(Constant.STATUS_DISABLE);
                 tmBillingInfo.setCreateBy(new Long(logonUser.getUserId()));
                 dao.insert(tmBillingInfo);
             }
@@ -3968,6 +3969,13 @@ public class DealerInfo {
             String legalTel = CommonUtils.checkNull(request.getParamValue("LEGAL_TEL"));// 法人电话
             String marketName = CommonUtils.checkNull(request.getParamValue("MARKET_NAME"));// 销售经理姓名
             String marketTel = CommonUtils.checkNull(request.getParamValue("MARKET_TEL"));// 销售经理电话
+            
+            String saleBillingInfoId = CommonUtils.checkNull(request.getParamValue("SALE_BILLING_INFO_ID"));// 整车销售
+            String afteBillingInfoId = CommonUtils.checkNull(request.getParamValue("AFTE_BILLING_INFO_ID"));// 售后服务
+            
+            String BALANCE_LEVEL =CommonUtils.checkNull(request.getParamValue("BALANCE_LEVEL"));//结算等级
+            String INVOICE_LEVEL =CommonUtils.checkNull(request.getParamValue("INVOICE_LEVEL"));//开票等级
+            
             // 经销商评级 没有
 
             // 校验新维护的经销商是否存在 开始
@@ -4060,6 +4068,8 @@ public class DealerInfo {
             po.setWebmasterPhone(WEBMASTER_PHONE);
             po.setDutyPhone(DUTY_PHONE);
             po.setBank(BANK);
+			po.setBalanceLevel(BALANCE_LEVEL);
+            po.setInvoiceLevel(INVOICE_LEVEL);
             // po.setTaxLevel(TAX_LEVEL);//暂时还未用到
             if (!"".equals(MAIN_RESOURCES)) {
                 po.setMainResources(Integer.parseInt(MAIN_RESOURCES));
@@ -4121,7 +4131,74 @@ public class DealerInfo {
                 tdor.setCreateDate(currTime);
                 dao.insert(tdor);
             }
-
+            /**
+             *  String saleBillingInfoId = CommonUtils.checkNull(request.getParamValue("SALE_BILLING_INFO_ID"));// 整车销售
+            	String afteBillingInfoId = CommonUtils.checkNull(request.getParamValue("AFTE_BILLING_INFO_ID"));// 售后服务
+             */
+            //整车销售
+            
+            int deType = new Integer(dealerType);
+            if (deType == Constant.DEALER_TYPE_DVS || deType == Constant.DEALER_TYPE_DP){
+            	TmBillingInfoPO tbi = new TmBillingInfoPO();
+            	if(!"".equals(saleBillingInfoId)){
+            		tbi.setBillingInfoId(new Long(saleBillingInfoId));
+                	dao.delete(tbi);
+            	}else{
+            		//开票信息ID唯一序列
+                    saleBillingInfoId = SequenceManager.getSequence("");
+            	}
+                String SALE_BILLING_TYPE =CommonUtils.checkNull(request.getParamValue("SALE_BILLING_TYPE"));
+                String SALE_BILLING_UNIT =CommonUtils.checkNull(request.getParamValue("SALE_BILLING_UNIT"));
+                String SALE_BANK =CommonUtils.checkNull(request.getParamValue("SALE_BANK"));
+                String SALE_TAX_NO =CommonUtils.checkNull(request.getParamValue("SALE_TAX_NO"));
+                String SALE_ACCOUNT =CommonUtils.checkNull(request.getParamValue("SALE_ACCOUNT"));
+                String SALE_BILLING_ADDRESS =CommonUtils.checkNull(request.getParamValue("SALE_BILLING_ADDRESS"));
+               
+                tbi.setBillingInfoId(new Long(saleBillingInfoId));
+                tbi.setDealerId(new Long(dealerId));
+                tbi.setDealerType(deType);
+                tbi.setBillingType(new Integer(SALE_BILLING_TYPE));
+                tbi.setBillingUnit(SALE_BILLING_UNIT);
+                tbi.setBank(SALE_BANK);
+                tbi.setTaxNo(SALE_TAX_NO);
+                tbi.setAccount(SALE_ACCOUNT);
+                tbi.setBillingAddress(SALE_BILLING_ADDRESS);
+                tbi.setUpdateDate(currTime);
+                tbi.setStatus(Constant.STATUS_ENABLE);
+                tbi.setUpdateBy(new Long(logonUser.getUserId()));
+                dao.insert(tbi);
+            }
+            // 售后服务
+            if (deType == Constant.DEALER_TYPE_DWR || deType == Constant.DEALER_TYPE_DP){
+            	TmBillingInfoPO tbin = new TmBillingInfoPO();
+            	if(!"".equals(afteBillingInfoId)){
+            		tbin.setBillingInfoId(new Long(afteBillingInfoId));
+                	dao.delete(tbin);
+            	}else{
+            		//没有ID这新建一个ID，有ID者用原ID
+            		afteBillingInfoId = SequenceManager.getSequence("");
+            	}
+            	String AFTE_BILLING_TYPE =CommonUtils.checkNull(request.getParamValue("AFTE_BILLING_TYPE"));
+                String AFTE_BILLING_UNIT =CommonUtils.checkNull(request.getParamValue("AFTE_BILLING_UNIT"));
+                String AFTE_BANK =CommonUtils.checkNull(request.getParamValue("AFTE_BANK"));
+                String AFTE_TAX_NO =CommonUtils.checkNull(request.getParamValue("AFTE_TAX_NO"));
+                String AFTE_ACCOUNT =CommonUtils.checkNull(request.getParamValue("AFTE_ACCOUNT"));
+                String AFTE_BILLING_ADDRESS =CommonUtils.checkNull(request.getParamValue("AFTE_BILLING_ADDRESS"));
+                
+                tbin.setBillingInfoId(new Long(afteBillingInfoId));
+                tbin.setDealerId(new Long(dealerId));
+                tbin.setDealerType(deType);
+                tbin.setBillingType(new Integer(AFTE_BILLING_TYPE));
+                tbin.setBillingUnit(AFTE_BILLING_UNIT);
+                tbin.setBank(AFTE_BANK);
+                tbin.setTaxNo(AFTE_TAX_NO);
+                tbin.setAccount(AFTE_ACCOUNT);
+                tbin.setBillingAddress(AFTE_BILLING_ADDRESS);
+                tbin.setUpdateDate(currTime);
+                tbin.setStatus(Constant.STATUS_DISABLE);
+                tbin.setUpdateBy(new Long(logonUser.getUserId()));
+                dao.insert(tbin);
+            }
             // zhumingwei add 2013-10-18
             // 这里判断如果是售后经销商的话那么再查询TtPartBillDefinePO表里面有记录没有，如果有就修改，反之就insert
             if (!"".equals(dealerType) && "10771002".equals(dealerType)) {
@@ -4955,7 +5032,9 @@ public class DealerInfo {
 
         act.setOutData("businessList", businessList);
         act.setOutData("addressList", addressList);
-        act.setOutData("billingList", billingList);
+        JSONArray json = JSONArray.fromObject(billingList); 
+        String str = json.toString();//把json转换为String 
+        act.setOutData("billingList", str);
         //act.setOutData("mortgageList", mortgageList);
         act.setOutData("map", map);
         act.setForword(url);

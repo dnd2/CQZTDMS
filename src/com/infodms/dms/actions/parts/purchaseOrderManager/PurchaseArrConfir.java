@@ -372,10 +372,10 @@ public class PurchaseArrConfir extends BaseImport {
 				po.setOrderId(orderId);
 				TtPartPoMainPO pom = (TtPartPoMainPO) dao.select(po).get(0);
 				
-				System.out.println("******dealerOrderId:"+dealerOrderId);
-				System.out.println("******orderId:"+orderId);
-				System.out.println("******pom.getBuyerType():"+pom.getBuyerType());
-				System.out.println("******Constant:"+Constant.PARTS_PURCH_ORDER_TYPE_XZC);
+//				System.out.println("******dealerOrderId:"+dealerOrderId);
+//				System.out.println("******orderId:"+orderId);
+//				System.out.println("******pom.getBuyerType():"+pom.getBuyerType());
+//				System.out.println("******Constant:"+Constant.PARTS_PURCH_ORDER_TYPE_XZC);
 				
 				if((pom.getBuyerType()+"").equals(Constant.PARTS_PURCH_ORDER_TYPE_XZC+"")){
 					soIdi=soIdi+1;
@@ -391,7 +391,7 @@ public class PurchaseArrConfir extends BaseImport {
 					TtPartDlrOrderDtlPO dtlPo = (TtPartDlrOrderDtlPO) dao.select(dtlPoSel).get(0);
 					//不包括的情况下重取销售单id
 					if(!soMainStrList.contains(key)){
-						logger.info("******soId:"+soId);
+//						logger.info("******soId:"+soId);
 						soId = CommonUtils.parseLong(SequenceManager.getSequence(""));
 						Map<String,Object> map=new HashMap<String, Object>();
 						map.put("soId", soId);
@@ -699,7 +699,7 @@ public class PurchaseArrConfir extends BaseImport {
             Long orgId = pos.getOrgId();//获取单位id
             Long whId = pos.getWhId();
             List<OrgBean> orgBeanList = PartWareHouseDao.getInstance().getOrgInfo(loginUser);
-            Map<String, Object> locMap = dao.getLoc(locCode);
+            Map<String, Object> locMap = dao.getLoc(locCode,partId,orgId, whId );
             Map<String, Object> map = dao.queryPartAndLocationInfo(partId, orgId, whId);//查询当前配件信息及其货位信息
             
             if (locMap==null) {

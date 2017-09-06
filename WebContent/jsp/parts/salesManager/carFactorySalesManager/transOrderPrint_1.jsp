@@ -93,6 +93,7 @@ th {
 	font-weight: bold;
             /*background: #ccc;*/
 }
+body, td{font-size: 16px;color:#000}
 </style>
 </head>
 	<script language="javascript">
@@ -108,22 +109,12 @@ th {
     function confirmResult(){
     	document.all.WebBrowser.ExecWB(6,1);//打印
 	}
-    function printsetup()
-    {
-        wb.execwb(8,1);// 打印页面设置
-    }
-    function printpreview()
-    {
-        document.all.WebBrowser.ExecWB(7,1);// 打印页面预览
-        //wb.execwb(7,1);// 打印页面预览
-    }
 </script>
 	<body style="margin: 0px;padding: 0px;text-align: center;">
 		<form name="fm" id="fm" method="post" enctype="multipart/form-data">
 			<input name="pickOrderId" id="pickOrderId" value="${dataMap.pickOrderId}" type="hidden" />
 			<div id="fot_div">
-				<TABLE border=0 cellpadding=0 cellspacing=0 class="Noprint page-print-buttons"
-					class="center" width=100%>
+				<TABLE border=0 cellpadding=0 cellspacing=0 class="Noprint page-print-buttons center" width=100%>
 					<tr style="border: 0px;">
 						<td style="border: 0px;">
 							<input type=button id="printBtn" class="txtToolBarButton" value="打印">
@@ -143,7 +134,7 @@ th {
             </c:choose>
 					<div id="cen_mid_div">
                     <div id="top_cen_mid_div">
-                        <img src="<%=request.getContextPath()%>/img/bq_log1.gif" style="float: left;height: 55px;width: 250px" />
+                        <img src="<%=request.getContextPath()%>/img/bq_log1.gif" style="float: left;height: 55px;width: 250px;margin-bottom:5px" />
                         <span style="font-size:30px;margin-left:-120px;font-weight:bold">配件发运单</span>
                     </div>
 						<div id="but_cen_mid_div">

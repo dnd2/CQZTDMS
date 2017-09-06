@@ -90,7 +90,7 @@
 				<td class="right" width="10%" align="right" >变量类型：</td>
 				<td width="20%">
 					<script type="text/javascript">
-						genSelBoxExp("FIXCODETYPE",<%=Constant.FIXCODE_TYPE%>,"-1",true,"short_sel u-select",'',"false",'');
+						genSelBoxExp("FIXCODETYPE",<%=Constant.FIXCODE_TYPE%>,"-1",true,"u-select",'',"false",'');
 						</script>
 				</td>
 				<td class="right" width="10%" align="right">变量名称：</td>

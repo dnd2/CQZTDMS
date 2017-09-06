@@ -487,9 +487,11 @@ public class PartTransDao extends BaseDao {
      * @Title :
      * @Description: 获取订单信息
      */
-    public Map<String, Object> getOrderMainInfo2(String pickOrderId) {
-        StringBuffer sql = new StringBuffer();
-        sql.append(" select za_concat(b.order_id) order_id,za_concat(b.order_code) order_code from tt_part_so_main b where b.pick_order_id='").append(pickOrderId).append("'");
+    public Map<String, Object> getOrderMainInfo2(String pickOrderId,Long sellerId) {
+    	StringBuffer sql = new StringBuffer();
+        sql.append(" select za_concat(b.order_id) order_id,za_concat(b.order_code) order_code from tt_part_so_main b where b.pick_order_id='")
+        .append(pickOrderId).append("'")
+        .append("and b.seller_id = "+sellerId.toString()+" ");
         List<Map<String, Object>> list = this.pageQuery(sql.toString(), null, this.getFunName());
         if (null == list || list.size() <= 0) {
             return new HashMap();

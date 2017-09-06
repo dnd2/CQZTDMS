@@ -147,7 +147,7 @@ public class SendAssignmentDao extends BaseDao<PO> {
 		String arrStartDate = (String) map.get("arrStartDate");//最晚到货开始日期
 		String arrEndDate = (String) map.get("arrEndDate");//最晚到货结束日期
 		String logiId = (String) map.get("logiId");//承运商ID
-		String isMiddleTurn = (String) map.get("isMiddleTurn");//是否中专
+		//String isMiddleTurn = (String) map.get("isMiddleTurn");//是否中专
 		String isSdan = (String) map.get("isSdan");//是否散单
 		String jsProvince = (String) map.get("jsProvince");//结算省份
 		String jsCity = (String) map.get("jsCity");//结算城市
@@ -156,21 +156,24 @@ public class SendAssignmentDao extends BaseDao<PO> {
 		/****************************** 页面查询字段end ***************************/
 		List<Object> params = new LinkedList<Object>();
 		StringBuffer sql= new StringBuffer();
-		sql.append("SELECT tvd.req_id,tvd.ORD_ID,\n" );
+		sql.append("SELECT tvd.req_id,\n" );
+		sql.append("       tvd.ORD_ID,\n" );
 		sql.append("       tvd.dlv_is_sd sd_id,\n" );
 		sql.append("       st.code_desc sd_name,\n" );
-		sql.append("	    tvd.dlv_is_zz,\n" );
-		sql.append("       (select tcd.code_desc from tc_code tcd where tcd.code_id=tvd.dlv_is_zz) zz_desc,\n" );
-		//sql.append("        TVD.REQ_TOTAL,\n" );
-		sql.append("        TVD.DLV_ZZ_PROV_ID,\n" );
-		sql.append("        TVD.DLV_ZZ_CITY_ID,\n" );
-		sql.append("        TVD.DLV_ZZ_COUNTY_ID,\n");
-		sql.append("		TVD.DLV_BAL_PROV_ID,\n" );
-		sql.append("		TVD.DLV_BAL_CITY_ID,\n" );
-		sql.append("		TVD.DLV_BAL_COUNTY_ID,\n");
-		sql.append("       tvd.dlv_logi_id logi_id,\n" );
+//		sql.append("       tvd.dlv_is_zz,\n" );
+//		sql.append("       (select tcd.code_desc\n" );
+//		sql.append("          from tc_code tcd\n" );
+//		sql.append("         where tcd.code_id = tvd.dlv_is_zz) zz_desc,\n" );
+//		sql.append("       TVD.DLV_ZZ_PROV_ID,\n" );
+//		sql.append("       TVD.DLV_ZZ_CITY_ID,\n" );
+//		sql.append("       TVD.DLV_ZZ_COUNTY_ID,\n" );
+		sql.append("       TVD.DLV_BAL_PROV_ID,\n" );
+		sql.append("       TVD.DLV_BAL_CITY_ID,\n" );
+		sql.append("       TVD.DLV_BAL_COUNTY_ID,\n" );
+		sql.append("       TOD.LOGI_ID logi_id,\n" );
 		sql.append("       tvd.req_no,\n" );
-		sql.append("       tvd.DLV_TYPE,dt.code_desc dlv_type_name,\n" );
+		sql.append("       tvd.DLV_TYPE,\n" );
+		sql.append("       dt.code_desc dlv_type_name,\n" );
 		sql.append("       td.dealer_shortname dealer_name,\n" );
 		sql.append("       rw.warehouse_name rec_wh_name,\n" );
 		sql.append("       tvd.req_wh_id req_wh_id,\n" );
@@ -180,22 +183,28 @@ public class SendAssignmentDao extends BaseDao<PO> {
 		sql.append("       rp.region_name || rc.region_name || rt.region_name req_addr,\n" );
 		sql.append("       tvd.req_rec_addr,\n" );
 		sql.append("       to_char(tvd.req_date, 'yyyy-mm-dd') req_date,\n" );
-		sql.append("	(select TU.NAME FROM TC_USER TU WHERE TU.USER_ID=TVD.AUDIT_BY) AUDIT_BY,\n" );
+		sql.append("       (select TU.NAME FROM TC_USER TU WHERE TU.USER_ID = TVD.AUDIT_BY) AUDIT_BY,\n" );
 		sql.append("       to_char(tvd.Audit_Date, 'yyyy-mm-dd') AUDIT_DATE,\n" );
-		sql.append("       TVD.AUDIT_REMARK");
-
-		sql.append("  FROM tt_vs_dlvry           tvd,\n" );
-		sql.append("       tm_warehouse          fw,\n" );
-		sql.append("       tm_warehouse          rw,\n" );
-		sql.append("       tm_dealer             td,\n" );
-		sql.append("       tm_region             rp,\n" );
-		sql.append("       tm_region             rc,\n" );
-		sql.append("       tm_region             rt,\n" );
-		sql.append("       tc_code               fs,\n" );
-		sql.append("       tc_code               dt,\n" );
-		sql.append("       tc_code               st,\n" );
+		sql.append("       TVD.AUDIT_REMARK\n" );
+		sql.append("  FROM tt_vs_dlvry tvd,\n" );
+		sql.append("       tm_warehouse fw,\n" );
+		sql.append("       tm_warehouse rw,\n" );
+		sql.append("       tm_dealer td,\n" );
+		sql.append("       tm_region rp,\n" );
+		sql.append("       tm_region rc,\n" );
+		sql.append("       tm_region rt,\n" );
+		sql.append("       tc_code fs,\n" );
+		sql.append("       tc_code dt,\n" );
+		sql.append("       tc_code st,\n" );
 		sql.append("       tm_pose_business_area pb,\n" );
-		sql.append("       tc_pose               tp\n" );
+		sql.append("       tc_pose tp,\n" );
+		sql.append("       (select tr.logi_id, tdD.dealer_id\n" );
+		sql.append("          from tm_org tr, tm_dealer tdD, tm_dealer_org_relation tdr\n" );
+		sql.append("         where tr.org_id = tdr.org_id\n" );
+		sql.append("           and tdr.dealer_id = tdD.dealer_id\n" );
+		sql.append("           and tr.duty_type = 10431004\n" );
+		sql.append("           and tr.status = 10011001\n" );
+		sql.append("           and tdD.status = 10011001) tod\n" );
 		sql.append(" WHERE tvd.req_rec_dealer_id = td.dealer_id(+)\n" );
 		sql.append("   AND tvd.req_rec_wh_id = rw.warehouse_id(+)\n" );
 		sql.append("   AND tvd.req_wh_id = fw.warehouse_id\n" );
@@ -212,6 +221,7 @@ public class SendAssignmentDao extends BaseDao<PO> {
 		sql.append("   AND rp.region_type = 10541002\n" );
 		sql.append("   AND rc.region_type = 10541003\n" );
 		sql.append("   AND rt.region_type = 10541004\n" );
+		sql.append("   AND TVD.req_rec_dealer_id = TOD.DEALER_ID(+)\n");
 		sql.append("   AND tp.pose_id = ?\n");
 
 		params.add(poseId);
@@ -271,11 +281,11 @@ public class SendAssignmentDao extends BaseDao<PO> {
 			sql.append("   AND TVD.Dlv_Logi_Id=?\n");
 			params.add(logiId);
 		}
-		if (isMiddleTurn != null && !"".equals(isMiddleTurn))//是否中转
-		{
-			sql.append("   AND TVD.DLV_IS_ZZ=?\n");
-			params.add(isMiddleTurn);
-		}
+//		if (isMiddleTurn != null && !"".equals(isMiddleTurn))//是否中转
+//		{
+//			sql.append("   AND TVD.DLV_IS_ZZ=?\n");
+//			params.add(isMiddleTurn);
+//		}
 		if (isSdan != null && !"".equals(isSdan))//是否散单
 		{
 			sql.append("   AND TVD.DLV_IS_SD=?\n");
@@ -568,11 +578,11 @@ public class SendAssignmentDao extends BaseDao<PO> {
 	public Map<String, Object> getDlvInfoById(String reqId)
 	{
 		StringBuffer sql= new StringBuffer();
-		sql.append("select TVD.DLV_IS_ZZ,\n" );
-		sql.append("       (SELECT TC.CODE_DESC FROM Tc_Code TC WHERE TC.CODE_ID = TVD.DLV_IS_ZZ) IS_ZZ_DESC,\n" );
-		sql.append("       TVD.ZZ_WH_ID,TVD.DLV_ZZ_PROV_ID,\n" );
-		sql.append("       TVD.DLV_ZZ_CITY_ID,\n" );
-		sql.append("       TVD.DLV_ZZ_COUNTY_ID,\n" );
+		sql.append("select \n" );
+		//sql.append("       (SELECT TC.CODE_DESC FROM Tc_Code TC WHERE TC.CODE_ID = TVD.DLV_IS_ZZ) IS_ZZ_DESC,\n" );
+//		sql.append("       TVD.ZZ_WH_ID,TVD.DLV_ZZ_PROV_ID,\n" );
+//		sql.append("       TVD.DLV_ZZ_CITY_ID,\n" );
+//		sql.append("       TVD.DLV_ZZ_COUNTY_ID,\n" );
 		sql.append("       TVD.REQ_WH_ID,TVD.REQ_REC_WH_ID,\n" );
 		sql.append("       TVD.DLV_BAL_PROV_ID,\n" );
 		sql.append("       TVD.DLV_BAL_CITY_ID,\n" );

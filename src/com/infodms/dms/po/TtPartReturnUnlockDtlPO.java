@@ -39,6 +39,7 @@ public class TtPartReturnUnlockDtlPO extends PO{
 	private Long inlocId;
 	private String soCode;
 	private String inCode;
+	private String batchNo;
 	
 	public void setUpdateDate(Date updateDate){
 		this.updateDate=updateDate;
@@ -214,6 +215,14 @@ public class TtPartReturnUnlockDtlPO extends PO{
 
     public void setInCode(String inCode) {
         this.inCode = inCode;
+    }
+
+    public String getBatchNo() {
+        return batchNo;
+    }
+
+    public void setBatchNo(String batchNo) {
+        this.batchNo = batchNo;
     }
 
 }

@@ -57,6 +57,7 @@ String contextPath=request.getContextPath();
 				<th noWrap align=middle>配置</th>
 				<th noWrap align=middle>颜色</th>
 				<th noWrap align=middle>物料代码</th>
+				<th noWrap align=middle>中转选择</th>
 				<th noWrap align=middle>订单数量</th>
 				<th noWrap align=middle>已组板数量</th>
 				<th noWrap align=middle>本次组板数量</th>
@@ -73,6 +74,11 @@ String contextPath=request.getContextPath();
 				<td>${list.PACKAGE_NAME}</td><!-- 配置名称 -->
 				<td>${list.COLOR_NAME}</td><!-- 颜色 -->
 				<td>${list.MATERIAL_CODE}</td><!-- 物料CODE-->
+				<td>
+					<c:if test="${list.DLV_TYPE==12131001}"><!-- 批售订单才选择中转地 -->
+						<input type="button" name="button1" class="normal_btn" id="zzDtn" onclick="toSelZz(${status.index + 1})" value="选择" /> 
+					</c:if>
+				</td>
 				<td>${list.CHECK_AMOUNT}<input type='hidden' id="HIDDEN_CHECK_AMOUNT" name='HIDDEN_CHECK_AMOUNT' value="<c:out value="${list.CHECK_AMOUNT}"/>" /></td>
 				<td>${list.BOARD_NUM}<input type='hidden' id="HIDDEN_BOARD_NUM"  name='HIDDEN_BOARD_NUM' value="<c:out value="${list.BOARD_NUM}"/>" /></td>
 				<td><input type='text' id="BOARD_NUM" name='BOARD_NUM' value="${list.CHECK_AMOUNT-list.BOARD_NUM}"  onfocus="thisNum(this);"  onkeyup='checkData(this,"<c:out value="${list.CHECK_AMOUNT}"/>","<c:out value="${list.BOARD_NUM}"/>")' size=2/>
@@ -86,6 +92,11 @@ String contextPath=request.getContextPath();
 				<input type='hidden'  id="AREA_ID" name='AREA_ID' value="${list.AREA_ID}"/>
 				<input type='hidden'  id="DLV_WH_ID" name='DLV_WH_ID' value="${list.DLV_WH_ID}"/>
 				<input type='hidden'  id="REQ_ID" name='REQ_ID' value="${list.REQ_ID}"/>
+				<input type='hidden'  id="IS_ZZ${status.index + 1}" name='IS_ZZ' value=""/>
+				<input type='hidden'  id="ZZ_WARE${status.index + 1}" name='ZZ_WARE' value=""/>
+				<input type='hidden'  id="ZZ_PROVINCE${status.index + 1}" name='ZZ_PROVINCE' value=""/>
+				<input type='hidden'  id="ZZ_CITY${status.index + 1}" name='ZZ_CITY' value=""/>
+				<input type='hidden'  id="ZZ_COUNTY${status.index + 1}" name='ZZ_COUNTY' value=""/>
 				</td>
 			</tr>
 			</c:forEach>
@@ -93,6 +104,7 @@ String contextPath=request.getContextPath();
 			<tr>
 				<td></td>
 				<!-- <td></td> -->
+				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -150,6 +162,17 @@ String contextPath=request.getContextPath();
 			}
 		}
 		document.getElementById("SHOW_THIS_NUM").innerHTML=thisboardSum;
+	}
+	//选择中转地
+	function toSelZz(index){
+		var isZz=document.getElementById("IS_ZZ"+index).value;
+		var zzWare=document.getElementById("ZZ_WARE"+index).value;
+		var zzProvince=document.getElementById("ZZ_PROVINCE"+index).value;
+		var zzCity=document.getElementById("ZZ_CITY"+index).value;
+		var zzCounty=document.getElementById("ZZ_COUNTY"+index).value;
+		var url2 = '<%=contextPath%>/sales/storage/sendmanage/SendBoardManage/toEditZzAddr.do?index=' + index+'&IS_ZZM='+isZz+'&ZZ_WAREM='+zzWare+
+				'&ZZ_PROVINCEM='+zzProvince+'&ZZ_CITYM='+zzCity+'&ZZ_COUNTYM='+zzCounty;
+		OpenHtmlWindow(url2,1000,450);
 	}
 	//验证数据
 	function checkData(va,checkAmount,boardNum){

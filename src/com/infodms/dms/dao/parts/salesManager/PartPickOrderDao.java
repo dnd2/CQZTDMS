@@ -388,11 +388,12 @@ public class PartPickOrderDao extends BaseDao {
         sql.append("            '0') AS NORMAL_QTY_NOW, \n");
         sql.append("        SUM(T.PKG_QTY) PKGEDQTY \n");
         sql.append("   FROM TT_PART_PKG_DTL T,TT_PART_LOACTION_DEFINE D, TT_PART_DEFINE PD \n");
-        sql.append("   ,(select PICKORDER_ID,BATCH_NO,LOC_ID from TT_PART_BOOK_DTL where PICKORDER_ID="+pickOrderId+" group by PICKORDER_ID,BATCH_NO,LOC_ID) BOOK_DTL \n");
+        sql.append("   ,(select PICKORDER_ID,BATCH_NO,LOC_ID from TT_PART_BOOK_DTL where PICKORDER_ID in("+pickOrderId+") group by PICKORDER_ID,BATCH_NO,LOC_ID) BOOK_DTL \n");
         sql.append("  WHERE T.LOC_ID=D.LOC_ID \n");
         sql.append("    AND D.LOC_ID=BOOK_DTL.LOC_ID AND T.PICK_ORDER_ID = BOOK_DTL.PICKORDER_ID \n");
-        sql.append("    AND T.PICK_ORDER_ID = "+pickOrderId);
+        sql.append("    AND T.PICK_ORDER_ID in( "+pickOrderId+" ) ");
         sql.append("    AND T.PART_ID = PD.PART_ID \n");
+        sql.append("    AND T.PART_ID = D.PART_ID \n");//20170830 add
         sql.append("    AND BOOK_DTL.Batch_No=t.batch_no \n");//20170830 add
         sql.append("	AND EXISTS (SELECT 1 FROM TT_PART_PKG_BOX_DTL PD\n");
         sql.append("         WHERE PD.PICK_ORDER_ID = T.PICK_ORDER_ID\n");

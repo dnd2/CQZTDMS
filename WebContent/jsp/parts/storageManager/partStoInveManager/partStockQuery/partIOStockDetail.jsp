@@ -79,7 +79,7 @@ function exportPartStockExcel() {
 			<div class="form-body">
 				<table class="table_query">
 					<tr>
-						<td class="center">日期：</td>
+						<td class="right">日期：</td>
 						<td>
 							<input id="checkSDate" class="middle_txt" name="checkSDate" value="${sDate}" datatype="1,is_date,10" maxlength="10" group="checkSDate,checkEDate" style="width: 80px;" />
 							<input class="time_ico" onclick="showcalendar(event, 'checkSDate', false);" value=" " type="button" />
@@ -87,19 +87,20 @@ function exportPartStockExcel() {
 							<input id="checkEDate" class="middle_txt" name="checkEDate" value="${eDate}" datatype="1,is_date,10" maxlength="10" group="checkSDate,checkEDate" style="width: 80px;" />
 							<input class="time_ico" onclick="showcalendar(event, 'checkEDate', false);" value=" " type="button" />
 						</td>
-						<td class="left">业务单号：</td>
+						<td class="right">业务单号：</td>
 						<td>
 							<input id="orderCode" class="middle_txt" name="orderCode" value="" />
 						</td>
 					</tr>
 					<tr>
-						<td class="center">入库总数：</td>
+						<td class="right">入库总数：</td>
 						<td>
 							<input id="IN_QTY" name="IN_QTY" type="text" value="0" readonly="readonly" style="border: none; background-color: #F3F4F8" />
 						</td>
-						<td class="left">出库总数：</td>
+						<td class="right">出库总数：</td>
 						<td>
 							<input id="OUT_QTY" name="OUT_QTY" type="text" value="0" readonly="readonly" style="border: none; background-color: #F3F4F8" />
+						</td>
 					</tr>
 					<tr>
 						<td colspan="4" class="center">

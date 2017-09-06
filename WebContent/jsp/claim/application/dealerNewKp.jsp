@@ -30,7 +30,7 @@ function doInit(){
 						{header: "保养费用(元)", width:'5%', dataIndex: 'FIRST_SETTLEMENT_AMOUNT'},
 						{header: "服务活动费用(元)", width:'5%', dataIndex: 'ACTIVITIE_SETTLEMENT_AMOUNT'},
 						{header: "外出费用(元)", width:'5%', dataIndex: 'OUTWARD_SETTLEMENT_AMOUNT'},
-						//{header: "旧件运费(元)", width:'5%', dataIndex: 'RETURN_AMOUNT'},
+						{header: "旧件运费(元)", width:'5%', dataIndex: 'AUTH_PRICE'},
 						{header: "正负激励(元)", width:'5%', dataIndex: 'PN_EXACTION'},
 						{header: "善于索赔费用(元)", width:'5%', dataIndex: 'GOOD_CLAIM_AMOUNT'},
 						//{header: "二次抵扣(元)", width:'5%', dataIndex: 'AMOUNT_SUM'},
@@ -48,9 +48,9 @@ function myLink(value,metaData,record){
 	var v6=accAdd(v5,record.data.PN_EXACTION);
 	var v7=accAdd(v6,record.data.GOOD_CLAIM_AMOUNT);
 	var v8=accAdd(v7,-1*record.data.LAST_ADMINISTRATION_AMOUNT);
-	//var v9=accAdd(v8,-1*record.data.RETURN_AMOUNT);
+	var v9=accAdd(v8,record.data.AUTH_PRICE);
 	//var v10=accAdd(v9,-1*record.data.AMOUNT_SUM);
-	document.getElementById("c_s_amount").value=v8;
+	document.getElementById("c_s_amount").value=v9;
 	document.getElementById("amount").value=record.data.CLAIM_AMOUNT;
 
 	document.getElementById("CLAIM_NUM").value=record.data.CLAIM_NUM;//索赔单数
@@ -64,8 +64,8 @@ function myLink(value,metaData,record){
 	document.getElementById("GOOD_CLAIM_AMOUNT").value=record.data.GOOD_CLAIM_AMOUNT;
 	document.getElementById("LAST_ADMINISTRATION_AMOUNT").value=record.data.LAST_ADMINISTRATION_AMOUNT;
 	document.getElementById("THIS_ADMINISTRATION_AMOUNT").value=record.data.THIS_ADMINISTRATION_AMOUNT;
-	/* document.getElementById("RETURN_AMOUNT").value=record.data.RETURN_AMOUNT;
-	document.getElementById("AMOUNT_SUM").value=record.data.AMOUNT_SUM; */
+	document.getElementById("AUTH_PRICE").value=record.data.AUTH_PRICE;
+	//document.getElementById("AMOUNT_SUM").value=record.data.AMOUNT_SUM;
 
 	return String.format(value);
 }
@@ -136,7 +136,7 @@ function accAdd(arg1,arg2){
 		<input type="hidden" name="GOOD_CLAIM_AMOUNT" id="GOOD_CLAIM_AMOUNT"/>
 		<input type="hidden" name="LAST_ADMINISTRATION_AMOUNT" id="LAST_ADMINISTRATION_AMOUNT"/>
 		<input type="hidden" name="THIS_ADMINISTRATION_AMOUNT" id="THIS_ADMINISTRATION_AMOUNT"/>
-		<input type="hidden" name="RETURN_AMOUNT" id="RETURN_AMOUNT"/>
+		<input type="hidden" name="AUTH_PRICE" id="AUTH_PRICE"/>
 		<input type="hidden" name="AMOUNT_SUM" id="AMOUNT_SUM"/>
 		<table align="center" class="table_query">
 			<tr>

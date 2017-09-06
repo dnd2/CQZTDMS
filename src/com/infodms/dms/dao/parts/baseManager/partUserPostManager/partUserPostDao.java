@@ -133,7 +133,7 @@ public class partUserPostDao extends BaseDao {
 
         sql.append("SELECT PF.FIX_NAME, PF.FIX_VALUE\n");
         sql.append("  FROM TT_PART_FIXCODE_DEFINE PF\n");
-        sql.append(" WHERE 1 = 1  AND PF.FIX_GOUPTYPE = " + Constant.FIXCODE_TYPE_01);
+        sql.append(" WHERE PF.STATE=10011001 AND PF.FIX_GOUPTYPE = " + Constant.FIXCODE_TYPE_01);
 
         List<Map<String, Object>> list = dao.pageQuery(sql.toString(), null, getFunName());
         return list;

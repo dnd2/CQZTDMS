@@ -77,21 +77,7 @@ String otherCode=Constant.ORDER_TYPE_02+","+Constant.ORDER_TYPE_04+","+Constant.
 			<input class="short_txt" readonly="readonly"  type="text" id="DLV_END_DATE" name="DLV_END_DATE" onFocus="WdatePicker({el:$dp.$('DLV_END_DATE'), minDate:'#F{$dp.$D(\'DLV_START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>
 		  </td>	
 	  </tr> 
-	  <tr class="csstr" align="center">
-	  <td class="right">是否中转：</td> 
-		  <td align="left">
-			  <label>
-					<script type="text/javascript">
-							genSelBoxExp("isMiddleTurn",<%=Constant.IF_TYPE %>,"-1",true,"u-select",'',"false",'');
-					</script>
-				</label>
-		  </td>	
-		  <td class="right">最晚到货日期：</td> 
-		  <td align="left">
-			<input class="short_txt" readonly="readonly"  type="text" id="ARR_START_DATE" name="ARR_START_DATE" onFocus="WdatePicker({el:$dp.$('ARR_START_DATE'), maxDate:'#F{$dp.$D(\'ARR_START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>&nbsp;至&nbsp;
-			<input class="short_txt" readonly="readonly"  type="text" id="ARR_END_DATE" name="ARR_END_DATE" onFocus="WdatePicker({el:$dp.$('ARR_END_DATE'), minDate:'#F{$dp.$D(\'ARR_START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>
-		  </td>		
-	</tr>
+	 
 	<tr class="csstr" align="center">  	  
 		<td class="right">是否散单：</td> 
 		<td align="left">
@@ -107,6 +93,25 @@ String otherCode=Constant.ORDER_TYPE_02+","+Constant.ORDER_TYPE_04+","+Constant.
 			<input class="short_txt" readonly="readonly"  type="text" id="ASS_ENDDATE" name="ASS_ENDDATE" onFocus="WdatePicker({el:$dp.$('ASS_ENDDATE'), minDate:'#F{$dp.$D(\'ASS_STARTDATE\')}'})"  style="cursor: pointer;width: 80px;"/>		
 		</td>
 	  </tr> 
+	   <tr class="csstr" align="center">
+	  	<!-- 
+	  	<td class="right">是否中转：</td> 
+		  <td align="left">
+			  <label>
+					<script type="text/javascript">
+							genSelBoxExp("isMiddleTurn",<%=Constant.IF_TYPE %>,"-1",true,"u-select",'',"false",'');
+					</script>
+				</label>
+		  </td>	
+	  	 -->	
+		  <td class="right">最晚到货日期：</td> 
+		  <td align="left">
+			<input class="short_txt" readonly="readonly"  type="text" id="ARR_START_DATE" name="ARR_START_DATE" onFocus="WdatePicker({el:$dp.$('ARR_START_DATE'), maxDate:'#F{$dp.$D(\'ARR_START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>&nbsp;至&nbsp;
+			<input class="short_txt" readonly="readonly"  type="text" id="ARR_END_DATE" name="ARR_END_DATE" onFocus="WdatePicker({el:$dp.$('ARR_END_DATE'), minDate:'#F{$dp.$D(\'ARR_START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>
+		  </td>	
+		  <td class="right"></td> 	
+		  <td align="left"></td>
+	</tr>
 	  <tr align="center">
 	  	<td colspan="4" class="table_query_4Col_input" style="text-align: center">
 	    	<input type="button" id="queryBtn" class="u-button u-query" value="查询" onclick="doQuery()" />  
@@ -165,8 +170,8 @@ String otherCode=Constant.ORDER_TYPE_02+","+Constant.ORDER_TYPE_04+","+Constant.
 				{header: "申请数量",dataIndex: 'CHK_NUM',align:'center'},
 				{header: "申请发运方式",dataIndex: 'REQ_SHIP',align:'center'},
 				{header: "分派发运方式",dataIndex: 'DLV_SHIP',align:'center'},
-				{header: "是否中转",dataIndex: 'ZZ_DESC',align:'center'},
-				{header: "中转地址",dataIndex: 'ZZ_ADDR_NAME',align:'center'},
+				//{header: "是否中转",dataIndex: 'ZZ_DESC',align:'center'},
+				//{header: "中转地址",dataIndex: 'ZZ_ADDR_NAME',align:'center'},
 				{header: "分派日期", dataIndex: 'DLV_DATE', align:'center'},
 				{header: "申请收货地",dataIndex: 'REQ_ADDR', style:'text-align:left'},
 				{header: "发运结算地",dataIndex: 'JS_ADDR_NAME', style:'text-align:left'},
@@ -288,11 +293,12 @@ String otherCode=Constant.ORDER_TYPE_02+","+Constant.ORDER_TYPE_04+","+Constant.
 	
 	//是否散单选择
 	function selectSd(value,metaDate,record){
-		var strOption="<option value='10041002'>否</option>";//<option value='10041001'>是</option>";
+		//var strOption="<option value='10041002'>否</option>";//<option value='10041001'>是</option>";
 		//if(record.data.SD_ID==10041001){
 		//	strOption="<option value='10041001'>是</option><option value='10041002'>否</option>";
 		//}
-		return String.format("<SELECT name='IS_SAND' id='IS_SAND"+record.data.REQ_ID+"' onchange='changeLogistic(this,"+record.data.REQ_ID+")'>"+strOption+"</SELECT>");// disabled='true'
+		//return String.format("<SELECT name='IS_SAND' id='IS_SAND"+record.data.REQ_ID+"' onchange='changeLogistic(this,"+record.data.REQ_ID+")'>"+strOption+"</SELECT>");// disabled='true'
+		return String.format("否<input type='hidden' name='IS_SAND' id='IS_SAND"+record.data.REQ_ID+"' value='10041002'/>");
 	}
 	//根据是否散单控制承运商是否可选
 	function changeLogistic(obj,reqId){

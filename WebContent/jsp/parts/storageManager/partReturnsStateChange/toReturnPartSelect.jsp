@@ -22,9 +22,11 @@ var columns = [
 	{header: "序号", renderer: getIndex},
 	{header: "退换单号",dataIndex:'RETURN_CODE', style:"text-align: center"},
 	{header: "销售单号",dataIndex:'SO_CODE', style:"text-align: center"},
+	{header: "入库单号",dataIndex:'IN_CODE', style:"text-align: center"},
 	{header: "配件编码",dataIndex:'PART_OLDCODE', style:"text-align: center"},
 	{header: "配件名称",dataIndex:'PART_CNAME', style:"text-align: center"},
 	{header: "单位",dataIndex:'UNIT', style:"text-align: center"},
+	{header: "批次号",dataIndex:'BATCH_NO', style:"text-align: center"},
 	{header: "申请数量",dataIndex:'APPLY_QTY', style:"text-align: center"},
 	{header: "已解封数量",dataIndex:'UNLOC_QTY', style:"text-align: center"},
 	{header: "可解封数量",dataIndex:'KY_QTY', style:"text-align: center"}

@@ -54,7 +54,7 @@ public class SendBoardManage {
 	private final LogisticsDao reLDao = LogisticsDao.getInstance();
 	private final String sendBoardInitUtl = "/jsp/sales/storage/sendmanage/sendBoard/sendBoardList.jsp";
 	private final String addSendBoardInitUtl = "/jsp/sales/storage/sendmanage/sendBoard/addSendBoard.jsp";
-
+	private final String selectZzAddrUrl = "/jsp/sales/storage/sendmanage/sendBoard/selectZzAddr.jsp";
 	/**
 	 * 
 	 * @Title      : 
@@ -116,7 +116,7 @@ public class SendBoardManage {
 			String provinceId = CommonUtils.checkNull(request.getParamValue("jsProvince")); //省份
 			String cityId = CommonUtils.checkNull(request.getParamValue("jsCity")); // 城市
 			String countyId = CommonUtils.checkNull(request.getParamValue("jsCounty")); // 区县
-			String isMiddleTurn = CommonUtils.checkNull(request.getParamValue("isMiddleTurn")); //是否中转
+			//String isMiddleTurn = CommonUtils.checkNull(request.getParamValue("isMiddleTurn")); //是否中转
 			String isSdan = CommonUtils.checkNull(request.getParamValue("isSdan")); //是否散单
 			//大区
 			String orgCode = CommonUtils.checkNull(request.getParamValue("orgCode")); // 大区
@@ -135,7 +135,7 @@ public class SendBoardManage {
 			map.put("provinceId", provinceId);
 			map.put("cityId", cityId);
 			map.put("countyId", countyId);
-			map.put("isMiddleTurn", isMiddleTurn);
+			//map.put("isMiddleTurn", isMiddleTurn);
 			map.put("isSdan", isSdan);
 			map.put("orgCode", orgCode);
 			map.put("poseId", logonUser.getPoseId().toString());
@@ -189,6 +189,36 @@ public class SendBoardManage {
 		} catch (Exception e) {
 			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE,
 					"添加组板初始化");
+			logger.error(logonUser, e1);
+			act.setException(e1);
+		}
+	}
+	/**
+	 * 中转地选择跳转
+	 */
+	public void toEditZzAddr(){
+		AclUserBean logonUser = (AclUserBean) act.getSession().get(Constant.LOGON_USER);
+		try {
+			String index = request.getParamValue("index");
+			String IS_ZZM = request.getParamValue("IS_ZZM");
+			String ZZ_WAREM = request.getParamValue("ZZ_WAREM");
+			String ZZ_PROVINCEM = request.getParamValue("ZZ_PROVINCEM");
+			String ZZ_CITYM = request.getParamValue("ZZ_CITYM");
+			String ZZ_COUNTYM = request.getParamValue("ZZ_COUNTYM");
+			act.setOutData("index", index);
+			act.setOutData("IS_ZZM", IS_ZZM);
+			act.setOutData("ZZ_WAREM", ZZ_WAREM);
+			act.setOutData("ZZ_PROVINCEM", ZZ_PROVINCEM);
+			act.setOutData("ZZ_CITYM", ZZ_CITYM);
+			act.setOutData("ZZ_COUNTYM", ZZ_COUNTYM);
+			String poseId=logonUser.getPoseId().toString();
+			String poseBusType=logonUser.getPoseBusType().toString();
+			List<Map<String, Object>> list_yieldly=MaterialGroupManagerDao.getWarehouseList(poseId,poseBusType);
+			act.setOutData("list", list_yieldly);//仓库LIST
+			act.setForword(selectZzAddrUrl);
+		} catch (Exception e) {
+			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE,
+					"添加组板-中转地选择跳转");
 			logger.error(logonUser, e1);
 			act.setException(e1);
 		}
@@ -262,6 +292,11 @@ public class SendBoardManage {
 			String[] boardNum=request.getParamValues("BOARD_NUM");//本次组板数量
 			String[] orderIds=request.getParamValues("ORDER_IDS");//订单ID
 			String[] logiIds=request.getParamValues("LOGI_IDS");//物流商ID
+			String[] isZzs = request.getParamValues("IS_ZZ");//是否中转
+			String[] zzWareIds = request.getParamValues("ZZ_WARE");//中转仓库
+			String[] zzProvinces = request.getParamValues("ZZ_PROVINCE");//中转省份
+			String[] zzCitys = request.getParamValues("ZZ_CITY");//中转城市
+			String[] zzCountys = request.getParamValues("ZZ_COUNTY");//中转区县
 			String carNo=CommonUtils.checkNull(request.getParamValue("CAR_NO"));//承运车牌号
 			String loads=CommonUtils.checkNull(request.getParamValue("LOADS"));//装车道次
 			String carTeam=CommonUtils.checkNull(request.getParamValue("CAR_TEAM"));//领票车队
@@ -293,9 +328,9 @@ public class SendBoardManage {
 		tsbPO.setDriverTel(driverTel);
 		tsbPO.setDlvShipType(tvds.getDlvShipType());//发运方式
 		tsbPO.setDlvLogiId(tvds.getDlvLogiId());//承运商
-		tsbPO.setDlvBalProvId(tvds.getDlvBalProvId());//结算省份
-		tsbPO.setDlvBalCityId(tvds.getDlvBalCityId());//结算城市
-		tsbPO.setDlvBalCountyId(tvds.getDlvBalCountyId());//结算区县
+//		tsbPO.setDlvBalProvId(tvds.getDlvBalProvId());//结算省份
+//		tsbPO.setDlvBalCityId(tvds.getDlvBalCityId());//结算城市
+//		tsbPO.setDlvBalCountyId(tvds.getDlvBalCountyId());//结算区县
 		//获取组板订单中最大的最晚发运日期和最晚交货日期
 		if(reqIds!=null&&reqIds.length>0){
 			StringBuffer sb=new StringBuffer();
@@ -368,6 +403,20 @@ public class SendBoardManage {
 					tsbdPO.setAssDate(ass.getDlvDate());
 					tsbdPO.setAssPer(ass.getDlvBy());
 					tsbdPO.setAssRemark(ass.getDlvRemark());
+					tsbdPO.setDlvBalProvId(tvds.getDlvBalProvId());//结算省份
+					tsbdPO.setDlvBalCityId(tvds.getDlvBalCityId());//结算城市
+					tsbdPO.setDlvBalCountyId(tvds.getDlvBalCountyId());//结算区县
+					String isZz=isZzs[i];
+					if(!("").equals(isZz)&&null!=isZz&&isZz.equals(String.valueOf(Constant.IF_TYPE_YES))){
+						tsbdPO.setDlvIsZz(Constant.IF_TYPE_YES);
+						tsbdPO.setZzWhId(Long.parseLong(zzWareIds[i]));
+						tsbdPO.setDlvZzProvId(Long.parseLong(zzProvinces[i]));
+						tsbdPO.setDlvZzCityId(Long.parseLong(zzCitys[i]));
+						tsbdPO.setDlvZzCountyId(Long.parseLong(zzCountys[i]));
+					}else{
+						tsbdPO.setDlvIsZz(Constant.IF_TYPE_NO);
+					}
+					
 					reDao.addSendBoardDel(tsbdPO);/**组板明细表添加*/
 				}
 			}
@@ -426,11 +475,14 @@ public class SendBoardManage {
 				TtVsDlvryPO tvp=new TtVsDlvryPO();
 				int bdTotal=Integer.parseInt(map.get("BD_TOTAL").toString());//组板数量
 				tvp.setDlvBdTotal(bdTotal);
-				if(tvs.getOrdTotal()>bdTotal){//组板数小于订单数
-					tvp.setDlvStatus(Constant.ORDER_STATUS_04);//部分组板
-				}else{
-					tvp.setDlvStatus(Constant.ORDER_STATUS_05);//组板提交
+				if(bdTotal>0){//组板数大于0时才更新组板状态
+					if(tvs.getOrdTotal()>bdTotal){//组板数小于订单数
+						tvp.setDlvStatus(Constant.ORDER_STATUS_04);//部分组板
+					}else{
+						tvp.setDlvStatus(Constant.ORDER_STATUS_05);//组板提交
+					}
 				}
+				
 				tvp.setUpdateBy(logonUser.getUserId());
 				tvp.setUpdateDate(new Date());
 				reDao.update(tvd, tvp);

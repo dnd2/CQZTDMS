@@ -32,7 +32,6 @@ var myPage;
 	var idArray = new Array();
 	var columns = [
 					{header: "序号", renderer:getIndex,align:'center'},
-					{id:'action',header: "<input type='checkbox' id = \"selectedAll\" onclick='selectAll(this,\"ids\")'/>选择",sortable: false,dataIndex: 'ID',renderer:myCheckBox},
 					{id:'action',header: "操作",sortable: false,dataIndex: 'ID',align:'center',renderer:myLink},
 					{header: "状态", align:'center', dataIndex: 'STATUS_NAME'},
 					{header: "索赔单号", align:'center', dataIndex: 'APP_CLAIM_NO'},

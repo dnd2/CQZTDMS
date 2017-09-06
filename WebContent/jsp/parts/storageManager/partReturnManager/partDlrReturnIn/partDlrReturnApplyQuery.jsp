@@ -11,6 +11,7 @@
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
 <title>配件销售退货入库</title>
 <script type="text/javascript">
+$(function(){__extQuery__(1);});
 var myPage;
 
 var url = "<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnInManager/queryPartDlrReturnApplyInfo.json";
@@ -77,7 +78,7 @@ function view(value) {
 </script>
 
 </head>
-<body onunload='javascript:destoryPrototype()' onload="__extQuery__(1);loadcalendar();">
+<body>
 	<div class="wbox">
 		<div class="navigation">
 			<img src="<%=contextPath%>/img/nav.gif" />&nbsp;当前位置： 配件管理&gt;配件仓库管理 >配件退货管理&gt;销售退货入库

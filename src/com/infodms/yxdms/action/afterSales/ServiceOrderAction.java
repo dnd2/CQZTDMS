@@ -853,12 +853,21 @@ public class ServiceOrderAction extends BaseAction{
 			String repairType = CommonUtils.checkNull(request.getParamValue("repairType"));//维修类型
 			String arrivalDate = CommonUtils.checkNull(request.getParamValue("arrivalDate"));//进站时间
 			String purchasedDate = CommonUtils.checkNull(request.getParamValue("purchasedDate"));//购车时间
-			String purchasedDays = getDaysBetween(purchasedDate+" 00:00",arrivalDate);//购车天数
-			String purchasedMonths = getMonthsBetween(purchasedDate,arrivalDate);//购车月份
+			String purchasedDays = "0";
+			if(!purchasedDate.equals("")&&!arrivalDate.equals("")){
+				purchasedDays = getDaysBetween(purchasedDate+" 00:00",arrivalDate);//购车天数
+			}
+			String purchasedMonths = "0";
+			if(!purchasedDate.equals("")&&!arrivalDate.equals("")){
+				purchasedMonths = getMonthsBetween(purchasedDate,arrivalDate);//购车月份
+			}
 			String mileage = CommonUtils.checkNull(request.getParamValue("mileage"));//进站里程
 			String repairDateBegin = CommonUtils.checkNull(request.getParamValue("repairDateBegin"));//维修开始时间
 			String repairDateEnd = CommonUtils.checkNull(request.getParamValue("repairDateEnd"));//维修结束时间
-			String repairDays = getDaysBetween(repairDateBegin,repairDateEnd);//维修天数
+			String repairDays = "0";//维修天数
+			if(!repairDateBegin.equals("")&&!repairDateEnd.equals("")){
+				repairDays = getDaysBetween(repairDateBegin,repairDateEnd);//维修天数
+			}
 			String curFreeTimes = CommonUtils.checkNull(request.getParamValue("curFreeTimes"));//当前维修次数
 			String receptionistMan = CommonUtils.checkNull(request.getParamValue("receptionistMan"));//接待员
 			//车辆信息
@@ -1350,7 +1359,7 @@ public class ServiceOrderAction extends BaseAction{
 	 * @throws ParseException 
 	 * */
 	public String getDaysBetween(String earlyDate,String lastDate) throws ParseException {
-		String days = "";
+		String days = "0";
 		if(!earlyDate.equals("")&&!lastDate.equals("")){
 			if(earlyDate.length()>16) earlyDate = earlyDate.substring(0,16);
 			if(lastDate.length()>16) lastDate = lastDate.substring(0,16);

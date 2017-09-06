@@ -357,12 +357,16 @@ public class PartSalePrice extends BaseImport implements PTConstants {
                 
                 hisPo.setOldPriceValidStartDate(po.getPriceValidStartDate());
                 hisPo.setOldPriceValidEndDate(po.getPriceValidEndDate());
-                hisPo.setPriceValidStartDate(sdf.parse(priceValidStartDate));
-                hisPo.setPriceValidEndDate(sdf.parse(priceValidEndDate));
+                if(priceValidStartDate!="" && priceValidEndDate!=""){
+                    hisPo.setPriceValidStartDate(sdf.parse(priceValidStartDate));
+                    hisPo.setPriceValidEndDate(sdf.parse(priceValidEndDate));
+                }
                 hisPo.setOldSalePriceStartDate(po.getSalePriceEndDate());
                 hisPo.setOldSalePriceEndDate(po.getSalePriceEndDate());
-                hisPo.setSalePriceStartDate(sdf.parse(salePriceStartDate));
-                hisPo.setSalePriceEndDate(sdf.parse(salePriceEndDate));
+                if(salePriceStartDate!="" && salePriceEndDate!=""){
+                    hisPo.setSalePriceStartDate(sdf.parse(salePriceStartDate));
+                    hisPo.setSalePriceEndDate(sdf.parse(salePriceEndDate));
+                }
                 
                 dao.insert(hisPo);
             }

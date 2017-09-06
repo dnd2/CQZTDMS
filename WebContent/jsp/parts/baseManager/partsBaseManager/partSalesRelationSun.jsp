@@ -160,7 +160,7 @@ function showPartDealer1(inputCode ,inputId ,isMulti ,orgId, isAllLevel, isAllAr
 							<td>${fatherCode}
 								<input type="hidden" id="FATHER_CODE" name="FATHER_CODE" value="${fatherCode}" />
 							</td>
-							<td class="right f-bold" align="right">销售单位:</td>
+							<td class="right f-bold" align="right">销售单位名称:</td>
 							<td>${fatherName}
 								<input type="hidden" id="FATHER_NAME" name="FATHER_NAME" value="${fatherName}" />
 								<input type="hidden" id="FATHER_ID" name="FATHER_ID" value="${fatherId}" id="FATHER_ID" />
@@ -171,7 +171,7 @@ function showPartDealer1(inputCode ,inputId ,isMulti ,orgId, isAllLevel, isAllAr
 							<td>
 								<input type="text" class="middle_txt" name="DEALER_CODE" value="" />
 							</td>
-							<td class="right">服务商代码:</td>
+							<td class="right">服务商名称:</td>
 							<td>
 								<input type="text" style="width: 250px;" class="middle_txt" name="DEALER_NAME" value="" />
 							</td>

@@ -111,10 +111,10 @@
 			   <!-- <th nowrap="nowrap">配置</th> -->
 			  <th nowrap="nowrap">颜色</th>
 			  <th nowrap="nowrap">车架号</th>
-			  <th nowrap="nowrap">挂账里程</th>
-			  <th nowrap="nowrap">挂账单价</th>
-			  <!--<th nowrap="nowrap">里程（段2）</th>
-			  <th nowrap="nowrap">单价（段2）</th> -->
+			  <th nowrap="nowrap">里程(段1)</th>
+			  <th nowrap="nowrap">单价(段1)</th>
+			  <th nowrap="nowrap">里程(段2)</th>
+			  <th nowrap="nowrap">单价(段2)</th>
 		      <th nowrap="nowrap">挂账运费</th>
 		      <th nowrap="nowrap">新里程</th>
 			  <th nowrap="nowrap">新单价</th>
@@ -136,14 +136,18 @@
     					<!-- <td>${list.PACKAGE_NAME}</td> -->
     					<td>${list.COLOR_NAME}</td>
     					<td>${list.VIN}</td>
-    					<c:if test="${list.IS_ZZ==10041002}">
+    					<!--<c:if test="${list.IS_ZZ==10041002}">
 	    					<td>${list.MILEAGE}</td>
 	    					<td>${list.PRICE}</td>
     					</c:if>
     					<c:if test="${list.IS_ZZ==10041001}">
 	    					<td>${list.MILEAGE_ZZ}</td>
 	    					<td>${list.PRICE_ZZ}</td>
-    					</c:if>
+    					</c:if>-->
+    					<td>${list.MILEAGE}</td>
+	    				<td>${list.PRICE}</td>
+	    				<td>${list.MILEAGE_ZZ}</td>
+	    				<td>${list.PRICE_ZZ}</td>
     					<td>${list.ONE_BILL_AMOUNT}</td>
     					<td>${list.NEW_MILEAGE}</td>
     					<td>${list.NEW_PRICE}</td>

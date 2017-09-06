@@ -154,9 +154,9 @@ function changeDiv() {
     }
     var tbl = document.getElementById('file');
     var len = tbl.rows.length;
-    if (len > 2) {
+    if (len > 1) {
         //改变仓库之后就要删除调拨明细,重新选择
-        for (var i = tbl.rows.length - 1; i >= 2; i--) {
+        for (var i = tbl.rows.length - 1; i >= 1; i--) {
             tbl.deleteRow(i);
         }
     }

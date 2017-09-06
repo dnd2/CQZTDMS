@@ -69,7 +69,7 @@
         return output;
     }
     function changeType(obj) {
-        OpenHtmlWindow('<%=contextPath%>/parts/baseManager/partPlannerQueryManager/partPlannerQuery/UpdateProduceWay.do?partId=' + obj, 1100, 450);
+        OpenHtmlWindow('<%=contextPath%>/parts/baseManager/partPlannerQueryManager/partPlannerQuery/UpdateProduceWay.do?partId=' + obj, 800, 450);
     }
 	
 	//设置超链接

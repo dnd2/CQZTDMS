@@ -256,7 +256,6 @@ function getMonThSelect(id, name, value) {
 }
 
 function addCells() {
-
     var ck = document.getElementsByName('ck');
     var mt = document.getElementById("myTable");
     var cn = 0;
@@ -334,8 +333,8 @@ function addCell(partId, partCode, partOldcode, partCname,partType,partTypeName,
     var cell11 = rowObj.insertCell(10);
     var cell12 = rowObj.insertCell(11);
     var cell13 = rowObj.insertCell(12);
-    cell1.innerHTML = '<tr><td class="center" nowrap><input  type="checkbox" value="' + partId + '" id="cell_' + (tbl.rows.length - 2) + '" name="cb" checked="true" onclick="refeshQtyAndAmount();" /></td>';
-    cell2.innerHTML = '<td class="center" nowrap><span id="orderLine_SEQ" >' + (tbl.rows.length - 2) + '</span><input id="idx_' + partId + '" name="idx_' + partId + '" value="' + (tbl.rows.length - 2) + '" type="hidden" ></td>';
+    cell1.innerHTML = '<tr><td class="center" nowrap><input  type="checkbox" value="' + partId + '" id="cell_' + (tbl.rows.length - 1) + '" name="cb" checked="true" onclick="refeshQtyAndAmount();" /></td>';
+    cell2.innerHTML = '<td class="center" nowrap><span id="orderLine_SEQ" >' + (tbl.rows.length - 1) + '</span><input id="idx_' + partId + '" name="idx_' + partId + '" value="' + (tbl.rows.length - 1) + '" type="hidden" ></td>';
     cell3.innerHTML = '<td style="text-align: left" ><input   name="partOldcode_' + partId + '" id="partOldcode_' + partId + '" value="' + partOldcode + '" type="hidden" />' + partOldcode + '</td>';
     cell4.innerHTML = '<td style="text-align: left"><input   name="partCname_' + partId + '" id="partCname_' + partId + '" value="' + partCname + '" type="hidden" />' + partCname + '</td>';
     cell5.innerHTML = '<td style="text-align: left"><input   name="partCode_' + partId + '" id="partCode_' + partId + '" value="' + partCode + '" type="hidden" />' + partCode + '</td>';

@@ -96,13 +96,11 @@ function exportPartStockExcel(){
 			<td class="right">制单日期：</td>
 			<td><input id="checkSDate" class="short_txt"
 				name="checkSDate" datatype="1,is_date,10" maxlength="10"
-				group="checkSDate,checkEDate" style="width:80px;" /> <input class="time_ico"
-				onclick="showcalendar(event, 'checkSDate', false);" value=" "
+				group="checkSDate,checkEDate" style="width:80px;" /> <input class="time_ico"  value=" "
 				type="button" /> &nbsp;至&nbsp; <input id="checkEDate"
 				class="short_txt" name="checkEDate" datatype="1,is_date,10"
 				maxlength="10" group="checkSDate,checkEDate"  style="width:80px;"/> <input
-				class="time_ico"
-				onclick="showcalendar(event, 'checkEDate', false);" value=" "
+				class="time_ico"  value=" "
 				type="button" />
 			</td>
 			<td class="right">仓库：</td>

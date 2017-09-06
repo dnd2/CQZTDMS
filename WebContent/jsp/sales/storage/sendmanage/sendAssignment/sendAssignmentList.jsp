@@ -92,21 +92,14 @@ List whs =(List)request.getAttribute("list");
 		  </td>	 
 	  </tr> 
 		<tr align="center"> 
-		  <td class="right">是否中转：</td> 
+		  <!-- <td class="right">是否中转：</td> 
 		  <td align="left">
 			  <label>
 					<script type="text/javascript">
 							genSelBoxExp("isMiddleTurn",<%=Constant.IF_TYPE %>,"-1",true,"u-select",'',"false",'');
 					</script>
 				</label>
-		  </td>	
-		  <td class="right">最晚发运日期：</td> 
-		  <td align="left">
-			<input class="short_txt" readonly="readonly"  type="text" id="DLV_START_DATE" name="DLV_START_DATE" onFocus="WdatePicker({el:$dp.$('DLV_START_DATE'), maxDate:'#F{$dp.$D(\'DLV_END_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>&nbsp;至&nbsp;
-			<input class="short_txt" readonly="readonly"  type="text" id="DLV_END_DATE" name="DLV_END_DATE" onFocus="WdatePicker({el:$dp.$('DLV_END_DATE'), minDate:'#F{$dp.$D(\'DLV_START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>
-		  </td>	
-	  </tr> 
-	  <tr align="center">  
+		  </td>	 -->
 		  <td class="right">是否散单：</td> 
 		  <td align="left">
 			 <label>
@@ -115,6 +108,12 @@ List whs =(List)request.getAttribute("list");
 					</script>
 				</label>
 		  </td> 
+		  <td class="right">最晚发运日期：</td> 
+		  <td align="left">
+			<input class="short_txt" readonly="readonly"  type="text" id="DLV_START_DATE" name="DLV_START_DATE" onFocus="WdatePicker({el:$dp.$('DLV_START_DATE'), maxDate:'#F{$dp.$D(\'DLV_END_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>&nbsp;至&nbsp;
+			<input class="short_txt" readonly="readonly"  type="text" id="DLV_END_DATE" name="DLV_END_DATE" onFocus="WdatePicker({el:$dp.$('DLV_END_DATE'), minDate:'#F{$dp.$D(\'DLV_START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>
+		  </td>	
+		  
 		  <td class="right">最晚到货日期：</td> 
 		  <td align="left">
 			<input class="short_txt" readonly="readonly"  type="text" id="ARR_START_DATE" name="ARR_START_DATE" onFocus="WdatePicker({el:$dp.$('ARR_START_DATE'), maxDate:'#F{$dp.$D(\'ARR_START_DATE\')}'})"  style="cursor: pointer;width: 80px;"/>&nbsp;至&nbsp;
@@ -280,8 +279,9 @@ List whs =(List)request.getAttribute("list");
 	
 	//是否散单选择
 	function selectSd(value,metaDate,record){
-		var strOption="<option value='10041002'>否</option>";
-		return String.format("<SELECT name='IS_SAND' id='IS_SAND"+record.data.REQ_ID+"' onchange='changeLogistic(this,"+record.data.REQ_ID+")'>"+strOption+"</SELECT>");// disabled='true'
+		//var strOption="<option value='10041002'>否</option>";
+		//return String.format("<SELECT name='IS_SAND' id='IS_SAND"+record.data.REQ_ID+"' onchange='changeLogistic(this,"+record.data.REQ_ID+")'>"+strOption+"</SELECT>");// disabled='true'
+		return String.format("否<input type='hidden' name='IS_SAND' id='IS_SAND"+record.data.REQ_ID+"' value='10041002'/>");
 	}
 	//根据是否散单控制承运商是否可选
 	function changeLogistic(obj,reqId){

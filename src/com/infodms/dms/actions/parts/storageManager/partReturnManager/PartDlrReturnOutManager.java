@@ -244,7 +244,7 @@ public class PartDlrReturnOutManager implements PTConstants {
 				    
 				    if(mainPO.getStockOut()!=null&&!mainPO.getStockOut().equals(0l)){//有出库库房的时候才调用出库逻辑
 				    	//调用出库逻辑
-			            List ins = new LinkedList<Object>();
+			            List<Object> ins = new LinkedList<Object>();
 			            ins.add(0,CommonUtils.parseLong(returnId));
 			            ins.add(1,Constant.PART_CODE_RELATION_29);
 			            ins.add(2,1);//0表示先前未占用(默认),1表示先前已占用

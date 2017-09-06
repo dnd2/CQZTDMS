@@ -46,6 +46,7 @@ public class TtPartReturnRecordPO extends PO{
 	private Long itemQty;
 	private Date createDate;
 	private Integer returnType;
+	private String batchNo;
 
 	public void setIsWo(Integer isWo){
 		this.isWo=isWo;
@@ -278,5 +279,13 @@ public class TtPartReturnRecordPO extends PO{
 	public Integer getReturnType(){
 		return this.returnType;
 	}
+
+    public String getBatchNo() {
+        return batchNo;
+    }
+
+    public void setBatchNo(String batchNo) {
+        this.batchNo = batchNo;
+    }
 
 }

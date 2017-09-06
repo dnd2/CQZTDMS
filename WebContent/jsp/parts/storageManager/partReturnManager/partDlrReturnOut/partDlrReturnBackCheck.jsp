@@ -10,20 +10,24 @@
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
 <title>配件销售退货回运</title>
 <script type="text/javascript">
+$(function(){
+	__extQuery__(1);
+});
+
 var myPage;
 var title = null;
 var url = "<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnChkManager/queryPartDlrReturnApplyDetail.json";
 
 var columns = [
     {header: "序号", align: 'center', renderer: getIndex},
-    {header: "配件编码", dataIndex: 'PART_OLDCODE', style: 'text-align:left'},
-    {header: "配件名称", dataIndex: 'PART_CNAME', style: 'text-align:left'},
+    {header: "配件编码", dataIndex: 'PART_OLDCODE', align: 'center'},
+    {header: "配件名称", dataIndex: 'PART_CNAME', align: 'center'},
 //     {header: "件号", dataIndex: 'PART_CODE', style: 'text-align:left'},
 //    {header: "采购数量", dataIndex: 'BUY_QTY', align: 'center'},
     {header: "申请退货数量", dataIndex: 'APPLY_QTY', align: 'center'},
-    {header: "审核数量", dataIndex: 'CHECK_QTY', align: 'center'},
-    {header: "回运数量", dataIndex: 'CHECK_QTY', align: 'center'},
-    {header: "备注", dataIndex: 'REMARK', style: 'text-align:left'}
+    {header: "审核数量", dataIndex: 'CHECK_THREE_QTY', align: 'center'},
+    {header: "回运数量", dataIndex: 'CHECK_THREE_QTY', align: 'center'},
+    {header: "备注", dataIndex: 'REMARK', align: 'center'}
 ];
 //回运
 function agreeApply() {
@@ -57,8 +61,7 @@ function getResult(jsonObj) {
         var error = jsonObj.error;
         var exceptions = jsonObj.Exception;
         if (success) {
-            MyAlert(success);
-            window.location.href = '<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnChkManager/queryPartReturnBackInit.do';
+            MyAlert(success, goback);
         }
         if (error) {
             MyAlert(error);
@@ -74,7 +77,7 @@ function goback() {
 </script>
 
 </head>
-<body onunload='javascript:destoryPrototype()' onload="__extQuery__(1);loadcalendar();">
+<body>
 	<div class="wbox">
 		<div class="navigation">
 			<img src="<%=contextPath%>/img/nav.gif" />&nbsp;当前位置： 配件管理&gt;配件仓库管理 >配件退货管理&gt;销售退货回运&gt;回运信息填写
@@ -111,7 +114,7 @@ function goback() {
 							<td class="right">回运日期：</td>
 							<td>
 								<input name="wlDate" id="wlDate" value="${old}" type="text" class="middle_txt" datatype="1,is_date,10" group="t1,t2" readonly>
-								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间" onclick="showcalendar(event, 'wlDate', false);" />
+								<input name='button3' value=" " type='button' class='time_ico' title="点击选择时间"  />
 								<font style="color: red">*</font>
 							</td>
 						</tr>

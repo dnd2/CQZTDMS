@@ -61,6 +61,78 @@ public class TtSalesBoDetailPO extends PO{
 	private Date createDate;
 	private Long assPer;
 	private Integer allocaNum;
+	private Long dlvBalProvId;
+	private Long dlvBalCityId;
+	private Long dlvBalCountyId;
+	private Integer dlvIsZz;
+	private Long dlvZzProvId;
+	private Long dlvZzCityId;
+	private Long dlvZzCountyId;
+	private Long zzWhId;
+	
+	public Long getDlvBalProvId() {
+		return dlvBalProvId;
+	}
+
+	public void setDlvBalProvId(Long dlvBalProvId) {
+		this.dlvBalProvId = dlvBalProvId;
+	}
+
+	public Long getDlvBalCityId() {
+		return dlvBalCityId;
+	}
+
+	public void setDlvBalCityId(Long dlvBalCityId) {
+		this.dlvBalCityId = dlvBalCityId;
+	}
+
+	public Long getDlvBalCountyId() {
+		return dlvBalCountyId;
+	}
+
+	public void setDlvBalCountyId(Long dlvBalCountyId) {
+		this.dlvBalCountyId = dlvBalCountyId;
+	}
+
+	public Integer getDlvIsZz() {
+		return dlvIsZz;
+	}
+
+	public void setDlvIsZz(Integer dlvIsZz) {
+		this.dlvIsZz = dlvIsZz;
+	}
+
+	public Long getDlvZzProvId() {
+		return dlvZzProvId;
+	}
+
+	public void setDlvZzProvId(Long dlvZzProvId) {
+		this.dlvZzProvId = dlvZzProvId;
+	}
+
+	public Long getDlvZzCityId() {
+		return dlvZzCityId;
+	}
+
+	public void setDlvZzCityId(Long dlvZzCityId) {
+		this.dlvZzCityId = dlvZzCityId;
+	}
+
+	public Long getDlvZzCountyId() {
+		return dlvZzCountyId;
+	}
+
+	public void setDlvZzCountyId(Long dlvZzCountyId) {
+		this.dlvZzCountyId = dlvZzCountyId;
+	}
+
+	public Long getZzWhId() {
+		return zzWhId;
+	}
+
+	public void setZzWhId(Long zzWhId) {
+		this.zzWhId = zzWhId;
+	}
 
 	public void setAddressId(Long addressId){
 		this.addressId=addressId;

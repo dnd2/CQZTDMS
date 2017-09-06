@@ -52,30 +52,70 @@ public class SendBoardSeachDao extends BaseDao<PO>{
 		StringBuffer sql= new StringBuffer();
 		sql.append("SELECT TVD.ORD_NO,\n" );
 		sql.append("       TW.WAREHOUSE_NAME WH_NAME,\n" );
-		sql.append("       DECODE(TD.DEALER_SHORTNAME,NULL,SH.WAREHOUSE_NAME,TD.DEALER_SHORTNAME) DEALER_NAME,\n" );
+		sql.append("       DECODE(TD.DEALER_SHORTNAME,\n" );
+		sql.append("              NULL,\n" );
+		sql.append("              SH.WAREHOUSE_NAME,\n" );
+		sql.append("              TD.DEALER_SHORTNAME) DEALER_NAME,\n" );
 		sql.append("       VMGM.SERIES_NAME,\n" );
 		sql.append("       VMGM.MODEL_NAME,\n" );
 		sql.append("       VMGM.PACKAGE_NAME,\n" );
 		sql.append("       VMGM.MATERIAL_NAME,\n" );
 		sql.append("       VMGM.MATERIAL_CODE,\n" );
 		sql.append("       VMGM.COLOR_NAME,\n" );
+		sql.append("       (SELECT TC.CODE_DESC\n" );
+		sql.append("          FROM TC_CODE TC\n" );
+		sql.append("         WHERE TC.CODE_ID = TSBD.DLV_IS_ZZ) DLV_IS_ZZ, --是否中转\n" );
+		sql.append("       ZZ.PROV_NAME || ZZ.CITY_NAME || ZZ.COUNTY_NAME ZZ_ADDR_NAME, --中转地\n" );
+		sql.append("       JS.PROV_NAME || JS.CITY_NAME || JS.COUNTY_NAME JS_ADDR_NAME, --结算地\n" );
 		sql.append("       TVDD.BD_TOTAL DLV_BD_TOTAL, --已组板数量\n" );
 		sql.append("       TSBD.BOARD_NUM BD_TOTAL, --本次组板数量\n" );
 		sql.append("       nvl(TVDD.FY_TOTAL, 0) FY_TOTAL --发运 数量\n" );
-		sql.append("  FROM TT_SALES_BO_DETAIL    TSBD,\n" );
-		sql.append("       TT_VS_DLVRY           TVD,\n" );
-		sql.append("       TT_VS_DLVRY_DTL       TVDD,\n" );
+		sql.append("  FROM TT_SALES_BO_DETAIL TSBD,\n" );
+		sql.append("       TT_VS_DLVRY TVD,\n" );
+		sql.append("       TT_VS_DLVRY_DTL TVDD,\n" );
 		sql.append("       VW_MATERIAL_GROUP_MAT VMGM,\n" );
-		sql.append("       TM_WAREHOUSE          TW,\n" );
-		sql.append("       TM_DEALER             TD,\n" );
-		sql.append("       TM_WAREHOUSE          SH\n" );
+		sql.append("       TM_WAREHOUSE TW,\n" );
+		sql.append("       TM_DEALER TD,\n" );
+		sql.append("       TM_WAREHOUSE SH,\n" );
+		sql.append("       (SELECT RP2.REGION_CODE PROV_CODE,\n" );
+		sql.append("               RC2.REGION_CODE CITY_CODE,\n" );
+		sql.append("               RT2.REGION_CODE COUNTY_CODE,\n" );
+		sql.append("               RP2.REGION_NAME PROV_NAME,\n" );
+		sql.append("               RC2.REGION_NAME CITY_NAME,\n" );
+		sql.append("               RT2.REGION_NAME COUNTY_NAME\n" );
+		sql.append("          FROM tm_region rp2, tm_region rc2, tm_region rt2\n" );
+		sql.append("         where 1 = 1\n" );
+		sql.append("           AND rp2.region_id = rc2.parent_id\n" );
+		sql.append("           AND rc2.region_id = rt2.parent_id\n" );
+		sql.append("           AND rp2.region_type = 10541002\n" );
+		sql.append("           AND rc2.region_type = 10541003\n" );
+		sql.append("           AND rt2.region_type = 10541004) ZZ,\n" );
+		sql.append("       (SELECT RP3.REGION_CODE PROV_CODE,\n" );
+		sql.append("               RC3.REGION_CODE CITY_CODE,\n" );
+		sql.append("               RT3.REGION_CODE COUNTY_CODE,\n" );
+		sql.append("               RP3.REGION_NAME PROV_NAME,\n" );
+		sql.append("               RC3.REGION_NAME CITY_NAME,\n" );
+		sql.append("               RT3.REGION_NAME COUNTY_NAME\n" );
+		sql.append("          FROM tm_region rp3, tm_region rc3, tm_region rt3\n" );
+		sql.append("         where 1 = 1\n" );
+		sql.append("           AND rp3.region_id = rc3.parent_id\n" );
+		sql.append("           AND rc3.region_id = rt3.parent_id\n" );
+		sql.append("           AND rp3.region_type = 10541002\n" );
+		sql.append("           AND rc3.region_type = 10541003\n" );
+		sql.append("           AND rt3.region_type = 10541004) JS\n" );
 		sql.append(" WHERE TSBD.OR_DE_ID = TVDD.ORD_DETAIL_ID\n" );
 		sql.append("   AND TSBD.MAT_ID = TVDD.MATERIAL_ID\n" );
 		sql.append("   AND TVDD.REQ_ID = TVD.REQ_ID\n" );
 		sql.append("   AND TVDD.MATERIAL_ID = VMGM.MATERIAL_ID\n" );
 		sql.append("   AND TVD.DLV_WH_ID = TW.WAREHOUSE_ID\n" );
 		sql.append("   AND TVD.ORD_PUR_DEALER_ID = TD.DEALER_ID(+)\n" );
-		sql.append("   AND TVD.DLV_REC_WH_ID=SH.WAREHOUSE_ID(+)\n");
+		sql.append("   AND TVD.DLV_REC_WH_ID = SH.WAREHOUSE_ID(+)\n" );
+		sql.append("   AND TSBD.DLV_ZZ_PROV_ID = ZZ.PROV_CODE(+)\n" );
+		sql.append("   AND TSBD.DLV_ZZ_CITY_ID = ZZ.CITY_CODE(+)\n" );
+		sql.append("   AND TSBD.DLV_ZZ_COUNTY_ID = ZZ.COUNTY_CODE(+)\n" );
+		sql.append("   AND TSBD.DLV_BAL_PROV_ID = JS.PROV_CODE(+)\n" );
+		sql.append("   AND TSBD.DLV_BAL_CITY_ID = JS.CITY_CODE(+)\n" );
+		sql.append("   AND TSBD.DLV_BAL_COUNTY_ID = JS.COUNTY_CODE(+)\n");
 		sql.append("   AND TSBD.BO_ID = ?\n");
 		sql.append(" ORDER BY TVD.ORD_NO, TW.WAREHOUSE_NAME, VMGM.MATERIAL_CODE");
 		List<Map<String, Object>> list= dao.pageQuery(sql.toString(), params, getFunName());
@@ -150,22 +190,22 @@ public class SendBoardSeachDao extends BaseDao<PO>{
 		sql.append("       (SELECT TC.CODE_DESC\n" );
 		sql.append("          FROM TC_CODE TC\n" );
 		sql.append("         WHERE TC.CODE_ID = TSB.DLV_SHIP_TYPE) SHIP_NAME,\n" );
-		sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
+//		sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
 		sql.append("       DECODE(TSB.PLAN_LOAD_DATE,NULL,to_char(SYSDATE, 'yyyy-mm-dd'),to_char(TSB.PLAN_LOAD_DATE, 'yyyy-mm-dd')) PLAN_LOAD_DATE,\n" );
 		sql.append("       to_char(TSB.DLV_FY_DATE, 'yyyy-mm-dd') DLV_FY_DATE,\n" );
 		sql.append("       to_char(TSB.DLV_JJ_DATE, 'yyyy-mm-dd') DLV_JJ_DATE\n" );
 		sql.append("  FROM TT_SALES_BOARD TSB,\n" );
-		sql.append("       TT_SALES_LOGI  TSL,\n" );
-		sql.append("       TM_REGION      TR1,\n" );
-		sql.append("       TM_REGION      TR2,\n" );
-		sql.append("       TM_REGION      TR3\n" );
+		sql.append("       TT_SALES_LOGI  TSL\n" );
+//		sql.append("       TM_REGION      TR1,\n" );
+//		sql.append("       TM_REGION      TR2,\n" );
+//		sql.append("       TM_REGION      TR3\n" );
 		sql.append(" WHERE 1 = 1\n" );
 		sql.append("   AND TSB.DLV_LOGI_ID = TSL.LOGI_ID(+)\n" );
-		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
-		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
-		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
-		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
-		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
+//		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
+//		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
+//		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
+//		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
+//		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
 		sql.append("   AND TSB.BO_ID = ?");
 		Map<String, Object> map= dao.pageQueryMap(sql.toString(), params, getFunName());
 		return map;	
@@ -208,9 +248,9 @@ public class SendBoardSeachDao extends BaseDao<PO>{
 		String poseId = CommonUtils.checkNull((String)map.get("poseId"));
 		String logiName = CommonUtils.checkNull((String)map.get("logiName")); //物流商
 		String transportType = CommonUtils.checkNull((String)map.get("transportType"));//发运方式
-		String provinceId = CommonUtils.checkNull((String)map.get("provinceId")); //结算省份
-		String cityId = CommonUtils.checkNull((String)map.get("cityId"));//结算城市
-		String countyId = CommonUtils.checkNull((String)map.get("countyId")); //结算区县
+//		String provinceId = CommonUtils.checkNull((String)map.get("provinceId")); //结算省份
+//		String cityId = CommonUtils.checkNull((String)map.get("cityId"));//结算城市
+//		String countyId = CommonUtils.checkNull((String)map.get("countyId")); //结算区县
 		
 		String posBusType=(String)map.get("posBusType");
 		String logiIdU=String.valueOf(map.get("logiId"));//当前职位所对应承运商ID
@@ -224,10 +264,10 @@ public class SendBoardSeachDao extends BaseDao<PO>{
 		sql.append("          FROM TC_CODE TC\n" );
 		sql.append("         WHERE TC.CODE_ID = TSB.DLV_SHIP_TYPE) SHIP_NAME,\n" );
 		sql.append("       TSL.LOGI_NAME,\n" );
-		sql.append("       TSB.DLV_BAL_PROV_ID,\n" );
-		sql.append("       TSB.DLV_BAL_CITY_ID,\n" );
-		sql.append("       TSB.DLV_BAL_COUNTY_ID,\n" );
-		sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
+//		sql.append("       TSB.DLV_BAL_PROV_ID,\n" );
+//		sql.append("       TSB.DLV_BAL_CITY_ID,\n" );
+//		sql.append("       TSB.DLV_BAL_COUNTY_ID,\n" );
+//		sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
 		sql.append("       to_char(TSB.BO_DATE, 'yyyy-mm-dd') BO_DATE,\n" );
 		sql.append("       NVL(TSB.BO_NUM, 0) BO_NUM, --组板数量\n" );
 		sql.append("       NVL(TSB.ALLOCA_NUM, 0) ALLOCA_NUM, --配车数量\n" );
@@ -238,18 +278,19 @@ public class SendBoardSeachDao extends BaseDao<PO>{
 		sql.append("      TSB.AUDIT_REMARK,\n" );
 		sql.append("      to_char(TSB.AUDIT_TIME,'yyyy-mm-dd') AUDIT_TIME");
 		sql.append("  from tt_sales_board tsb,\n" );
-		sql.append("       TT_SALES_LOGI  TSL,\n" );
-		sql.append("       TM_REGION      TR1,\n" );
-		sql.append("       TM_REGION      TR2,\n" );
-		sql.append("       TM_REGION      TR3\n" );
+		sql.append("       TT_SALES_LOGI  TSL\n" );
+//		sql.append("       TM_REGION      TR1,\n" );
+//		sql.append("       TM_REGION      TR2,\n" );
+//		sql.append("       TM_REGION      TR3\n" );
 		sql.append(" WHERE 1 = 1\n" );
 		sql.append("   AND TSB.DLV_LOGI_ID = TSL.LOGI_ID(+)\n" );
-		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
-		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
-		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
-		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
-		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
-		sql.append("   AND TSB.BO_STATUS = '1'\n" );
+//		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
+//		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
+//		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
+//		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
+//		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
+		
+//		sql.append("   AND TSB.BO_STATUS = '1'\n" );
 		
 		if(posBusType.equals(String.valueOf(Constant.POSE_BUS_TYPE_WL))){//物流商
 			sql.append("   AND TSB.DLV_LOGI_ID= ?\n" );
@@ -276,18 +317,18 @@ public class SendBoardSeachDao extends BaseDao<PO>{
 			sql.append("  AND TSB.BO_DATE<=TO_DATE(?,'YYYY-MM-DD HH24:MI:SS')\n" );
 			params.add(raiseEndDate +" 23:59:59");
 		}
-		if(provinceId!=null&&!"".equals(provinceId)){
-			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
-			params.add(provinceId);
-		}
-		if(cityId!=null&&!"".equals(cityId)){
-			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
-			params.add(cityId);
-		}
-		if(countyId!=null&&!"".equals(countyId)){
-			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
-			params.add(countyId);
-		}
+//		if(provinceId!=null&&!"".equals(provinceId)){
+//			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
+//			params.add(provinceId);
+//		}
+//		if(cityId!=null&&!"".equals(cityId)){
+//			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
+//			params.add(cityId);
+//		}
+//		if(countyId!=null&&!"".equals(countyId)){
+//			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
+//			params.add(countyId);
+//		}
 		sql.append(" order by tsb.bo_date desc");
 		Object[] arr=new Object[2];
 		arr[0]=sql;

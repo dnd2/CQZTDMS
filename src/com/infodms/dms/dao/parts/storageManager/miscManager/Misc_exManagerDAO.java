@@ -96,7 +96,7 @@ public class Misc_exManagerDAO extends BaseDao<PO> {
         StringBuffer sql = new StringBuffer();
 
         sql.append("SELECT T.PART_ID,T.PART_CODE,T.PART_OLDCODE,T.PART_CNAME,NVL(T.UNIT,'件') UNIT,T.MIN_PACK1 AS MIN_PACKAGE,");
-        sql.append("VPS.LOC_ID,VPS.LOC_CODE,VPS.LOC_NAME,VPS.BATCH_NO,VPS.ITEM_QTY,VPS.NORMAL_QTY,VPS.BOOKED_QTY,vps.STOCK_ID");
+        sql.append("VPS.LOC_ID,VPS.LOC_CODE,VPS.LOC_NAME,VPS.BATCH_NO,VPS.ITEM_QTY,VPS.NORMAL_QTY,VPS.BOOKED_QTY,vps.STOCK_ID, VPS.STOCK_VENDER_ID");
         sql.append(" FROM TT_PART_DEFINE T, VW_PART_STOCK VPS ");
         sql.append(" WHERE 1=1 AND T.PART_ID = VPS.PART_ID");
 
@@ -220,8 +220,9 @@ public class Misc_exManagerDAO extends BaseDao<PO> {
         return list;
     }
 
-    public List<Map<String, Object>> checkItemQty(String partId, String whId, String orgId, String locId) {
+    public List<Map<String, Object>> checkItemQty(String partId, String whId, String orgId, String locId, String batchNo) {
         String sql = "SELECT * FROM VW_PART_STOCK V WHERE v.state= 10011001 and v.status= 1 and V.PART_ID=" + partId + " AND V.WH_ID=" + whId + " AND V.ORG_ID=" + orgId + " AND V.LOC_ID=" + locId;
+        sql += " AND V.BATCH_NO = '"+batchNo+"'";
         List<Map<String, Object>> list = (List<Map<String, Object>>) pageQuery(sql, null, getFunName());
         return list;
     }

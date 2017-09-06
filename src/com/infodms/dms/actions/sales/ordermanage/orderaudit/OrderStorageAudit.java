@@ -354,10 +354,10 @@ public class OrderStorageAudit {
 				if(!"".equals(CommonUtils.checkNull(map.get(0).get("DLV_STATUS")))&&CommonUtils.checkNull(map.get(0).get("DLV_STATUS"))!=null){
 					tvdp.setDlvStatus(new Integer(CommonUtils.checkNull(map.get(0).get("DLV_STATUS"))));
 				}
-				if(!"".equals(CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ")))&&CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ"))!=null){
+				/*if(!"".equals(CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ")))&&CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ"))!=null){
 					tvdp.setDlvIsZz(new Integer(CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ"))));
 				}
-				
+				*/
 				dao.insert(tvdp);
 				List<Map<String,Object>> dtlMap=dao.getDelvyDtlInfo(reqId);
 				for(int i=0;i<dtlMap.size();i++){
@@ -523,9 +523,9 @@ public class OrderStorageAudit {
 				if(!"".equals(CommonUtils.checkNull(map.get(0).get("DLV_STATUS")))&&CommonUtils.checkNull(map.get(0).get("DLV_STATUS"))!=null){
 					tvdp.setDlvStatus(new Integer(CommonUtils.checkNull(map.get(0).get("DLV_STATUS"))));
 				}
-				if(!"".equals(CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ")))&&CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ"))!=null){
+				/*if(!"".equals(CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ")))&&CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ"))!=null){
 					tvdp.setDlvIsZz(new Integer(CommonUtils.checkNull(map.get(0).get("DLV_IS_ZZ"))));
-				}
+				}*/
 				 
 				dao.insert(tvdp);
 				List<Map<String,Object>> dtlMap=dao.getDelvyDtlInfo(reqIds[i]);

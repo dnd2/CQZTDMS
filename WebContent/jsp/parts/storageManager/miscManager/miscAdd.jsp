@@ -19,58 +19,44 @@ var title = null;
 var columns = [
         {header: "序号", align:'center', renderer:getIndex},
      	{header: "<input type='checkbox'  name='ckbAll' id='ckbAll' onclick='selAll(this)'  />", dataIndex: 'PART_ID', align:'center',width: '33px' ,renderer:seled},
-     	{header: "配件编码", dataIndex: 'PART_OLDCODE', style: 'text-align: left;'},
-     	{header: "配件名称", dataIndex: 'PART_CNAME', style: 'text-align: left;'},
-     	{header: "件号", dataIndex: 'PART_CODE', style: 'text-align: left;'},
+     	{header: "配件编码", dataIndex: 'PART_OLDCODE', style: 'text-align: center;'},
+     	{header: "配件名称", dataIndex: 'PART_CNAME', style: 'text-align: center;'},
+     	{header: "件号", dataIndex: 'PART_CODE', style: 'text-align: center;'},
      	{header: "单位", dataIndex: 'UNIT', align:'center'},
+     	{header: "最小包装量", dataIndex: 'MIN_PACKAGE', align:'center'},
      	{header: "货位选择", dataIndex: 'UNIT', align:'center',renderer:returnCode},
-     	{header: "批次", dataIndex: 'PART_ID', align:'center',renderer:returnPCCode},
      	{header: "入库数量", dataIndex: 'PART_ID', align:'center',renderer:returnText}
      ];
 
+// 复选框
 function seled(value, meta, record) {
-    return "<input type='checkbox' value='" + value + "' name='ck' id='ck_" + value + "' />";
+	var html = "<input type='checkbox' value='" + value + "' name='ck' id='ck_" + value + "' />";
+	html += '<input type="hidden" id="PART_OLDCODE_'+value+'" value="'+record.data.PART_OLDCODE+'" />';
+	html += '<input type="hidden" id="PART_CNAME_'+value+'" value="'+record.data.PART_CNAME+'" />';
+	html += '<input type="hidden" id="PART_CODE_'+value+'" value="'+record.data.PART_CODE+'" />';
+	html += '<input type="hidden" id="UNIT_'+value+'" value="'+record.data.UNIT+'" />';
+	html += '<input type="hidden" id="MIN_PACKAGE_'+value+'" value="'+record.data.MIN_PACKAGE+'" />';
+    return html;
 }
+
+// 货位选择
 function returnCode(value, meta, record) {
     var partId = record.data.PART_ID;
     var partOldcode = record.data.PART_OLDCODE;
     var partCname = record.data.PART_CNAME;
+    
     var text = '<input name="LOC_CODE_'+partId+'" id="LOC_CODE_'+partId+'" class="middle_txt" type="text" readonly />';
     text += '<input name="LOC_ID_'+partId+'" id="LOC_ID_'+partId+'" type="hidden" value="" />';
+    text += '<input name="LOC_NAME_'+partId+'" id="LOC_NAME_'+partId+'" type="hidden" value="" />';
     text += '<input class="mini_btn" type="button" value="..." onclick=\'codeChoice("'+partId+'", "'+partId+'","'+partOldcode+'", "'+partCname+'")\' />';
     return String.format(text);
 }
-function returnPCCode(value, meta, record) {
-    return "<input type='text' class='short_txt' style='width: 100px;' value='' name='PC_CODE_" + value + "' id='PC_CODE_" + value + "' onchange='dataCheck2(this, " + value + ")'/>";
-}
-function checkCode(th,partId){
-	var loc_code = th.value;
-	var whId = $("#whId").find("option:selected").val();
-	var whName = $("#whId").find("option:selected").text();
-	var url2 = "<%=contextPath%>/parts/storageManager/partDistributeMgr/PartDistributeMgr/checkSeatExist.json";
-	var para = "LOC_CODE="+loc_code+"&PART_ID="+partId+"&whId="+whId+"&whName="+whName;
-	makeCall(url2,forBack2,para);
-}
-function forBack2(json){
-	var partId = json.PART_ID;
-	if(json.returnValue != 1){
-		if(partId!=""){
-			document.getElementById("LOC_CODE_" + partId).value = "";
-			document.getElementById("LOC_ID_" + partId).value = "";
-		}
-		parent.MyAlert("该货位编码不存在！");
-	}else if(json.returnValue == 1){
-		var i = json.LOC_ID;
-		var c = json.LOC_CODE;
-		var n = json.LOC_NAME;
-		var v = i + "," + c + "," + n;
-	    document.getElementById("LOC_ID_" + partId).value = v;
-	}
-}
+// 入库数量
 function returnText(value, meta, record) {
-    return "<input type='text' class='short_txt' value='' name='Num_" + value + "' id='Num_" + value + "' onchange='dataCheck1(this, " + value + ")'/>";
+    return "<input type='text' class='short_txt' value='' name='Num_" + value + "' id='Num_" + value + "' maxlength='10' onchange='dataCheck1(this, " + value + ")'/>";
 }
 
+// 选择货位
 function codeChoice(partLocId, id, code, name) {
     var whId2 = document.getElementById("whId").value;
     if (whId2 == '') {
@@ -82,9 +68,9 @@ function codeChoice(partLocId, id, code, name) {
     OpenHtmlWindow(encodeURI(url), 800, 500);
 }
 
+
 function dataCheck(obj) {
-    var value = obj.value;
-    if (isNaN(value)) {
+    if (isNaN(obj.value)) {
         MyAlert("请输入数字!");
         obj.value = "";
         return;
@@ -95,27 +81,6 @@ function dataCheck(obj) {
         obj.value = "";
         return;
     }
-
-}
-
-function dataCheck2(obj, partId) {
-    var value = obj.value;
-    if(value.trim() == ""){
-    	document.getElementById("ck_" + partId).checked = false;
-    	return;
-    }
-    if (isNaN(value)) {
-        MyAlert("请输入数字!");
-        obj.value = "";
-        return;
-    }
-    var re = /^\d{10}$/;
-    if (!re.test(obj.value)) {
-        MyAlert("请输入十位数字!");
-        obj.value = "";
-        return;
-    }
-    document.getElementById("ck_" + partId).checked = true;
 }
 
 function dataCheck1(obj, partId) {
@@ -173,119 +138,129 @@ function selAll2(obj) {
 }
 
 function addCells() {
-
-    var ck = document.getElementsByName('ck');
-    var mt = document.getElementById("myTable");
-    var cn = 0;
-    for (var i = 1; i < mt.rows.length; i++) {
-        var partId = mt.rows[i].cells[1].firstChild.value;  //ID
-        if (mt.rows[i].cells[1].firstChild.checked) {
-            cn++;
-            if (validateCell(partId)) {
-                var partCode = mt.rows[i].cells[4].innerText;  //件号
-                var partOldcode = mt.rows[i].cells[2].innerText;  //配件编码
-                var partCname = mt.rows[i].cells[3].innerText;  //配件名称
-                var unit = mt.rows[i].cells[5].innerText;  //单位
-                var number = document.getElementById("Num_" + partId).value;  //零售数量
-                if ("" == number) {
-                    number = 1;
-                }
-                var locCode = document.getElementById("LOC_CODE_"+partId).value; //货位信息
-				if("" == locCode){
-					MyAlert("第 "+i+" 行，请选择货位信息！");return;
-				}
-				var locId = document.getElementById("LOC_ID_"+partId).value; //货位信息
-				pc_code = document.getElementById("PC_CODE_"+partId).value; //批次信息
-				if("" == pc_code){
-					MyAlert("第 "+i+" 行，请输入批次信息！");return;
-				}else{
-					pc_code = document.getElementById("PC_CODE_"+partId).value; //货位信息
-				}
-                addCell(partId, partCode, partOldcode, partCname, unit, locId, locCode , pc_code, number);
-            } else {
-                MyAlert("第" + i + "行配件：" + mt.rows[i].cells[4].innerText + " 已存在!</br>");
-                break;
-            }
-        }
-    }
-    if (cn == 0) {
-        MyAlert("请选择要添加的配件信息!");
-    }
-}
-
-function validateCell(spartId) {
-    var partIds = document.getElementsByName("cb");
-    if (partIds && partIds.length > 0) {
-        for (var i = 0; i < partIds.length; i++) {
-            if (spartId == partIds[i].value) {
-                return false;
-            }
-        }
-        return true;
-    }
-    return true;
-}
-
-function addCell(partId, partCode, partOldcode, partCname, unit, locId, locCode , pc_code, inQty) {
-    var tbl = document.getElementById('file');
-    var rowObj = tbl.insertRow(tbl.rows.length);
-    if (tbl.rows.length % 2 == 0) {
-        rowObj.className = "table_list_row2";
-    } else {
-        rowObj.className = "table_list_row1";
-    }
-    var cell1 = rowObj.insertCell(0);
-    var cell2 = rowObj.insertCell(1);
-    var cell3 = rowObj.insertCell(2);
-    var cell4 = rowObj.insertCell(3);
-    var cell5 = rowObj.insertCell(4);
-    var cell6 = rowObj.insertCell(5);
-    var cell7 = rowObj.insertCell(6);
-    var cell8 = rowObj.insertCell(7);
-    var cell9 = rowObj.insertCell(8);
-    cell1.innerHTML = '<tr><td align="center" nowrap><input  type="checkbox" value="' + partId + '" id="cell_' + (tbl.rows.length - 2) + '" name="cb" checked="true"  /></td>';
-    cell2.innerHTML = '<td align="center" nowrap><span id="orderLine_SEQ" >' + (tbl.rows.length - 2) + '</span><input id="idx_' + partId + '" name="idx_' + partId + '" value="' + (tbl.rows.length - 2) + '" type="hidden" ></td>';
-    cell5.innerHTML = '<td align="center" nowrap><input   name="partCode_' + partId + '" id="partCode_' + partId + '" value="' + partCode + '" type="hidden" />' + partCode + '</td>';
-    cell3.innerHTML = '<td align="center"><input   name="partOldcode_' + partId + '" id="partOldcode_' + partId + '" value="' + partOldcode + '" type="hidden" />' + partOldcode + '</td>';
-    cell4.innerHTML = '<td align="center" nowrap><input   name="partCname_' + partId + '" id="partCname_' + partId + '" value="' + partCname + '" type="hidden" class="cname_' + partId + '"/>' + partCname + '</td>';
-    cell6.innerHTML = '<td align="center" nowrap><input   name="unit_' + partId + '" id="unit_' + partId + '" value="' + unit + '" type="hidden" />' + unit + '</td>';
-    if(locCode==""){
-	    cell7.innerHTML = '<td align="center" nowrap><input   name="inQty_' + partId + '" id="inQty_' + partId + '" value="' + inQty + '" type="text" onchange="dataCheck(this);" /></td>';
-	    cell8.innerHTML = '<td><input type="button" class="u-button"  name="delBtn" value="删除" onclick="deleteTblRow('+(tbl.rows.length-1)+');" /></td></TR>';
-	}else{
-	    var cell10 = rowObj.insertCell(9);
-	    var cell7Html = '<td align="center" nowrap><input name="locId_' + partId + '" id="locId_' + partId + '" value="' + locId + '" type="hidden" />';
-    	cell7Html += '<input name="locCode_' + partId + '" id="locCode_' + partId + '" value="' + locCode + '" type="hidden" />' + locCode + '</td>';
-	    cell7.innerHTML = cell7Html;
-	    cell8.innerHTML = '<td align="center" nowrap><input   name="pc_' + partId + '" id="pc_' + partId + '" value="' + pc_code + '" type="hidden" />' + pc_code + '</td>';
-	    cell9.innerHTML = '<td align="center" nowrap><input class="short_txt" name="inQty_' + partId + '" id="inQty_' + partId + '" value="' + inQty + '" type="text" onchange="dataCheck(this);" /></td>';
-	    cell10.innerHTML = '<td><input type="button" class="u-button"  name="delBtn" value="删除" onclick="deleteTblRow('+(tbl.rows.length-1)+');" /></td></TR>';
+	var len = $('input[name="ck"]:checked').length;
+	if(len==0){
+		MyAlert('请选择要添加的数据！');
+		return;
 	}
+	var error = '';
+	for(var i=0;i<len;i++){
+		var partId = $('input[name="ck"]:checked').eq(i).val(); // 配件id
+        var partCode = $('#PART_CODE_'+partId).val();  //件号
+        var partOldcode = $('#PART_OLDCODE_'+partId).val();  //配件编码
+        var partCname = $('#PART_CNAME_'+partId).val();  //配件名称
+        var unit = $('#UNIT_'+partId).val();  //配件名称
+		var locId = $('#LOC_ID_'+partId).val(); // 货位id
+		var locCode = $('#LOC_CODE_'+partId).val(); // 货位编码
+		var locName = $('#LOC_NAME_'+partId).val(); // 货位名称
+		var minPackage = $('#MIN_PACKAGE_'+partId).val(); // 最小包装量
+		var inQty = $('#Num_'+partId).val(); // 入库数量
+		
+		var leng = $('input[name="cb"]').length;
+		var flag = true;
+		var index = 0; 
+		for(var k=0;k<leng;k++){
+			//判断重复
+			var partIdk = $('input[name="cb"]').eq(k).val();
+			if(partIdk==partId){
+				flag = false;
+				index = $('input[name="ck"]:checked').eq(i).parent().parent().index();
+			}
+		}
+        
+		if(flag){
+			//不重复，写入保存信息块
+			if("" == locId){
+				index = $('input[name="ck"]:checked').eq(i).parent().parent().index();
+				MyAlert("第 "+index+" 行，请选择货位信息！");return;
+			}
+			var rsStr = '<input type="checkbox" checked="checked" name="cb" value="'+partId+'" />';
+				rsStr += '<input type="hidden" id="partCode_'+partId+'" name="partCode_'+partId+'" value="'+partCode+'">';
+				rsStr += '<input type="hidden" id="partOldcode_'+partId+'" name="partOldcode_'+partId+'" value="'+partOldcode+'">';
+				rsStr += '<input type="hidden" id="partCname_'+partId+'" name="partCname_'+partId+'" value="'+partCname+'">';
+				rsStr += '<input type="hidden" id="unit_'+partId+'" name="unit_'+partId+'" value="'+unit+'">';
+				rsStr += '<input type="hidden" id="minPackage_'+partId+'" name="minPackage_'+partId+'" value="'+minPackage+'">';
+				rsStr += '<input type="hidden" id="locId_'+partId+'" name="locId_'+partId+'" value="'+locId+'">';
+				rsStr += '<input type="hidden" id="locCode_'+partId+'" name="locCode_'+partId+'" value="'+locCode+'">';
+				rsStr += '<input type="hidden" id="locName_'+partId+'" name="locName_'+partId+'" value="'+locName+'">';
+				
+			var str = '<tr id="delete_'+partId+'" class="delete_claszzall">';
+			    str += '<td>'+rsStr+'</td>';
+			    str += '<td class="my_xh"></td>';
+			    str += '<td>'+partOldcode+'</td>';
+			    str += '<td class="cname_'+partId+'">'+partCname+'</td>';
+			    str += '<td>'+partCode+'</td>';
+			    str += '<td>'+unit+'</td>';
+			    str += '<td>'+minPackage+'</td>';
+			    str += '<td>'+locCode+'</td>';
+			    str += '<td><input type="text" class="short_txt" value="'+inQty+'" name="inQty_'+partId+'" id="inQty_'+partId+'" maxlength="10" onchange="dataCheck(this)"/></td>';
+			    str += '<td><input type="button" class="u-button" value="删除" onclick="deleteRow(\'delete_'+partId+'\')"></td>';
+			    str += '</tr>';
+			$('#file').append(str);
+		}else{
+			//重复，写入提示信息
+            MyAlert("第" + index + "行配件：" + partOldcode + " 已存在!</br>");
+            break;
+		}
+	}
+
+	if(error!=''){
+		MyAlert(error);
+	}
+	
+	setXhDom();//写入序号元素
+	setStyleDom();//写入行样式元素
 }
 
-function deleteTblRow(rowNum) {
-    var tbl = document.getElementById('file');
-    tbl.deleteRow(rowNum);
-    var count = tbl.rows.length;
-    for (var i = rowNum; i <= count; i++) {
-        tbl.rows[i].cells[1].innerText = i - 1;
-        tbl.rows[i].cells[7].innerHTML = "<td><input type=\"button\" class=\"u-button\"  name=\"deleteBtn\" value=\"删 除\" onclick='deleteTblRow(" + i + ")'/></td></tr>";
-        if (i % 2 == 0) {
-            tbl.rows[i].className = "table_list_row1";
-        } else {
-            tbl.rows[i].className = "table_list_row2";
-        }
-    }
+//删除行
+function deleteRow(id){
+	$('#'+id).remove();
+	setXhDom();//重写序号
+	setStyleDom();
 }
 
 //删除所有已添加的明细
 function deleteTblAll() {
     var tbl = document.getElementById('file');
     var count = tbl.rows.length;
-    for (var i = count - 1; i > 1; i--) {
+    for (var i = count - 1; i > 0; i--) {
         tbl.deleteRow(i);
     }
 }
+
+//写入序号元素
+function setXhDom(){
+	var leng = $('.my_xh').length;
+	for(var i=0;i<leng;i++){
+		$('.my_xh').eq(i).html(i+1);
+	}
+}
+
+
+//写入行样式元素
+function setStyleDom(){
+	var leng = $('input[name="ck"]').length;
+	
+	for(var i=0;i<leng;i++){
+		/* var trclass="";
+		if((i+1)%2==0){
+			trclass = 'table_list_row2';
+		}else{
+			trclass = 'table_list_row1';
+		} */
+		var ckId = $('input[name="ck"]').eq(i).val();
+		$('#delete_'+ckId).removeClass('table_list_row2');
+		$('#delete_'+ckId).removeClass('table_list_row1');
+		// $('#delete_'+ckId).addClass(trclass);
+		$('#applyQty'+ckId).attr('tabindex',(i+1));//按tab快捷到下一个输入框
+		var kyQty = $('#kyQty'+ckId).val();
+		if($('#applyQty'+ckId).val()==''){
+			$('#applyQty'+ckId).val(kyQty);//可用=申请
+		}
+		
+	}
+}
+
 
 function addPartDiv() {
     var partDiv = document.getElementById("partDiv");
@@ -313,9 +288,7 @@ function WHChanged() {
     var partDiv = document.getElementById("partDiv");
     var addPartViv = document.getElementById("addPartViv");
     var whValue = document.getElementById("whId").value;
-
     deleteTblAll();
-
     if ("" == whValue && "收 起" == addPartViv.value) {
         addPartViv.value = "增 加";
         partDiv.style.display = "none";
@@ -380,7 +353,7 @@ function validateFm() {
     var nclass = "";
     var sid = "";
     for (var i = 0; i < ary.length; i++) {
-        $(".cname_" + ary[i]).parent("td").css({background: ""});
+        $(".cname_" + ary[i]).css({background: ""});
     }
     for (var i = 0; i < ary.length; i++) {
         if (s.replace(ary[i] + ",", "").indexOf(ary[i] + ",") > -1) {
@@ -393,7 +366,7 @@ function validateFm() {
         }
     }
     if (pflag) {
-        $("." + nclass).parent("td").css({background: "red"});
+        $("." + nclass).css({background: "red"});
         return false;
     }
 
@@ -659,72 +632,23 @@ function check(obj) {
 			</div>
 
 			<table id="file" class="table_list" style="border-bottom: 1px solid #DAE0EE">
+				<caption><img class="nav" src="<%=contextPath%>/img/subNav.gif" />配件信息 </caption>
 				<tr>
-					<th colspan="15" align="left">
-						<img class="nav" src="<%=contextPath%>/img/subNav.gif" />配件信息 <span class="checked" style="text-align: left"></span>
-					</th>
-				</tr>
-				<tr bgcolor="#FFFFCC">
-					<td align="center" width="2%">
+					<th align="center" width="2%">
 						<input type="checkbox" checked name="ckAll" id="ckAll" onclick="selectAll()" />
-					</td>
-					<td align="center" width="4%">序号</td>
-					<td align="center" width="12%">配件编码</td>
-					<td align="center" width="11%">配件名称</td>
-					<td align="center" width="10%">配件件号</td>
-					<td align="center" width="11%">单位</td>
-					<c:if test="${dataMap.dealerId==null}">
-						<td align="center" width="11%">货位</td>
-						<td align="center" width="7%">批次</td>
-					</c:if>
-					<td align="center" width="7%">
+					</th>
+					<th align="center" width="4%">序号</th>
+					<th align="center" width="12%">配件编码</th>
+					<th align="center" width="11%">配件名称</th>
+					<th align="center" width="10%">配件件号</th>
+					<th align="center" width="11%">单位</th>
+					<th align="center" width="11%">最小包装量</th>
+					<th align="center" width="11%">货位</th>
+					<th align="center" width="7%">
 						入库数量<font color="RED">*</font>
-					</td>
-					<td align="center" width="8%">操作</td>
+					</th>
+					<th align="center" width="8%">操作</th>
 				</tr>
-				<c:if test="${list !=null}">
-					<c:forEach items="${list}" var="list" varStatus="_sequenceNum">
-						<c:if test="${((_sequenceNum.index+1) mod 2) != 0}">
-							<tr class="table_list_row1">
-						</c:if>
-						<c:if test="${((_sequenceNum.index+1) mod 2) == 0}">
-							<tr class="table_list_row2">
-						</c:if>
-						<td align="center" nowrap>
-							<input type="checkbox" value="${list.PART_ID}" id="cell_${_sequenceNum.index+1}" name="cb" checked="checked" />
-						</td>
-						<td align="center" nowrap>${_sequenceNum.index+1}
-							<input id="idx_${list.PART_ID}" name="idx_${list.PART_ID}" value="${_sequenceNum.index+1}" type="hidden">
-						</td>
-						<td align="center">
-							<input name="partOldcode_${list.PART_ID}" id="partOldcode_${list.PART_ID}" value="${list.PART_OLDCODE}" type="hidden" />${list.PART_OLDCODE}
-						</td>
-						<td align="center" nowrap>
-							<input name="partCname_${list.PART_ID}" id="partCname_${list.PART_ID}" value="${list.PART_CNAME}" type="hidden" class="cname_${list.PART_ID}" />${list.PART_CNAME}
-						</td>
-						<td align="center" nowrap>
-							<input name="partCode_${list.PART_ID}" id="partCode_${list.PART_ID}" value="${list.PART_CODE}" type="hidden" />${list.PART_CODE}
-						</td>
-						<td align="center" nowrap>
-							<input name="unit_${list.PART_ID}" id="unit_${list.PART_ID}" value="${list.UNIT}" type="hidden" />${list.UNIT}
-						</td>
-						<c:if test="${dataMap.dealerId==null}">
-							<td align="center" nowrap>
-								<input name="loc_${list.PART_ID}" id="loc_${list.PART_ID}" value="${list.LOC_ID},${list.LOC_CODE},${list.LOC_NAME}" type="hidden" />${list.LOC_CODE}
-							</td>
-							<td align="center" nowrap>
-								<input name="pc_${list.PART_ID}" id="pc_${list.PART_ID}" value="${list.PC}" type="hidden" />${list.pc}
-							</td>
-						</c:if>
-						<td align="center" nowrap>
-							<input name="inQty_${list.PART_ID}" id="inQty_${list.PART_ID}" value="${list.INQTY}" type="hidden" />${list.INQTY}
-						</td>
-						<td>
-							<input type="button" class="u-button" name="deleteBtn" value="删  除" onclick="deleteTblRow('${_sequenceNum.index+2}');" />
-						</td>
-						</tr>
-					</c:forEach>
-				</c:if>
 			</table>
 
 
@@ -764,15 +688,15 @@ function check(obj) {
 						<tr>
 							<td class="right">配件编码：</td>
 							<td align="left" width="20%">
-								<input class="middle_txt" id="partOldcode" datatype="1,is_noquotation,30" name="partOldcode" onblur="isCloseDealerTreeDiv(event,this,'pan')" type="text" />
+								<input class="middle_txt" id="partOldcode" datatype="1,is_noquotation,30" name="partOldcode" type="text" />
 							</td>
 							<td class="right">配件名称：</td>
 							<td align="left" width="20%">
-								<input class="middle_txt" id="partCname" datatype="1,is_noquotation,30" name="partCname" onblur="isCloseDealerTreeDiv(event,this,'pan')" type="text" />
+								<input class="middle_txt" id="partCname" datatype="1,is_noquotation,30" name="partCname" type="text" />
 							</td>
 							<td class="right">件号：</td>
 							<td>
-								<input class="middle_txt" id="partCode" datatype="1,is_noquotation,30" name="partCode" onblur="isCloseDealerTreeDiv(event,this,'pan')" type="text" />
+								<input class="middle_txt" id="partCode" datatype="1,is_noquotation,30" name="partCode" type="text" />
 							</td>
 						</tr>
 						<tr>

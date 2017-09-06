@@ -1,6 +1,5 @@
 package com.infodms.dms.actions.parts.salesManager.carFactorySalesManager;
 
-import com.infodms.dms.actions.partsmanage.infoSearch.DealerDlrstockInfo;
 import com.infodms.dms.actions.sales.planmanage.PlanUtil.BaseImport;
 import com.infodms.dms.bean.AclUserBean;
 import com.infodms.dms.bean.OrgBean;
@@ -1283,9 +1282,9 @@ public class PartOutstock extends BaseImport implements PTConstants {
         try {
 
             Long transId = Long.valueOf(request.getAttribute("transId") + "");
-//            PartOutstockDao dao = PartOutstockDao.getInstance();
             PartTransDao partTransDao = PartTransDao.getInstance();
-            Map<String, Object> orderMainMap = partTransDao.getOrderMainInfo2(outMainPo.getPickOrderId() + "");
+           
+        	Map<String, Object> orderMainMap = partTransDao.getOrderMainInfo2(outMainPo.getPickOrderId() + "",outMainPo.getSellerId());
             String orderId = CommonUtils.checkNull(orderMainMap.get("ORDER_ID"));;
             String orderCode = CommonUtils.checkNull(orderMainMap.get("ORDER_CODE"));
             //添加发运单
@@ -1293,8 +1292,8 @@ public class PartOutstock extends BaseImport implements PTConstants {
             String transCode = OrderCodeManager.getOrderCode(Constant.PART_CODE_RELATION_10);
             String outCode = CommonUtils.checkNull(outMainPo.getOutCode());
             String soCode = CommonUtils.checkNull(outMainPo.getSoCode());
-//            String isBatchso = CommonUtils.checkNull(outMainPo.getIsBatchso());
-//            String soFrom = CommonUtils.checkNull(outMainPo.getSoFrom());
+//                String isBatchso = CommonUtils.checkNull(outMainPo.getIsBatchso());
+//                String soFrom = CommonUtils.checkNull(outMainPo.getSoFrom());
             String dealerId = CommonUtils.checkNull(outMainPo.getDealerId());
             String dealerCode = CommonUtils.checkNull(outMainPo.getDealerCode());
             String dealerName = CommonUtils.checkNull(outMainPo.getDealerName());
@@ -1372,6 +1371,7 @@ public class PartOutstock extends BaseImport implements PTConstants {
             po.setWuliuCode(request.getParamValue("WULIU_CODE"));//物流单号
         	
             dao.insert(po);
+            
         } catch (Exception ex) {
             throw ex;
         }

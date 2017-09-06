@@ -77,7 +77,6 @@ public class ReturnsPartStateChangeDao extends BaseDao{
 		String startDate = CommonUtils.checkNull(request.getParamValue("startDate"));
 		String endDate = CommonUtils.checkNull(request.getParamValue("endDate"));
 		String STATE = CommonUtils.checkNull(request.getParamValue("STATE"));
-		
 		sql.append("SELECT\n" );
 		sql.append("  TPRUM.*,\n" );
 		sql.append("  TU.NAME CREATE_BY_CN,\n" );
@@ -204,6 +203,10 @@ public class ReturnsPartStateChangeDao extends BaseDao{
 		String partCode = CommonUtils.checkNull(request.getParamValue("partCode"));
 		String whId = CommonUtils.checkNull(request.getParamValue("whId"));
 		String returnType = CommonUtils.checkNull(request.getParamValue("returnType"));
+        String unit = CommonUtils.checkNull(request.getParamValue("unit"));
+        String returnCode = CommonUtils.checkNull(request.getParamValue("returnCode"));
+        String inCode = CommonUtils.checkNull(request.getParamValue("inCode"));
+        
 //		String changeType = CommonUtils.checkNull(request.getParamValue("changeType"));
 		
 //		if(Constant.RC_JF_TYPE_01.toString().equals(unlocType)){
@@ -242,6 +245,7 @@ public class ReturnsPartStateChangeDao extends BaseDao{
 //		sql.append("  TPDRD.ORDER_ID,\n" );
 		sql.append("  TPDRM.SO_CODE,\n" );
 		sql.append("  TPDRM.IN_CODE,\n" );
+		sql.append("  TPDRD.IN_BATCH_NO,\n" );
 		sql.append("  TPDRD.CREATE_DATE,\n" );
 		sql.append("  NVL(TPDRD.UNLOC_QTY,0) AS UNLOC_QTY\n" );
 		sql.append("FROM\n" );
@@ -280,6 +284,18 @@ public class ReturnsPartStateChangeDao extends BaseDao{
 			sql.append("  AND TPDRM.RETURN_TYPE = ?\n");
 			params.add(returnType);
 		}
+        if(StringUtil.notNull(unit)){
+            sql.append("  AND TPDRD.UNIT = ?\n");
+            params.add(unit);
+        }
+        if(StringUtil.notNull(returnCode)){
+            sql.append("  AND TPDRM.RETURN_CODE = ?\n");
+            params.add(returnCode);
+        }
+        if(StringUtil.notNull(inCode)){
+            sql.append("  AND TPDRM.IN_CODE = ?\n");
+            params.add(inCode);
+        }
 		sql.append(")TEMP WHERE TEMP.KY_QTY > 0\n");
 //		}else if(Constant.RC_JF_TYPE_02.toString().equals(unlocType)){
 //			//换货解封
@@ -395,6 +411,7 @@ public class ReturnsPartStateChangeDao extends BaseDao{
 //		sql.append("  TPDRD.ORDER_ID,\n" );
 		sql.append("  TPDRM.SO_CODE,\n" );
 		sql.append("  TPDRM.IN_CODE,\n" );
+		sql.append("  TPDRD.IN_BATCH_NO,\n" );
 		sql.append("  NVL(TPDRD.UNLOC_QTY,0) AS UNLOC_QTY\n" );
 		sql.append("FROM\n" );
 		sql.append("  TT_PART_DLR_RETURN_MAIN TPDRM,\n" );
@@ -780,7 +797,12 @@ public class ReturnsPartStateChangeDao extends BaseDao{
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public Map<String,Object> getVwPartStock(String partId, String OrgId, String whId, String LocId){
+	public Map<String,Object> getVwPartStock(Map<String, String> paramMap){
+	    String partId = paramMap.get("partId");
+	    String orgId = paramMap.get("orgId");
+	    String whId = paramMap.get("whId");
+	    String locId = paramMap.get("locId");
+	    String batchNo = paramMap.get("batchNo");
 		StringBuffer sql = new StringBuffer();
 		List<Object> params = new ArrayList<Object>();
 		sql.append("SELECT\n" );
@@ -791,11 +813,13 @@ public class ReturnsPartStateChangeDao extends BaseDao{
 		sql.append("  PART_ID = ?\n" );
 		params.add(partId);
 		sql.append("AND ORG_ID = ?\n" );
-		params.add(OrgId);
+		params.add(orgId);
 		sql.append("AND WH_ID = ?\n" );
 		params.add(whId);
 		sql.append("AND LOC_ID = ?\n");
-		params.add(LocId);
+		params.add(locId);
+		sql.append("AND BATCH_NO = ?\n");
+		params.add(batchNo);
 		Map<String, Object> map = pageQueryMap(sql.toString(), params, getFunName());
 		return map;
 	}

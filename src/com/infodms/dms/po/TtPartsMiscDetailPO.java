@@ -34,6 +34,7 @@ public class TtPartsMiscDetailPO extends PO{
 	private Long locId;
 	private Long deleteBy;
 	private Date createDate;
+	private String batchNo;
 
 	public void setLocCode(String locCode){
 		this.locCode=locCode;
@@ -170,5 +171,13 @@ public class TtPartsMiscDetailPO extends PO{
 	public Date getCreateDate(){
 		return this.createDate;
 	}
+
+    public String getBatchNo() {
+        return batchNo;
+    }
+
+    public void setBatchNo(String batchNo) {
+        this.batchNo = batchNo;
+    }
 
 }

@@ -35,7 +35,7 @@ function getRadio(value,meta,record){
 function selData(i,c,n){
 	parentDocument.getElementById('LOC_ID_'+'${partLocId}').value = i;
 	parentDocument.getElementById('LOC_CODE_'+'${partLocId}').value = c;
-	//parentDocument.getElementById('LOC_NAME'+'${partLocId}').value = n;
+	parentDocument.getElementById('LOC_NAME_'+'${partLocId}').value = n;
        _hide();
 }
 </script>

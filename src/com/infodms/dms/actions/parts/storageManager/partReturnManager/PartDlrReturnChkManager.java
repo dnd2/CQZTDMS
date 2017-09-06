@@ -285,7 +285,16 @@ public class PartDlrReturnChkManager implements PTConstants {
                     TtPartDlrReturnDtlPO po2 = new TtPartDlrReturnDtlPO();
                     po1.setDtlId(dtlId);
 
-                    po2.setCheckQty(checkQty);//审核退货数量
+                    if (mainPO.getVerifyLevel().intValue() == Constant.PART_RETURN_CHK_LEVEL_01) {
+                        // 一级审核
+                        po2.setCheckQty(checkQty);//审核退货数量
+                    } else if (mainPO.getVerifyLevel().intValue() == Constant.PART_RETURN_CHK_LEVEL_02) {
+                        // 二级审核
+                        po2.setCheckTwoQty(checkQty);
+                    } else if (mainPO.getVerifyLevel().intValue() == Constant.PART_RETURN_CHK_LEVEL_03) {
+                        // 三级审核
+                        po2.setCheckThreeQty(checkQty);
+                    }
 
                     dao.update(po1, po2);
                 }
@@ -691,6 +700,15 @@ public class PartDlrReturnChkManager implements PTConstants {
                 }
 
                 dao.update(spo, po);
+
+                /*---------------------修改经销商入库明细记录的退货数量----------------------*/
+                Map<String, String> paramMap = new HashMap<String, String>();
+                paramMap.put("returnId", returnId); // 入库单主记录id
+                paramMap.put("loginId", logonUser.getUserId().toString()); // 当前用户
+                paramMap.put("sumColunm", "APPLY_QTY"); // 求和的字段 
+                PartDlrReturnChkrDao chkrDao = PartDlrReturnChkrDao.getInstance();
+                chkrDao.updateInStrockReturnQty(paramMap);
+                /*---------------------修改经销商入库明细记录的退货数量----------------------*/
 
                 if (stockOut != null && !stockOut.equals(0l)) {//如果退货单位有仓库才会调用释放逻辑
                     //调用库存释放逻辑

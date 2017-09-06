@@ -4,8 +4,8 @@
 * License version 1.0, a copy of which has been included with this
 * distribution in the LICENSE.txt file.
 *
-* CreateDate : 2017-07-31 10:42:37
-* CreateBy   : chenzheng
+* CreateDate : 2017-09-04 17:51:04
+* CreateBy   : Administrator
 * Comment    : generate by com.sgm.po.POGen
 */
 
@@ -17,28 +17,21 @@ import com.infoservice.po3.bean.PO;
 @SuppressWarnings("serial")
 public class TtAsWrOldpartDeductionPO extends PO{
 
-	private Float otherPrice;
 	private Long dealerId;
-	private String invoiceNo;
-	private Float partPrice;
+	private Float partDeductionAmount;
 	private Date updateDate;
 	private Long createBy;
+	private Long deductionId;
+	private Integer isSecond;
+	private String balanceNo;
 	private String deductionNo;
 	private Integer status;
-	private Long returnedId;
-	private Float labourPrice;
+	private Float outwardDeductionAmount;
 	private Long updateBy;
-	private Long id;
-	private Float totalPrice;
+	private Float hoursDeductionAmount;
+	private Float secondDeductionAmount;
+	private Long claimId;
 	private Date createDate;
-
-	public void setOtherPrice(Float otherPrice){
-		this.otherPrice=otherPrice;
-	}
-
-	public Float getOtherPrice(){
-		return this.otherPrice;
-	}
 
 	public void setDealerId(Long dealerId){
 		this.dealerId=dealerId;
@@ -48,20 +41,12 @@ public class TtAsWrOldpartDeductionPO extends PO{
 		return this.dealerId;
 	}
 
-	public void setInvoiceNo(String invoiceNo){
-		this.invoiceNo=invoiceNo;
+	public void setPartDeductionAmount(Float partDeductionAmount){
+		this.partDeductionAmount=partDeductionAmount;
 	}
 
-	public String getInvoiceNo(){
-		return this.invoiceNo;
-	}
-
-	public void setPartPrice(Float partPrice){
-		this.partPrice=partPrice;
-	}
-
-	public Float getPartPrice(){
-		return this.partPrice;
+	public Float getPartDeductionAmount(){
+		return this.partDeductionAmount;
 	}
 
 	public void setUpdateDate(Date updateDate){
@@ -80,6 +65,30 @@ public class TtAsWrOldpartDeductionPO extends PO{
 		return this.createBy;
 	}
 
+	public void setDeductionId(Long deductionId){
+		this.deductionId=deductionId;
+	}
+
+	public Long getDeductionId(){
+		return this.deductionId;
+	}
+
+	public void setIsSecond(Integer isSecond){
+		this.isSecond=isSecond;
+	}
+
+	public Integer getIsSecond(){
+		return this.isSecond;
+	}
+
+	public void setBalanceNo(String balanceNo){
+		this.balanceNo=balanceNo;
+	}
+
+	public String getBalanceNo(){
+		return this.balanceNo;
+	}
+
 	public void setDeductionNo(String deductionNo){
 		this.deductionNo=deductionNo;
 	}
@@ -96,20 +105,12 @@ public class TtAsWrOldpartDeductionPO extends PO{
 		return this.status;
 	}
 
-	public void setReturnedId(Long returnedId){
-		this.returnedId=returnedId;
+	public void setOutwardDeductionAmount(Float outwardDeductionAmount){
+		this.outwardDeductionAmount=outwardDeductionAmount;
 	}
 
-	public Long getReturnedId(){
-		return this.returnedId;
-	}
-
-	public void setLabourPrice(Float labourPrice){
-		this.labourPrice=labourPrice;
-	}
-
-	public Float getLabourPrice(){
-		return this.labourPrice;
+	public Float getOutwardDeductionAmount(){
+		return this.outwardDeductionAmount;
 	}
 
 	public void setUpdateBy(Long updateBy){
@@ -120,20 +121,28 @@ public class TtAsWrOldpartDeductionPO extends PO{
 		return this.updateBy;
 	}
 
-	public void setId(Long id){
-		this.id=id;
+	public void setHoursDeductionAmount(Float hoursDeductionAmount){
+		this.hoursDeductionAmount=hoursDeductionAmount;
 	}
 
-	public Long getId(){
-		return this.id;
+	public Float getHoursDeductionAmount(){
+		return this.hoursDeductionAmount;
 	}
 
-	public void setTotalPrice(Float totalPrice){
-		this.totalPrice=totalPrice;
+	public void setSecondDeductionAmount(Float secondDeductionAmount){
+		this.secondDeductionAmount=secondDeductionAmount;
 	}
 
-	public Float getTotalPrice(){
-		return this.totalPrice;
+	public Float getSecondDeductionAmount(){
+		return this.secondDeductionAmount;
+	}
+
+	public void setClaimId(Long claimId){
+		this.claimId=claimId;
+	}
+
+	public Long getClaimId(){
+		return this.claimId;
 	}
 
 	public void setCreateDate(Date createDate){

@@ -582,7 +582,7 @@ public class partStockSettingAction extends BaseImport {
                         insertCSDPo.setCreateBy(userId);
                         insertCSDPo.setCreateDate(date);
                         insertCSDPo.setLocId(locId);
-                        insertCSDPo.setBatchNo(Long.parseLong(batchNo));
+                        insertCSDPo.setBatchNo(batchNo);
                         insertCSDPo.setVenderId(Long.parseLong(venderId));
                         //如果为解封,状态直接修改为已处理
                         if (cgType2 == cgType) {

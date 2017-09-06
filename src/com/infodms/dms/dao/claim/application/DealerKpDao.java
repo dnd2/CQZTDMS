@@ -173,132 +173,139 @@ public class DealerKpDao extends BaseDao {
 		sql.append(")GROUP BY AREA_NAME,STATUS");
 		return this.pageQuery(sql.toString(), paramList, this.getFunName(), condition.getPageSize(), condition.getCurPage());
 	}*/
-@SuppressWarnings("unchecked")
-public PageResult<Map<String,Object>> dealerBalanceStatisQuery(DealerBalanceBean condition,String dealerId){
-	StringBuffer sql= new StringBuffer();
-	sql.append("select\n" );
-	sql.append("       sum (claim_num) as claim_num,\n" );
-	sql.append("       sum(hours_settlement_amount) as hours_settlement_amount,\n" );
-	sql.append("       sum(part_settlement_amount) as part_settlement_amount,\n" );
-	sql.append("       sum(pdi_settlement_amount) as pdi_settlement_amount,\n" );
-	sql.append("       sum(first_settlement_amount) as first_settlement_amount,\n" );
-	sql.append("       sum(activitie_settlement_amount) as activitie_settlement_amount,\n" );
-	sql.append("       sum(outward_settlement_amount) as outward_settlement_amount,\n" );
-	sql.append("       sum(settlement_total_amount) as settlement_total_amount,\n" );//结算总金额（不包括特殊费用）
-	sql.append("  sum(pn_exaction) as pn_exaction,\n" );//正负激励总金额
-	sql.append("  sum(good_claim_amount) as good_claim_amount,");//善于索赔总金额
-	sql.append("  sum(LAST_ADMINISTRATION_AMOUNT) as LAST_ADMINISTRATION_AMOUNT,");//上次行政扣款金额
-	sql.append("   decode(sign(round(sum(settlement_total_amount)+sum(pn_exaction)+sum(good_claim_amount)-sum(LAST_ADMINISTRATION_AMOUNT),2)),0,'0',1,'0',round(sum(settlement_total_amount)+sum(pn_exaction)+sum(good_claim_amount)-sum(LAST_ADMINISTRATION_AMOUNT),2)) as THIS_ADMINISTRATION_AMOUNT,");//本次行政扣款金额
-	sql.append("  round(sum(settlement_total_amount)+sum(pn_exaction)+sum(good_claim_amount)-sum(LAST_ADMINISTRATION_AMOUNT),2) as claim_amount");//索赔总金额
-	sql.append("\n" );
-	sql.append("       from(SELECT count(wac.id) as claim_num,\n" );//索赔单个数
-	sql.append("       sum(wac.hours_settlement_amount) as hours_settlement_amount,\n" );//工时结算金额
-	sql.append("       sum(wac.part_settlement_amount) as part_settlement_amount,\n" );//配件结算金额
-	sql.append("       sum(wac.pdi_settlement_amount) as pdi_settlement_amount,\n" );//pdi结算金额
-	sql.append("       sum(wac.first_settlement_amount) as first_settlement_amount,\n" );//首保结算金额
-	sql.append("       sum(wac.activitie_settlement_amount) as activitie_settlement_amount,\n" );//服务活动结算金额
-	sql.append("       sum(wac.outward_settlement_amount) as outward_settlement_amount,\n" );//外出维修结算金额
-	sql.append("       sum(wac.settlement_total_amount) as settlement_total_amount,\n" );//结算总金额（不包含特殊费用）
-	sql.append("       0 as pn_exaction,\n" );
-	sql.append("       0 as good_claim_amount,\n" );
-	sql.append("       0 as LAST_ADMINISTRATION_AMOUNT\n" );
-	
-	sql.append("  from TT_AS_WR_APPLICATION_CLAIM wac\n" );
-	sql.append(" where (wac.REPAIR_TYPE in\n" );
-	sql.append("       (11441004, 11441008) or\n" );
-	sql.append("       (wac.REPAIR_TYPE = 11441005 and wac.activity_type != 96281001))\n" );
-	sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') <=\n" );
-	sql.append("       TO_DATE('"+condition.getConEndDay()+"','YYYY-MM-DD')\n" );
-	sql.append("   and wac.STATUS in (19991005)\n" );
-	sql.append("   and wac.is_bill=10041002\n" );
-	sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') >=\n" );
-	sql.append("       TO_DATE('"+condition.getEndBalanceDate()+"','YYYY-MM-DD')\n" );
-	sql.append("   and wac.dealer_id="+dealerId+"--无旧件的\n" );
-	sql.append("\n" );
-	sql.append("\n" );
-	sql.append("   union all\n" );
-	sql.append("\n" );
-	sql.append("\n" );
-	sql.append("   SELECT count(wac.id) as claim_num,\n" );
-	sql.append("       sum(wac.hours_settlement_amount) as hours_settlement_amount,\n" );
-	sql.append("       sum(wac.part_settlement_amount) as part_settlement_amount,\n" );
-	sql.append("       sum(wac.pdi_settlement_amount) as pdi_settlement_amount,\n" );
-	sql.append("       sum(wac.first_settlement_amount) as first_settlement_amount,\n" );
-	sql.append("       sum(wac.activitie_settlement_amount) as activitie_settlement_amount,\n" );
-	sql.append("       sum(wac.outward_settlement_amount) as outward_settlement_amount,\n" );
-	sql.append("       sum(wac.settlement_total_amount) as settlement_total_amount,\n" );
-	sql.append("       0 as pn_exaction,\n" );
-	sql.append("       0 as good_claim_amount,\n" );
-	sql.append("       0 as LAST_ADMINISTRATION_AMOUNT\n" );
-	sql.append("  from TT_AS_WR_APPLICATION_CLAIM wac\n" );
-	sql.append("  inner join\n" );
-	sql.append("  (select distinct od.claim_id from TT_AS_WR_RETURNED_ORDER o\n" );
-	sql.append("          inner join Tt_As_Wr_Returned_Order_Detail od\n" );
-	sql.append("          on o.id=od.return_id\n" );
-	sql.append("          where o.dealer_id="+dealerId+"\n" );
-	sql.append("          and to_char(o.wr_start_date, 'yyyy-mm-dd') = '"+condition.getEndBalanceDate()+"'\n" );
-	sql.append("          and to_char(o.return_end_date, 'yyyy-mm-dd') = '"+condition.getConEndDay()+"'\n" );
-	sql.append("          and o.status=10811005\n" );
-	sql.append("          and o.IS_BILL=10041002\n" );
-	sql.append("          ) odo\n" );
-	sql.append("  on wac.id=odo.claim_id\n" );
-	sql.append(" where wac.REPAIR_TYPE in\n" );
-	sql.append("       (11441001, 11441002, 11441003, 11441006, 11441009)\n" );
-	sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') <=\n" );
-	sql.append("       TO_DATE('"+condition.getConEndDay()+"','YYYY-MM-DD')\n" );
-	sql.append("   and wac.STATUS in (19991005)\n" );
-	sql.append("   and wac.is_bill=10041002\n" );
-	sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') >=\n" );
-	sql.append("       TO_DATE('"+condition.getEndBalanceDate()+"','YYYY-MM-DD')\n" );
-	sql.append("   and wac.dealer_id="+dealerId+"--去除(首保，pdi,服务活动)有旧件的\n" );
-	
-	sql.append("   union all\n" );
-	sql.append("\n" );
-	sql.append("\n" );
-	sql.append("   SELECT count(wac.id) as claim_num,\n" );
-	sql.append("      0 as hours_settlement_amount,\n" );
-	sql.append("      0 as part_settlement_amount,\n" );
-	sql.append("      0 as pdi_settlement_amount,\n" );
-	sql.append("      0 as first_settlement_amount,\n" );
-	sql.append("      round(sum(wac.hours_settlement_amount)+sum(wac.part_settlement_amount),2) as activitie_settlement_amount,\n" );
-	sql.append("      0 as outward_settlement_amount,\n" );
-	sql.append("      sum(wac.settlement_total_amount) as settlement_total_amount,\n" );
-	sql.append("      0 as pn_exaction,\n" );
-	sql.append("      0 as good_claim_amount,\n" );
-	sql.append("      0 as LAST_ADMINISTRATION_AMOUNT");
-	sql.append("  from TT_AS_WR_APPLICATION_CLAIM wac\n" );
-	sql.append("  inner join\n" );
-	sql.append("  (select distinct od.claim_id from TT_AS_WR_RETURNED_ORDER o\n" );
-	sql.append("          inner join Tt_As_Wr_Returned_Order_Detail od\n" );
-	sql.append("          on o.id=od.return_id\n" );
-	sql.append("          where o.dealer_id="+dealerId+"\n" );
-	sql.append("          and to_char(o.wr_start_date, 'yyyy-mm-dd') = '"+condition.getEndBalanceDate()+"'\n" );
-	sql.append("          and to_char(o.return_end_date, 'yyyy-mm-dd') = '"+condition.getConEndDay()+"'\n" );
-	sql.append("          and o.status=10811005\n" );
-	sql.append("          and o.IS_BILL=10041002\n" );
-	sql.append("          ) odo\n" );
-	sql.append("  on wac.id=odo.claim_id\n" );
-	sql.append(" where \n" );
-	sql.append("       wac.REPAIR_TYPE = 11441005 and wac.activity_type = 96281001\n" );
-	sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') <=\n" );
-	sql.append("       TO_DATE('"+condition.getConEndDay()+"','YYYY-MM-DD')\n" );
-	sql.append("   and wac.STATUS in (19991005)\n" );
-	sql.append("   and wac.is_bill=10041002\n" );
-	sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') >=\n" );
-	sql.append("       TO_DATE('"+condition.getEndBalanceDate()+"','YYYY-MM-DD')\n" );
-	sql.append("   and wac.dealer_id="+dealerId+"--服务活动技术升级（有旧件的）\n" );
-	sql.append("union all\n" );
-	sql.append("   select 0,0,0,0,0,0,0,0,sum(af.labour_sum) as pn_exaction,0,0 from tt_as_wr_fine af where af.pay_status=11511001 and af.dealer_id="+dealerId+"\n" );//正负激励总金额
-	sql.append("\n" );
-	sql.append("   union all\n" );
-	sql.append("   select 0,0,0,0,0,0,0,0,0,sum(t.audit_amount) as good_claim_amount,0 from tt_as_wr_Special t where t.DEALER_ID="+dealerId+" and t.status=20331014 and t.is_claim=10041002 and t.claim_no is null");//善于索赔总金额
-	sql.append("   union all\n" );
-	sql.append("   select 0,0,0,0,0,0,0,0,0,0,t.labour_sum as LAST_ADMINISTRATION_AMOUNT from tt_as_wr_administrative_charge t where t.dealerid="+dealerId+" and t.status=94151002");//上次行政扣款金额
+	@SuppressWarnings("unchecked")
+	public PageResult<Map<String,Object>> dealerBalanceStatisQuery(DealerBalanceBean condition,String dealerId){
+		StringBuffer sql= new StringBuffer();
+		sql.append("select\n" );
+		sql.append("       sum (claim_num) as claim_num,\n" );
+		sql.append("       sum(hours_settlement_amount) as hours_settlement_amount,\n" );
+		sql.append("       sum(part_settlement_amount) as part_settlement_amount,\n" );
+		sql.append("       sum(pdi_settlement_amount) as pdi_settlement_amount,\n" );
+		sql.append("       sum(first_settlement_amount) as first_settlement_amount,\n" );
+		sql.append("       sum(activitie_settlement_amount) as activitie_settlement_amount,\n" );
+		sql.append("       sum(outward_settlement_amount) as outward_settlement_amount,\n" );
+		sql.append("       sum(settlement_total_amount) as settlement_total_amount,\n" );//结算总金额（不包括特殊费用）
+		sql.append("  sum(pn_exaction) as pn_exaction,\n" );//正负激励总金额
+		sql.append("  sum(good_claim_amount) as good_claim_amount,");//善于索赔总金额
+		sql.append("  sum(LAST_ADMINISTRATION_AMOUNT) as LAST_ADMINISTRATION_AMOUNT,");//上次行政扣款金额
+		sql.append("  sum(AUTH_PRICE) as AUTH_PRICE,\n");//运费
+		sql.append("   decode(sign(round(sum(settlement_total_amount)+sum(pn_exaction)+sum(good_claim_amount)-sum(LAST_ADMINISTRATION_AMOUNT)+sum(AUTH_PRICE),2)),0,'0',1,'0',round(sum(settlement_total_amount)+sum(pn_exaction)+sum(good_claim_amount)-sum(LAST_ADMINISTRATION_AMOUNT)+sum(AUTH_PRICE),2)) as THIS_ADMINISTRATION_AMOUNT,");//本次行政扣款金额
+		sql.append("  round(sum(settlement_total_amount)+sum(pn_exaction)+sum(good_claim_amount)-sum(LAST_ADMINISTRATION_AMOUNT)+sum(AUTH_PRICE),2) as claim_amount");//索赔总金额
+		sql.append("\n" );
+		sql.append("       from(SELECT count(wac.id) as claim_num,\n" );//索赔单个数
+		sql.append("       sum(wac.hours_settlement_amount) as hours_settlement_amount,\n" );//工时结算金额
+		sql.append("       sum(wac.part_settlement_amount) as part_settlement_amount,\n" );//配件结算金额
+		sql.append("       sum(wac.pdi_settlement_amount) as pdi_settlement_amount,\n" );//pdi结算金额
+		sql.append("       sum(wac.first_settlement_amount) as first_settlement_amount,\n" );//首保结算金额
+		sql.append("       sum(wac.activitie_settlement_amount) as activitie_settlement_amount,\n" );//服务活动结算金额
+		sql.append("       sum(wac.outward_settlement_amount) as outward_settlement_amount,\n" );//外出维修结算金额
+		sql.append("       sum(wac.settlement_total_amount) as settlement_total_amount,\n" );//结算总金额（不包含特殊费用）
+		sql.append("       0 as pn_exaction,\n" );
+		sql.append("       0 as good_claim_amount,\n" );
+		sql.append("       0 as LAST_ADMINISTRATION_AMOUNT,\n" );
+		sql.append("       0 as AUTH_PRICE\n");
+		
+		sql.append("  from TT_AS_WR_APPLICATION_CLAIM wac\n" );
+		sql.append(" where (wac.REPAIR_TYPE in\n" );
+		sql.append("       (11441004, 11441008) or\n" );
+		sql.append("       (wac.REPAIR_TYPE = 11441005 and wac.activity_type != 96281001))\n" );
+		sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') <=\n" );
+		sql.append("       TO_DATE('"+condition.getConEndDay()+"','YYYY-MM-DD')\n" );
+		sql.append("   and wac.STATUS in (19991005)\n" );
+		sql.append("   and wac.is_bill=10041002\n" );
+		sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') >=\n" );
+		sql.append("       TO_DATE('"+condition.getEndBalanceDate()+"','YYYY-MM-DD')\n" );
+		sql.append("   and wac.dealer_id="+dealerId+"--无旧件的\n" );
+		sql.append("\n" );
+		sql.append("\n" );
+		sql.append("   union all\n" );
+		sql.append("\n" );
+		sql.append("\n" );
+		sql.append("   SELECT count(wac.id) as claim_num,\n" );
+		sql.append("       sum(wac.hours_settlement_amount) as hours_settlement_amount,\n" );
+		sql.append("       sum(wac.part_settlement_amount) as part_settlement_amount,\n" );
+		sql.append("       sum(wac.pdi_settlement_amount) as pdi_settlement_amount,\n" );
+		sql.append("       sum(wac.first_settlement_amount) as first_settlement_amount,\n" );
+		sql.append("       sum(wac.activitie_settlement_amount) as activitie_settlement_amount,\n" );
+		sql.append("       sum(wac.outward_settlement_amount) as outward_settlement_amount,\n" );
+		sql.append("       sum(wac.settlement_total_amount) as settlement_total_amount,\n" );
+		sql.append("       0 as pn_exaction,\n" );
+		sql.append("       0 as good_claim_amount,\n" );
+		sql.append("       0 as LAST_ADMINISTRATION_AMOUNT,\n" );
+		sql.append("       0 as AUTH_PRICE\n");
+		sql.append("  from TT_AS_WR_APPLICATION_CLAIM wac\n" );
+		sql.append("  inner join\n" );
+		sql.append("  (select distinct od.claim_id from TT_AS_WR_RETURNED_ORDER o\n" );
+		sql.append("          inner join Tt_As_Wr_Returned_Order_Detail od\n" );
+		sql.append("          on o.id=od.return_id\n" );
+		sql.append("          where o.dealer_id="+dealerId+"\n" );
+		sql.append("          and to_char(o.wr_start_date, 'yyyy-mm-dd') = '"+condition.getEndBalanceDate()+"'\n" );
+		sql.append("          and to_char(o.return_end_date, 'yyyy-mm-dd') = '"+condition.getConEndDay()+"'\n" );
+		sql.append("          and o.status=10811005\n" );
+		sql.append("          and o.IS_BILL=10041002\n" );
+		sql.append("          ) odo\n" );
+		sql.append("  on wac.id=odo.claim_id\n" );
+		sql.append(" where wac.REPAIR_TYPE in\n" );
+		sql.append("       (11441001, 11441002, 11441003, 11441006, 11441009)\n" );
+		sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') <=\n" );
+		sql.append("       TO_DATE('"+condition.getConEndDay()+"','YYYY-MM-DD')\n" );
+		sql.append("   and wac.STATUS in (19991005)\n" );
+		sql.append("   and wac.is_bill=10041002\n" );
+		sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') >=\n" );
+		sql.append("       TO_DATE('"+condition.getEndBalanceDate()+"','YYYY-MM-DD')\n" );
+		sql.append("   and wac.dealer_id="+dealerId+"--去除(首保，pdi,服务活动)有旧件的\n" );
+		
+		sql.append("   union all\n" );
+		sql.append("\n" );
+		sql.append("\n" );
+		sql.append("   SELECT count(wac.id) as claim_num,\n" );
+		sql.append("      0 as hours_settlement_amount,\n" );
+		sql.append("      0 as part_settlement_amount,\n" );
+		sql.append("      0 as pdi_settlement_amount,\n" );
+		sql.append("      0 as first_settlement_amount,\n" );
+		sql.append("      round(sum(wac.hours_settlement_amount)+sum(wac.part_settlement_amount),2) as activitie_settlement_amount,\n" );
+		sql.append("      0 as outward_settlement_amount,\n" );
+		sql.append("      sum(wac.settlement_total_amount) as settlement_total_amount,\n" );
+		sql.append("      0 as pn_exaction,\n" );
+		sql.append("      0 as good_claim_amount,\n" );
+		sql.append("      0 as LAST_ADMINISTRATION_AMOUNT,\n");
+		sql.append("      0 as AUTH_PRICE\n");
+		sql.append("  from TT_AS_WR_APPLICATION_CLAIM wac\n" );
+		sql.append("  inner join\n" );
+		sql.append("  (select distinct od.claim_id from TT_AS_WR_RETURNED_ORDER o\n" );
+		sql.append("          inner join Tt_As_Wr_Returned_Order_Detail od\n" );
+		sql.append("          on o.id=od.return_id\n" );
+		sql.append("          where o.dealer_id="+dealerId+"\n" );
+		sql.append("          and to_char(o.wr_start_date, 'yyyy-mm-dd') = '"+condition.getEndBalanceDate()+"'\n" );
+		sql.append("          and to_char(o.return_end_date, 'yyyy-mm-dd') = '"+condition.getConEndDay()+"'\n" );
+		sql.append("          and o.status=10811005\n" );
+		sql.append("          and o.IS_BILL=10041002\n" );
+		sql.append("          ) odo\n" );
+		sql.append("  on wac.id=odo.claim_id\n" );
+		sql.append(" where \n" );
+		sql.append("       wac.REPAIR_TYPE = 11441005 and wac.activity_type = 96281001\n" );
+		sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') <=\n" );
+		sql.append("       TO_DATE('"+condition.getConEndDay()+"','YYYY-MM-DD')\n" );
+		sql.append("   and wac.STATUS in (19991005)\n" );
+		sql.append("   and wac.is_bill=10041002\n" );
+		sql.append("   and to_date(to_char(wac.AUTH_AUDIT_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') >=\n" );
+		sql.append("       TO_DATE('"+condition.getEndBalanceDate()+"','YYYY-MM-DD')\n" );
+		sql.append("   and wac.dealer_id="+dealerId+"--服务活动技术升级（有旧件的）\n" );
+		sql.append("union all\n" );
+		sql.append("   select 0,0,0,0,0,0,0,0,sum(af.labour_sum) as pn_exaction,0,0,0 from tt_as_wr_fine af where af.pay_status=11511001 and af.dealer_id="+dealerId+"\n" );//正负激励总金额
+		sql.append("\n" );
+		sql.append("   union all\n" );
+		sql.append("   select 0,0,0,0,0,0,0,0,0,sum(t.audit_amount) as good_claim_amount,0,0 from tt_as_wr_Special t where t.DEALER_ID="+dealerId+" and t.status=20331014 and t.is_claim=10041002 and t.claim_no is null");//善于索赔总金额
+		sql.append("   union all\n" );
+		sql.append("   select 0,0,0,0,0,0,0,0,0,0,t.labour_sum as LAST_ADMINISTRATION_AMOUNT,0 from tt_as_wr_administrative_charge t where t.dealerid="+dealerId+" and t.status=94151002");//上次行政扣款金额
+		sql.append("   union all\n" );
+		sql.append("   select 0,0,0,0,0,0,0,0,0,0,0,o.AUTH_PRICE as AUTH_PRICE from TT_AS_WR_RETURNED_ORDER o where o.dealer_id = "+dealerId+"\n");
+		sql.append("          and to_char(o.wr_start_date, 'yyyy-mm-dd') = '"+condition.getEndBalanceDate()+"' and to_char(o.return_end_date, 'yyyy-mm-dd') = '"+condition.getConEndDay()+"' and o.status = 10811005 and o.IS_BILL = 10041002");//运费
 
-	sql.append("   )");
+		sql.append("   )");
 
-		return this.pageQuery(sql.toString(), null, this.getFunName(), condition.getPageSize(), condition.getCurPage());
-	}
+			return this.pageQuery(sql.toString(), null, this.getFunName(), condition.getPageSize(), condition.getCurPage());
+		}
 	/**
 	 * zyw 重新优化逻辑改造
 	 * @param dealerId
@@ -5250,6 +5257,22 @@ public List dealerBalanOrderJJD(String dealerId, String startTime, String endTim
 		StringBuffer sb= new StringBuffer();
 		sb.append("  SELECT * FROM Tt_As_Payment WHERE 1=1  AND Balance_Oder='"+balance+"'\n" );
 		List<TtAsPaymentPO> list = this.pageQuery(sb.toString(), null, getFunName());
+		return list;
+	}
+	public List<Map<String, Object>> balanceRecord(String id) {
+		StringBuffer sql= new StringBuffer();
+		sql.append("select g.id,\n" );
+		sql.append("       g.balance_ID,\n" );
+		sql.append("       g.audit_record,\n" );
+		sql.append("       TO_CHAR(g.audit_date, 'YYYY-MM-DD hh24:mi:ss') audit_date,\n" );
+		sql.append("       g.audit_by,\n" );
+		sql.append("       u.name,\n" );
+		sql.append("       (SELECT c.code_desc FROM tc_code c where c.code_id=g.opera_ststus) as opera_ststus\n" );
+		sql.append("  from tt_as_wr_balance_record g left join tc_user u on g.audit_by=u.user_Id \n" );
+		sql.append(" where 1=1 ");
+
+		DaoFactory.getsql(sql, "g.balance_ID", id, 1);
+		List<Map<String,Object>> list = this.pageQuery(sql.toString(), null, getFunName());
 		return list;
 	}
 }

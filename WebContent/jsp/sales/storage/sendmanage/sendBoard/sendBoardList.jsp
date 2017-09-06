@@ -104,6 +104,7 @@ background-color: blue;
 					<option value="10211004">部分组板</option>
 		  		</select>
 	     	 </td> 
+		 <!-- 
 		 <td class="right">是否中转：</td> 
 		  <td align="left">
 			  <label>
@@ -112,6 +113,7 @@ background-color: blue;
 					</script>
 				</label>
 		  </td>
+		  -->
 		  <td class="right">是否散单：</td> 
 		  <td align="left">
 			 <label>
@@ -120,11 +122,14 @@ background-color: blue;
 					</script>
 				</label>
 		  </td>
+		  <td class="right"></td> 
+		  <td align="left">
+		  </td>
 	 </tr> 
 	  <tr align="center">
 	  <td colspan="2" align="left">
-	  	<font color="red">组板说明：1、针对承运商、发运方式、发运结算地相同的订单才能组成一板</font><br/>
-	  	<font color="red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、若存在未组板的散单，散单优先组板</font>
+	  	<font color="red">组板说明：1、针对发运方式、承运商相同的订单才能组成一板</font><br/>
+	  	<font color="red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、若存在未组板的散单，散单优先组板</font>
 	  </td>
 	  <td colspan="4" align="center">
 	    	  <input type="button" id="queryBtn" class="u-button u-query" value="查询" onclick="_function(1);" />   
@@ -173,7 +178,7 @@ background-color: blue;
  				{header: "是否散单",dataIndex: 'DLV_IS_SD',align:'center',renderer:getItemValue},
  				{header: "承运商",dataIndex: 'LOGI_NAME',align:'center'},
  				//{header: "承运商",dataIndex: 'REQ_ID',align:'center',renderer:mySelect},
-				{header: "是否中转",dataIndex: 'DLV_IS_ZZ',align:'center',renderer:getItemValue},
+				//{header: "是否中转",dataIndex: 'DLV_IS_ZZ',align:'center',renderer:getItemValue},
 				{header: "经销商或收货仓库",dataIndex: 'DEALER_NAME',align:'center'},
 				{header: "发运仓库",dataIndex: 'WAREHOUSE_NAME',align:'center'},
 				{header: "发运方式",dataIndex: 'DLV_SHIP_TYPE',align:'center',renderer:getItemValue},
@@ -240,29 +245,29 @@ background-color: blue;
     function subSel(){
     	var b=0;
     	var c=0;//记录选中第一条的承运商、结算地和发运方式
-    	var d=0;
+    	//var d=0;
     	var k=0;
     	var m=0;
-    	var areaId;
+    	//var areaId;
     	var shipType;
     	var logiId;
 		var arrayObj=document.getElementsByName("orderIds");
-		var jsAddrs=document.getElementsByName("jsAddrs");//发运结算地
+		//var jsAddrs=document.getElementsByName("jsAddrs");//发运结算地
 		var shipTypes=document.getElementsByName("shipTypes");//发运方式
 		var logiIds=document.getElementsByName("logiIds");//承运商
 		for(var i=0;i<arrayObj.length;i++){
 			if(arrayObj[i].checked){
 				b=1;//有选中
 				if(c==0){
-					areaId=jsAddrs[i].value;
+					//areaId=jsAddrs[i].value;
 					shipType=shipTypes[i].value;
 					logiId=logiIds[i].value;
 					c=1;
 				}
-				if(areaId!=jsAddrs[i].value){
-					d=1;//不同结算地
-					break;
-				}
+				//if(areaId!=jsAddrs[i].value){
+				//	d=1;//不同结算地
+				//	break;
+				//}
 				if(shipType!=shipTypes[i].value){
 					k=1;//不同发运方式
 					break;
@@ -278,10 +283,10 @@ background-color: blue;
 			MyAlert("请选择需要组板的批售单或调拨单！");
 			return;
 		}
-		if(d==1){
-			MyAlert("不同结算地不能生产同一组板！");
-			return;
-		}
+		//if(d==1){
+		//	MyAlert("不同结算地不能生产同一组板！");
+		//	return;
+		//}
 		if(k==1){
 			MyAlert("不同发运方式不能生产同一组板！");
 			return;

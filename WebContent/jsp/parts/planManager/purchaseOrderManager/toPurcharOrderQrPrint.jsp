@@ -139,7 +139,7 @@
     </style>
 </head>
 <script language="javascript">
-	jQuery.noConflict();
+	//jQuery.noConflict();
     //获取选择框的值
     function getCode(value) {
         var str = getItemValue(value);

@@ -88,9 +88,9 @@ public class SendBoardAudit {
 			String logiName = CommonUtils.checkNull(request.getParamValue("LOGI_NAME")); //物流公司
 			String startDate = CommonUtils.checkNull(request.getParamValue("START_DATE")); //组板提交日期开始
 			String endDate = CommonUtils.checkNull(request.getParamValue("END_DATE")); // 组板提交日期结束
-			String provinceId = CommonUtils.checkNull(request.getParamValue("jsProvince")); //省份
-			String cityId = CommonUtils.checkNull(request.getParamValue("jsCity")); // 城市
-			String countyId = CommonUtils.checkNull(request.getParamValue("jsCounty")); // 区县
+//			String provinceId = CommonUtils.checkNull(request.getParamValue("jsProvince")); //省份
+//			String cityId = CommonUtils.checkNull(request.getParamValue("jsCity")); // 城市
+//			String countyId = CommonUtils.checkNull(request.getParamValue("jsCounty")); // 区县
 			/******************************页面查询字段end***************************/
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("boardNo", boardNo);
@@ -98,9 +98,9 @@ public class SendBoardAudit {
 			map.put("logiName", logiName);
 			map.put("startDate", startDate);
 			map.put("endDate", endDate);
-			map.put("provinceId", provinceId);
-			map.put("cityId", cityId);
-			map.put("countyId", countyId);
+//			map.put("provinceId", provinceId);
+//			map.put("cityId", cityId);
+//			map.put("countyId", countyId);
 			map.put("poseId", logonUser.getPoseId().toString());
 			
 			Integer curPage = request.getParamValue("curPage") != null ? Integer.parseInt(request
@@ -331,9 +331,9 @@ public class SendBoardAudit {
 			String logiName = CommonUtils.checkNull(request.getParamValue("LOGI_NAME")); //物流公司
 			String startDate = CommonUtils.checkNull(request.getParamValue("START_DATE")); //组板提交日期开始
 			String endDate = CommonUtils.checkNull(request.getParamValue("END_DATE")); // 组板提交日期结束
-			String provinceId = CommonUtils.checkNull(request.getParamValue("jsProvince")); //省份
-			String cityId = CommonUtils.checkNull(request.getParamValue("jsCity")); // 城市
-			String countyId = CommonUtils.checkNull(request.getParamValue("jsCounty")); // 区县
+//			String provinceId = CommonUtils.checkNull(request.getParamValue("jsProvince")); //省份
+//			String cityId = CommonUtils.checkNull(request.getParamValue("jsCity")); // 城市
+//			String countyId = CommonUtils.checkNull(request.getParamValue("jsCounty")); // 区县
 			/******************************页面查询字段end***************************/
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("boardNo", boardNo);
@@ -341,9 +341,9 @@ public class SendBoardAudit {
 			map.put("logiName", logiName);
 			map.put("startDate", startDate);
 			map.put("endDate", endDate);
-			map.put("provinceId", provinceId);
-			map.put("cityId", cityId);
-			map.put("countyId", countyId);
+//			map.put("provinceId", provinceId);
+//			map.put("cityId", cityId);
+//			map.put("countyId", countyId);
 			map.put("poseId", logonUser.getPoseId().toString());
 			
 			Integer curPage = request.getParamValue("curPage") != null ? Integer.parseInt(request
@@ -585,9 +585,9 @@ public class SendBoardAudit {
 		sql.append("   BO_STATUS,\n" );
 		sql.append("   DLV_SHIP_TYPE,\n" );
 		sql.append("   DLV_LOGI_ID,\n" );
-		sql.append("   DLV_BAL_PROV_ID,\n" );
-		sql.append("   DLV_BAL_CITY_ID,\n" );
-		sql.append("   DLV_BAL_COUNTY_ID,\n" );
+//		sql.append("   DLV_BAL_PROV_ID,\n" );
+//		sql.append("   DLV_BAL_CITY_ID,\n" );
+//		sql.append("   DLV_BAL_COUNTY_ID,\n" );
 		sql.append("   DLV_FY_DATE,\n" );
 		sql.append("   DLV_JJ_DATE,\n" );
 		sql.append("   PLAN_LOAD_DATE)\n" );
@@ -618,9 +618,9 @@ public class SendBoardAudit {
 		sql.append("         BO_STATUS,\n" );
 		sql.append("         DLV_SHIP_TYPE,\n" );
 		sql.append("         DLV_LOGI_ID,\n" );
-		sql.append("         DLV_BAL_PROV_ID,\n" );
-		sql.append("         DLV_BAL_CITY_ID,\n" );
-		sql.append("         DLV_BAL_COUNTY_ID,\n" );
+//		sql.append("         DLV_BAL_PROV_ID,\n" );
+//		sql.append("         DLV_BAL_CITY_ID,\n" );
+//		sql.append("         DLV_BAL_COUNTY_ID,\n" );
 		sql.append("         DLV_FY_DATE,\n" );
 		sql.append("         DLV_JJ_DATE,\n" );
 		sql.append("         PLAN_LOAD_DATE\n" );
@@ -678,7 +678,15 @@ public class SendBoardAudit {
 		sql.append("   INVOICE_NO_VER,\n" );
 		sql.append("   IS_RETAIL,\n" );
 		sql.append("   REC_DEALER_NAME,\n" );
-		sql.append("   REC_SHORTDEALER_NAME)\n" );
+		sql.append("   REC_SHORTDEALER_NAME,\n" );
+		sql.append("   DLV_BAL_PROV_ID,\n" );
+		sql.append("   DLV_BAL_CITY_ID,\n" );
+		sql.append("   DLV_BAL_COUNTY_ID,\n" );
+		sql.append("   DLV_IS_ZZ,\n" );
+		sql.append("   DLV_ZZ_PROV_ID,\n" );
+		sql.append("   DLV_ZZ_CITY_ID,\n" );
+		sql.append("   DLV_ZZ_COUNTY_ID,\n" );
+		sql.append("   ZZ_WH_ID)\n" );
 		sql.append("  select BO_DE_ID,\n" );
 		sql.append("         BO_ID,\n" );
 		sql.append("         OR_DE_ID,\n" );
@@ -720,7 +728,15 @@ public class SendBoardAudit {
 		sql.append("         INVOICE_NO_VER,\n" );
 		sql.append("         IS_RETAIL,\n" );
 		sql.append("         REC_DEALER_NAME,\n" );
-		sql.append("         REC_SHORTDEALER_NAME\n" );
+		sql.append("         REC_SHORTDEALER_NAME,\n" );
+		sql.append("   		DLV_BAL_PROV_ID,\n" );
+		sql.append("   DLV_BAL_CITY_ID,\n" );
+		sql.append("   DLV_BAL_COUNTY_ID,\n" );
+		sql.append("   DLV_IS_ZZ,\n" );
+		sql.append("   DLV_ZZ_PROV_ID,\n" );
+		sql.append("   DLV_ZZ_CITY_ID,\n" );
+		sql.append("   DLV_ZZ_COUNTY_ID,\n" );
+		sql.append("   ZZ_WH_ID\n" );
 		sql.append("    from tt_sales_bo_detail t\n" );
 		sql.append("   where t.bo_id = "+boId+"\n");
 		return sql.toString();

@@ -27,7 +27,7 @@
   				<td colspan="1">服务站电话:${ps.PHONE } </td>
   			</tr>
   			<tr>
-  				<td colspan="7" style="border-right: 0px;" align="left">重庆北汽幻速汽车销售有限公司 ：    </td>
+  				<td colspan="7" style="border-right: 0px;" align="left">重庆君马汽车销售有限公司 ：    </td>
   				<td colspan="3" style="border-left: 0px;" align="right">一式三联，两联随发票寄出</td>
   			</tr>
   			<tr>
@@ -162,7 +162,7 @@
   				</td>
   			</tr>
   			<tr>
-  				<td colspan="2">北汽幻速签字确认：</td>
+  				<td colspan="2">君马签字确认：</td>
   				<td colspan="2">&nbsp;</td>
   				<td colspan="7">
   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年
@@ -172,23 +172,23 @@
   			<tr>
   				<td rowspan="5">购货单位</td>
   				<td colspan="2">购货单位</td>
-  				<td colspan="7">重庆北汽幻速汽车销售有限公司</td>
+  				<td colspan="7">重庆君马汽车销售有限公司</td>
   			</tr>
   			<tr>
   				<td colspan="2">纳税人识别号</td>
-  				<td colspan="7">500117083059795</td>
+  				<td colspan="7">xxxxxxxxxxxxxxx</td>
   			</tr>
   			<tr>
   				<td colspan="2">地 址 电 话</td>
-  				<td colspan="7">重庆市合川区土场镇三口村 023-42661188</td>
+  				<td colspan="7">重庆市xxx区xxx镇xxx村 xxx-xxxxxxxx</td>
   			</tr>
   			<tr>
   				<td colspan="2">开   户   行</td>
-  				<td colspan="7">中信银行重庆九龙坡支行</td>
+  				<td colspan="7">xxxxxxxxxxxxxxxxxxxxx</td>
   			</tr>
   			<tr>
   				<td colspan="2">账     号</td>
-  				<td colspan="7">7422410182600052664</td>
+  				<td colspan="7">xxxxxxxxxxxxxxxxxx</td>
   			</tr>
   			<tr>
   				<td colspan="10"></td>
@@ -197,36 +197,48 @@
   				<td>收 
   				</td>
   				<td colspan="2">单 位 名 称</td>
-  				<td colspan="7">重庆北汽幻速汽车销售有限公司</td>
+  				<td colspan="7">重庆君马汽车销售有限公司</td>
   			</tr>
   			<tr>
   				<td>件</td>
   				<td colspan="2">收件人姓名<input type="hidden" id="STATUS" name="STATUS" />  </td>
-  				<td colspan="7">重庆北汽幻速汽车销售有限公司索赔管理部</td>
+  				<td colspan="7">重庆君马汽车销售有限公司索赔管理部</td>
   			</tr>
   			<tr>
   				<td>单</td>
   				<td colspan="2">地址、电话</td>
-  				<td colspan="7">重庆市北碚区土场镇三口村北汽银翔（研发中心二楼） 023-42668160</td>
+  				<td colspan="7">重庆市xxxxxxxxxxxxxxxxxxxxx xxx-xxxxxxxx</td>
   			</tr>
   			<tr>
   				<td>位</td>
   				<td colspan="2">邮 政 编 码</td>
-  				<td colspan="7">401520</td>
+  				<td colspan="7">xxxxxx</td>
   			</tr>
   		</table>
   		</div>
-  		<br> 		
-  		<table class="table_edit">
+  		<br><br> 		
+  	<!-- 审核记录 -->
+  	<table style="width: 900px;" class="tab_edit" id="tab1" >
   			<tr>
-			<td> 审核意见：</td>
-	        <td class="table_info_3col_input">
-	        	<div style="width:800px;">
-	        		${ps.FUNANCIAL_REMARK }
-	        	</div>	        	
-	        </td> 
+  				<td colspan="10" align="left">审核记录如下：</td>
+  			</tr>
+  	</table><br>
+    <table style="width: 900px;" class="table_edit">
+    <tr>
+    		<th style="width: 20%;text-align: center;">审核时间</th>
+			<th style="width: 20%;text-align: center;">审核意见</th>
+			<th style="width: 20%;text-align: center;">审核人</th>
+			<th style="width: 20%;text-align: center;">审核状态</th>
+    	</tr>
+		<c:forEach items="${rList}" var="applyR">
+			<tr>
+				<td style="width: 20%;text-align: center;">${applyR.AUDIT_DATE}</td>
+				<td style="width: 20%;text-align: center;">${applyR.AUDIT_RECORD}</td>
+				<td style="width: 20%;text-align: center;">${applyR.NAME}</td>
+				<td style="width: 20%;text-align: center;">${applyR.OPERA_STSTUS}</td> 
 			</tr> 
-  		</table>
+		</c:forEach>
+    </table><br><br>
 		<table class="table_edit">
 			<tr style="text-align: center;">
 				<td>

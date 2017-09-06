@@ -77,6 +77,7 @@ public class SalesBalanceDao  extends  IBaseDao  {
 		DaoFactory.getsql(sql, "b.bal_no", DaoFactory.getParam(request, "bal_no"), 2);
 		DaoFactory.getsql(sql, "wb.bill_no", DaoFactory.getParam(request, "bill_no"), 2);
 		DaoFactory.getsql(sql, "b.status", DaoFactory.getParam(request, "status"), 1);
+		sql.append(" order by b.BAL_DATE desc");
 		return dao.pageQuery(sql.toString(), null, getFunName(), pageSize, currPage);
 	}
 	
@@ -122,6 +123,7 @@ public class SalesBalanceDao  extends  IBaseDao  {
 		DaoFactory.getsql(sql, "b.bal_no", DaoFactory.getParam(request, "bal_no"), 2);
 		DaoFactory.getsql(sql, "wb.bill_no", DaoFactory.getParam(request, "bill_no"), 2);
 		DaoFactory.getsql(sql, "b.status", DaoFactory.getParam(request, "status"), 1);
+		sql.append(" order by b.BAL_DATE desc");
 		return dao.pageQuery(sql.toString(), null, getFunName(), pageSize, currPage);
 	}
 	/**

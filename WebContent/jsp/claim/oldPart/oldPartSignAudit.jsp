@@ -388,6 +388,7 @@
     var signAmount = record.data.SIGN_AMOUNT;//签收数
     
     var id = record.data.ID;//配件明细ID
+    var returnId = record.data.RETURN_ID;//配件清单ID
     var isMainCode = record.data.IS_MAIN_CODE;//是否主因件
     var claimId = record.data.CLAIM_ID;//索赔单ID
     var claimPartId = record.data.CLAIM_PART_ID;//索赔配件表ID
@@ -406,13 +407,13 @@
  	if(isBill==<%=Constant.PART_BASE_FLAG_YES%>||isOut==<%=Constant.PART_BASE_FLAG_YES%>||deductRemark==<%=Constant.OLDPART_DEDUCT_TYPE_22%>){
  		//已开票、已出库、扣件原因为连带扣件就不能再选择了
  		 //res = String.format("<input type=\"text\" readOlny id=\"signNum"+record.data.ID+"\" onkeyup=\"signforwad("+record.data.ID+","+0+");\" name=\"signNum"+record.data.ID+"\" class=\"short_txt\"  value=\"" + value+ "\"/>"+"<input type=\"hidden\" id=\"signNum1"+record.data.ID+"\" name=\"signNum1"+record.data.ID+"\"   value=\"" + value + "\"/>");
- 		res = "<select id=\"signAmount_"+record.data.ID+"\" name=\"signAmount_"+record.data.ID+"\" class=\"u-select\" style=\"width:40px\" onchange=\"signAmountChange("+id+","+isMainCode+","+claimId+","+claimPartId+","+partId+")\">" 
+ 		res = "<select id=\"signAmount_"+record.data.ID+"\" name=\"signAmount_"+record.data.ID+"\" class=\"u-select\" style=\"width:40px\" >" 
             + option
             + "</select>";
  	}else {
  		//$('qianshou').disabled="";
  		//res = String.format("<input type=\"text\"  id=\"signNum"+record.data.ID+"\" onkeyup=\"signforwad("+record.data.ID+","+0+");\" name=\"signNum"+record.data.ID+"\" class=\"short_txt\"  value=\"" + value+ "\"/>"+"<input type=\"hidden\" id=\"signNum1"+record.data.ID+"\" name=\"signNum1"+record.data.ID+"\"   value=\"" + value + "\"/>");
- 		res = "<select id=\"signAmount_"+record.data.ID+"\" name=\"signAmount_"+record.data.ID+"\" class=\"u-select\" style=\"width:40px\" onchange=\"signAmountChange("+id+","+isMainCode+","+claimId+","+claimPartId+","+partId+")\">" 
+ 		res = "<select id=\"signAmount_"+record.data.ID+"\" name=\"signAmount_"+record.data.ID+"\" class=\"u-select\" style=\"width:40px\" onchange=\"signAmountChange("+id+","+returnId+","+isMainCode+","+claimId+","+claimPartId+","+partId+")\">" 
             + options
             + "</select>";
  	}
@@ -534,12 +535,12 @@ function afterModSupp(json){
 			makeNomalFormCall(url,afterCall111,'fm','');
 	}
     //选择签收数
-    function signAmountChange(id,isMainCode,claimId,claimPartId,partId){
+    function signAmountChange(id,returnId,isMainCode,claimId,claimPartId,partId){
       var signAmount = document.getElementById("signAmount_"+id).value;
       var curPage = myPage.page;//
       
 	  var url="<%=contextPath%>/claim/oldPart/ClaimOldPartApporoveStorageManager/signAmountChange.json?id="+id+"&signAmount="+signAmount
-	         +"&isMainCode="+isMainCode+"&claimId="+claimId+"&claimPartId="+claimPartId
+	         +"&returnId="+returnId+"&isMainCode="+isMainCode+"&claimId="+claimId+"&claimPartId="+claimPartId
 	         +"&partId="+partId+"&curPage="+curPage;
 	  makeNomalFormCall(url,signAmountChangeResult,'fm','');
     }

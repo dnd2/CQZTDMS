@@ -90,6 +90,7 @@
         border-right: 0px;
         border-bottom: 0px;
   }
+    body, td {font-size: 16px}
 </style>
 <script language="javascript">
 var printStyle = "width:241mm;height:280mm;";
@@ -142,7 +143,7 @@ function printpreviewToA4() {
 }
 </script>
 </head>
-<body style="text-align:center;margin:0px;padding:0px;">
+<body style="text-align:center;margin:0px;padding:0px;font-size: 16px;color:#000">
 <TABLE border=0 cellpadding=0 cellspacing=0 class="Noprint center page-print-buttons" width=100%>
     <tr style="border: 0px;">
         <td style="border: 0px;">
@@ -165,7 +166,7 @@ function printpreviewToA4() {
         </c:choose>
         <div id="cen_mid_div" name="cen_mid_div">
             <div id="top_cen_mid_div">
-                <img src="<%=request.getContextPath()%>/img/bq_log1.gif" style="float: left;height: 55px;width: 250px"/>
+                <img src="<%=request.getContextPath()%>/img/bq_log1.gif" style="float: left;height: 55px;width: 250px;margin-bottom:5px"/>
                 <span style="font-size:40px;margin-left:-120px;font-weight:bold">拣配单</span>
             </div>
             <table class="tableHead" width="100%">

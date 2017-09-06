@@ -96,7 +96,7 @@ public class MiscManagerDAO extends BaseDao<PO> {
         String partCname = CommonUtils.checkNull(request.getParamValue("partCname"));// 配件名称
 
         StringBuffer sql = new StringBuffer();
-        sql.append("select PART_ID,PART_CODE,PART_OLDCODE,PART_CNAME,nvl(UNIT,'件') UNIT,MIN_PACK1 as MIN_PACKAGE  \n");
+        sql.append("select PART_ID,PART_CODE,PART_OLDCODE,PART_CNAME,nvl(UNIT,'件') UNIT,BUY_MIN_PKG as MIN_PACKAGE  \n");
         sql.append("from TT_PART_DEFINE  \n");
         sql.append("where 1=1   \n");
         if (null != partCode && !partCode.equals("")) {
@@ -123,9 +123,21 @@ public class MiscManagerDAO extends BaseDao<PO> {
      */
     public Map<String, Object> getMainData(String orderId) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t1.MISC_ORDER_CODE,t1.ORG_ID,t2.WH_ID,t2.WH_CODE,t2.WH_NAME,t1.REMARK,to_char(t1.CREATE_DATE,'yyyy-mm-dd') as CREATE_DATE,t3.NAME,decode(t1.B_TYPE,1,'杂项入库','杂项出库') B_TYPE \n");
-        sql.append("from TT_PARTS_MISC_MAIN t1,TT_PART_WAREHOUSE_DEFINE t2,TC_USER t3  \n");
-        sql.append("where MISC_ORDER_ID=" + orderId + " and t1.WH_ID=t2.WH_ID and t1.CREATE_BY=t3.USER_ID  \n");
+        sql.append("SELECT T1.MISC_ORDER_CODE,\n");
+        sql.append("       T1.ORG_ID,\n");
+        sql.append("       T2.WH_ID,\n");
+        sql.append("       T2.WH_CODE,\n");
+        sql.append("       T2.WH_NAME,\n");
+        sql.append("       T1.REMARK,\n");
+        sql.append("       TO_CHAR(T1.CREATE_DATE, 'yyyy-mm-dd') AS CREATE_DATE,\n");
+        sql.append("       T3.NAME,\n");
+        sql.append("       DECODE(T1.B_TYPE, 1, '杂项入库', '杂项出库') B_TYPE,\n");
+        sql.append("       TC.CODE_DESC EX_TYPE\n");
+        sql.append("  FROM TT_PARTS_MISC_MAIN T1, TT_PART_WAREHOUSE_DEFINE T2, TC_USER T3, TC_CODE TC\n");
+        sql.append(" WHERE MISC_ORDER_ID = '"+orderId+"'\n");
+        sql.append("   AND T1.WH_ID = T2.WH_ID\n");
+        sql.append("   AND T1.EX_TYPE = TC.CODE_ID\n");
+        sql.append("   AND T1.CREATE_BY = T3.USER_ID\n");
         List<Map<String, Object>> list = this.pageQuery(sql.toString(), null, this.getFunName());
         if (null == list || list.size() <= 0 || list.get(0) == null) {
             return null;
@@ -144,9 +156,19 @@ public class MiscManagerDAO extends BaseDao<PO> {
      */
     public PageResult<Map<String, Object>> getDetailList(String orderId, int pageSize, int curPage) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t1.MISC_DETAIL_ID,t2.PART_ID,t2.PART_CODE,t2.PART_OLDCODE,t2.PART_CNAME, T1.LOC_CODE, t2.UNIT,t2.MIN_PACK1,IN_QTY    \n");
-        sql.append("from TT_PARTS_MISC_DETAIL t1,TT_PART_DEFINE t2  \n");
-        sql.append("where MISC_ORDER_ID=" + orderId + " and t1.PART_ID=t2.PART_ID   \n");
+        sql.append("SELECT T1.MISC_DETAIL_ID,\n");
+        sql.append("       T1.PART_ID,\n");
+        sql.append("       T2.PART_CODE,\n");
+        sql.append("       T2.PART_OLDCODE,\n");
+        sql.append("       T2.PART_CNAME,\n");
+        sql.append("       T1.LOC_CODE,\n");
+        sql.append("       T1.UNIT,\n");
+        sql.append("       T1.MIN_PACKAGE,\n");
+        sql.append("       T1.BATCH_NO,\n");
+        sql.append("       IN_QTY\n");
+        sql.append("  FROM TT_PARTS_MISC_DETAIL T1, TT_PART_DEFINE T2\n");
+        sql.append(" WHERE MISC_ORDER_ID = '"+orderId+"'\n");
+        sql.append("   AND T1.PART_ID = T2.PART_ID\n");
         PageResult<Map<String, Object>> ps = pageQuery(sql.toString(), null, getFunName(), pageSize, curPage);
         return ps;
     }
@@ -154,7 +176,6 @@ public class MiscManagerDAO extends BaseDao<PO> {
 
     @Override
     protected PO wrapperPO(ResultSet rs, int idx) {
-        // TODO Auto-generated method stub
         return null;
     }
 

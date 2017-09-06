@@ -245,7 +245,7 @@ public class partDealerAccImpRecAction implements PTConstants {
             String checkSDate = CommonUtils.checkNull(request.getParamValue("checkSDate"));//打款日期
             String pzNo = CommonUtils.checkNull(request.getParamValue("pz_no"));//凭证号
             String hid = CommonUtils.checkNull(request.getParamValue("hid"));//记录ID
-            String jp = CommonUtils.checkNull(request.getParamValue("jp"));//记录ID
+            String jp = CommonUtils.checkNull(request.getParamValue("jp"));//打款类型，前端隐藏默认为配件款
             String flag = CommonUtils.checkNull(request.getParamValue("flag"));//标志
             String bankId = CommonUtils.checkNull(request.getParamValue("bankId"));//银行Id
 

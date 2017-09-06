@@ -61,6 +61,7 @@ public class PartWareHouseDao extends BaseDao<PO> {
         StringBuffer sql = new StringBuffer();
         sql.append("select  * from tt_part_warehouse_define tpwd where 1=1 ");
         sql.append(conSql);
+        sql.append("  order by tpwd.create_date desc,tpwd.update_date desc");
         return pageQuery(sql.toString(), null, getFunName(), pageSize, curPage);
     }
 

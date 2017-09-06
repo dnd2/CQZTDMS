@@ -25,6 +25,7 @@ var columns = [
                {header: "配件件号", dataIndex: 'PART_CODE',  style: 'text-class="cneter"'},
                {header: "单位", dataIndex: 'UNIT', align:'center'},
                {header: "货位", dataIndex: 'LOC_CODE', align:'center'},
+               {header: "批次号", dataIndex: 'BATCH_NO', align:'center'},
                {header: "数量", dataIndex: 'IN_QTY', align:'center'}
 	      ];
 //获取选择框的值
@@ -66,7 +67,8 @@ function goBack(){
         <td>${mainMap.CREATE_DATE}</td>
     	<td class="right">仓库:</td>
         <td>${mainMap.WH_NAME}</td>   
-
+    	<td class="right">出库类型:</td>
+        <td>${mainMap.EX_TYPE}</td>
     </tr>
     <tr>
         <td class="right">备注:</td>

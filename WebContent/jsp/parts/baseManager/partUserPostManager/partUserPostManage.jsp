@@ -118,7 +118,7 @@ function relationAdd(){
 						<tr>
 							<td class="right">人员类型：</td>
 							<td>
-								<select name="fixValue" id="fixValue" class="short_sel u-select">
+								<select name="fixValue" id="fixValue" class="u-select">
 									<option value="">-请选择-</option>
 									<c:if test="${postList!=null}">
 									<c:forEach items="${postList}" var="list">

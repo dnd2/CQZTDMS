@@ -7,6 +7,7 @@
 %>
 <head>
 <title>装箱单打印</title>
+    <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
 <style media=print>
    .Noprint {
        display: none;
@@ -95,6 +96,7 @@
             font-weight: bold;
             /*background: #ccc;*/
         }
+        body, td {font-size: 16px}
     </style>
 </head>
 <script language="javascript">
@@ -111,19 +113,18 @@
     }
 </script>
 
-<body style="margin: 0px;padding: 0px;text-align: center;">
+<body style="margin: 0px;padding: 0px;text-align: center;font-size: 16px;color:#000">
 <form name="fm" id="fm" method="post" enctype="multipart/form-data">
     <OBJECT id=WebBrowser classid=CLSID:8856F961-340A-11D0-A96B-00C04FD705A2 style="display: none"></OBJECT>
     <input name="pickOrderId" id="pickOrderId" value="${dataMap.pickOrderId}" type="hidden"/>
     <div id="fot_div">
-        <TABLE border=0 cellpadding=0 cellspacing=0 class="Noprint"
-               class="center" width=100%>
+        <TABLE border=0 cellpadding=0 cellspacing=0 class="Noprint center page-print-buttons" width=100%>
             <tr style="border: 0px;">
                 <td style="border: 0px;">
                     <input type=button id="printBtn" class="txtToolBarButton"
-                           value="打印" onClick="printOrder()">
+                           value="打印">
                     <input type=button id="printBtn2" class="txtToolBarButton"
-                           value="预览" onClick="printpreview()">
+                           value="预览">
                 </td>
             </tr>
         </TABLE>
@@ -139,7 +140,7 @@
             </c:choose>
             <div id="cen_mid_div">
                 <div id="top_cen_mid_div">
-                    <img src="<%=request.getContextPath()%>/img/bq_log1.gif" style="float: left;height: 55px;width: 250px"/>
+                    <img src="<%=request.getContextPath()%>/img/bq_log1.gif" style="float: left;height: 55px;width: 250px;margin-bottom:5px"/>
                     <span style="font-size:40px;margin-left:-160px;font-weight:bold">装箱单</span>
                 </div>
                 <div id="but_cen_mid_div">

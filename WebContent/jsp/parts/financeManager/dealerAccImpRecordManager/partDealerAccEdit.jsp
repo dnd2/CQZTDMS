@@ -92,12 +92,13 @@ function extractCode(value) {
     //MyAlert(11);
 }
 function gobackConfirm(){
-    MyConfirm("确认返回?",goback);
+//     MyConfirm("确认返回?",goback);
+    window.location.href = "<%=contextPath%>/parts/financeManager/dealerAccImpRecordManager/partDealerAccImpRecAction/partDealerAccPaymentinit.do";
 
 }
-function goback(){
+<%-- function goback(){
     window.location.href = "<%=contextPath%>/parts/financeManager/dealerAccImpRecordManager/partDealerAccImpRecAction/partDealerAccPaymentinit.do";
-}
+} --%>
 </script>
 
 </head>
@@ -141,8 +142,8 @@ function goback(){
 								<input type="text" class="middle_txt" name="pz_no" id="pz_no" datatype="0,is_null,100" value="${pz_no}" />
 								<font style="color: red">(请录入后8位数字)</font>
 							</td>
-							<td class="right">精品配件款：</td>
-							<td>
+							<td class="right" style="display: none;">精品配件款：</td>
+							<td  style="display: none;">
 								<input type="checkbox" style="border: none;" name="is_jp" id="is_jp" value="" />
 								<font style="color: red">(款项为精品款时请勾选)</font>
 								<script type="text/javascript">

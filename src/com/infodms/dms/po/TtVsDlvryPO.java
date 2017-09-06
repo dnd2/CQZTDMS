@@ -51,10 +51,10 @@ public class TtVsDlvryPO extends PO {
 	private Long dlvBalProvId;
 	private Long dlvBalCityId;
 	private Long dlvBalCountyId;
-	private Integer dlvIsZz;
-	private Long dlvZzProvId;
-	private Long dlvZzCityId;
-	private Long dlvZzCountyId;
+//	private Integer dlvIsZz;
+//	private Long dlvZzProvId;
+//	private Long dlvZzCityId;
+//	private Long dlvZzCountyId;
 	private Long createBy;
 	private Date createDate;
 	private Long updateBy;
@@ -69,17 +69,17 @@ public class TtVsDlvryPO extends PO {
 	private Date auditDate;
 	private Long auditBy;
 	private String auditRemark;
-	private Long zzWhId;
+//	private Long zzWhId;
 	
-	public Long getZzWhId() {
-		return zzWhId;
-	}
-	public void setZzWhId(Long zzWhId) {
-		this.zzWhId = zzWhId;
-	}
 	public Date getAuditDate() {
 		return auditDate;
 	}
+//	public Integer getDlvIsZz() {
+//		return dlvIsZz;
+//	}
+//	public void setDlvIsZz(Integer dlvIsZz) {
+//		this.dlvIsZz = dlvIsZz;
+//	}
 	public void setAuditDate(Date auditDate) {
 		this.auditDate = auditDate;
 	}
@@ -335,30 +335,7 @@ public class TtVsDlvryPO extends PO {
 	public void setDlvBalCountyId(Long dlvBalCountyId) {
 		this.dlvBalCountyId = dlvBalCountyId;
 	}
-	public Integer getDlvIsZz() {
-		return dlvIsZz;
-	}
-	public void setDlvIsZz(Integer dlvIsZz) {
-		this.dlvIsZz = dlvIsZz;
-	}
-	public Long getDlvZzProvId() {
-		return dlvZzProvId;
-	}
-	public void setDlvZzProvId(Long dlvZzProvId) {
-		this.dlvZzProvId = dlvZzProvId;
-	}
-	public Long getDlvZzCityId() {
-		return dlvZzCityId;
-	}
-	public void setDlvZzCityId(Long dlvZzCityId) {
-		this.dlvZzCityId = dlvZzCityId;
-	}
-	public Long getDlvZzCountyId() {
-		return dlvZzCountyId;
-	}
-	public void setDlvZzCountyId(Long dlvZzCountyId) {
-		this.dlvZzCountyId = dlvZzCountyId;
-	}
+	
 	public Long getCreateBy() {
 		return createBy;
 	}

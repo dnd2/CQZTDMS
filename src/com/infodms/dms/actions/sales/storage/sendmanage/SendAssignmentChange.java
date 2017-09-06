@@ -104,7 +104,7 @@ public class SendAssignmentChange {
 			String assStartdate = CommonUtils.checkNull(request.getParamValue("ASS_STARTDATE")); // 分派日期开始
 			String assEnddate = CommonUtils.checkNull(request.getParamValue("ASS_ENDDATE")); //分派日期结束
 			String logiName = CommonUtils.checkNull(request.getParamValue("LOGI_NAME_SEACH")); //物流商
-			String isMiddleTurn = CommonUtils.checkNull(request.getParamValue("isMiddleTurn")); //是否中转
+			//String isMiddleTurn = CommonUtils.checkNull(request.getParamValue("isMiddleTurn")); //是否中转
 			String isSdan = CommonUtils.checkNull(request.getParamValue("isSdan")); //是否散单
 			
 			/******************************页面查询字段end***************************/
@@ -120,7 +120,7 @@ public class SendAssignmentChange {
 			map.put("assStartDate", assStartdate);
 			map.put("assEndDate", assEnddate);
 			map.put("logiName", logiName);
-			map.put("isMiddleTurn", isMiddleTurn);
+			//map.put("isMiddleTurn", isMiddleTurn);
 			map.put("isSdan", isSdan);
 			map.put("poseId", logonUser.getPoseId().toString());
 			if("1".equals(common)){//统计 调用
@@ -387,11 +387,11 @@ public class SendAssignmentChange {
 					tpo2.setDlvBalProvId(tvo.getReqRecProvId());//结算省份
 					tpo2.setDlvBalCityId(tvo.getReqRecCityId());//结算城市
 					tpo2.setDlvBalCountyId(tvo.getReqRecCountyId());//结算区县
-					tpo2.setDlvIsZz(Constant.IF_TYPE_NO);//是否中转为否
+					//tpo2.setDlvIsZz(Constant.IF_TYPE_NO);//是否中转为否
 					//中转省市县置空
-					tpo2.setDlvZzProvId(Long.valueOf(0));
-					tpo2.setDlvZzCityId(Long.valueOf(0));
-					tpo2.setDlvZzCountyId(Long.valueOf(0));
+//					tpo2.setDlvZzProvId(Long.valueOf(0));
+//					tpo2.setDlvZzCityId(Long.valueOf(0));
+//					tpo2.setDlvZzCountyId(Long.valueOf(0));
 					tpo2.setDlvShipType(tvo.getReqShipType());//发运方式
 					tpo2.setDlvIsSd(Constant.IF_TYPE_NO);//是否散单为否
 					tpo2.setDlvLogiId(Long.valueOf(0));//承运商置空
@@ -454,10 +454,10 @@ public class SendAssignmentChange {
 		sql.append("   DLV_BAL_PROV_ID,\n" );
 		sql.append("   DLV_BAL_CITY_ID,\n" );
 		sql.append("   DLV_BAL_COUNTY_ID,\n" );
-		sql.append("   DLV_IS_ZZ,\n" );
-		sql.append("   DLV_ZZ_PROV_ID,\n" );
-		sql.append("   DLV_ZZ_CITY_ID,\n" );
-		sql.append("   DLV_ZZ_COUNTY_ID,\n" );
+//		sql.append("   DLV_IS_ZZ,\n" );
+//		sql.append("   DLV_ZZ_PROV_ID,\n" );
+//		sql.append("   DLV_ZZ_CITY_ID,\n" );
+//		sql.append("   DLV_ZZ_COUNTY_ID,\n" );
 		sql.append("   REQ_REC_WH_ID,\n" );
 		sql.append("   DLV_DATE,\n" );
 		sql.append("   DLV_IS_SD,\n" );
@@ -504,10 +504,10 @@ public class SendAssignmentChange {
 		sql.append("         DLV_BAL_PROV_ID,\n" );
 		sql.append("         DLV_BAL_CITY_ID,\n" );
 		sql.append("         DLV_BAL_COUNTY_ID,\n" );
-		sql.append("         DLV_IS_ZZ,\n" );
-		sql.append("         DLV_ZZ_PROV_ID,\n" );
-		sql.append("         DLV_ZZ_CITY_ID,\n" );
-		sql.append("         DLV_ZZ_COUNTY_ID,\n" );
+//		sql.append("         DLV_IS_ZZ,\n" );
+//		sql.append("         DLV_ZZ_PROV_ID,\n" );
+//		sql.append("         DLV_ZZ_CITY_ID,\n" );
+//		sql.append("         DLV_ZZ_COUNTY_ID,\n" );
 		sql.append("         REQ_REC_WH_ID,\n" );
 		sql.append("         DLV_DATE,\n" );
 		sql.append("         DLV_IS_SD,\n" );

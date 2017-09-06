@@ -173,7 +173,7 @@
 				<td width="10%">
 					<input class="middle_txt"  type="text" name="egress_no" id="egress_no" maxlength="18"/>
 				</td>
-				<td width="5%" style="text-align: right"> 起始日期：</td>
+				<td width="5%" style="text-align: right"> 创建日期：</td>
 				<td width="19%" align="left">
 					<input id="startDate" name="startDate" readonly="readonly" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="display: inline-block;min-width: 60px;width: 90px;height: 30px;padding: 4px 5px;margin: 0 4px;border: #b8b8b8 solid 1px;border-radius: 3px;box-shadow: 0 1px 3px #ececec inset;background-color: #fefefe;color: #5a5a5a;outline: none;box-sizing: border-box;"/>
 					至

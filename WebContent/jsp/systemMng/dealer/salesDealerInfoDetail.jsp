@@ -19,16 +19,16 @@ function doInit()
 	if(dealerLevel==dl)
 	{
 		document.getElementById("sJDealerCode").disabled="true";
-		document.getElementById("dealerbu").disabled="true";
+		document.getElementById("sJDealerCode").disabled="true";
 		document.getElementById("orgCode").disabled="";
-		document.getElementById("orgbu").disabled="";
+		document.getElementById("orgCode").disabled="";
 		
 	}else
 	{
 		document.getElementById("sJDealerCode").disabled="";
-		document.getElementById("dealerbu").disabled="";
+		document.getElementById("sJDealerCode").disabled="";
 		document.getElementById("orgCode").disabled="true";
-		document.getElementById("orgbu").disabled="true";		
+		document.getElementById("orgCode").disabled="true";		
 	}
 	genLocSel('txt1','txt2','txt3','${map.PROVINCE_ID}','${map.CITY_ID}','${map.COUNTIES}'); // 加载省份城市和县
 	//document.getElementById("priceId").value="${map.PRICE_ID}";
@@ -39,16 +39,16 @@ function changeDealerlevel(value)
 	if(dealerLevel==value)
 	{
 		document.getElementById("sJDealerCode").disabled="true";
-		document.getElementById("dealerbu").disabled="true";
+		document.getElementById("sJDealerCode").disabled="true";
 		document.getElementById("orgCode").disabled="";
-		document.getElementById("orgbu").disabled="";
+		document.getElementById("orgCode").disabled="";
 		document.getElementById("sJDealerCode").value="";
 		document.getElementById("sJDealerId").value="";
 		
 	}else
 	{
 		document.getElementById("sJDealerCode").disabled="";
-		document.getElementById("dealerbu").disabled="";
+		document.getElementById("sJDealerCode").disabled="";
 		document.getElementById("orgCode").disabled="true";
 		document.getElementById("orgbu").disabled="true";
 		document.getElementById("orgCode").value="";
@@ -155,7 +155,7 @@ function saveDealerInfo()
 		//return;
 	//}
 
-	/* if(DEALERTYPE==<%=Constant.DEALER_TYPE_DWR%>){
+	/*if(DEALERTYPE==<%=Constant.DEALER_TYPE_DWR%>){
 		var BALANCE_LEVEL=document.getElementById("BALANCE_LEVEL").value;
 		var INVOICE_LEVEL=document.getElementById("INVOICE_LEVEL").value;
 		var DEALERLEVEL=document.getElementById("DEALERLEVEL").value;//经销商级别
@@ -185,94 +185,6 @@ function saveDealerInfo()
 		}
 	}*/
 	
-    if (<%=Constant.DEALER_TYPE_DVS%> != DEALERTYPE)
-    {
-        //结算等级
-        var BALANCE_LEVEL=document.getElementById("BALANCE_LEVEL").value;
-        //开票等级
-        var INVOICE_LEVEL=document.getElementById("INVOICE_LEVEL").value;
-        if ("" == BALANCE_LEVEL)
-        {
-            MyAlert('请选择结算等级！');
-            return;
-        }
-        if ("" == INVOICE_LEVEL)
-        {
-            MyAlert('请选择开票等级！');
-            return;
-        }
-    }
-	
-	//整车销售判断
-    if (<%=Constant.DEALER_TYPE_DVS%> == DEALERTYPE || <%=Constant.DEALER_TYPE_DP%> == DEALERTYPE)
-   {
-   	 var SALE_BILLING_TYPE = document.getElementById("SALE_BILLING_TYPE").value;
-   	 var SALE_BILLING_UNIT = document.getElementById("SALE_BILLING_UNIT").value;
-   	 var SALE_TAX_NO = document.getElementById("SALE_TAX_NO").value;
-   	 var SALE_BANK = document.getElementById("SALE_BANK").value;
-   	 var SALE_ACCOUNT = document.getElementById("SALE_ACCOUNT").value;
-        if ("" == SALE_BILLING_TYPE)
-        {
-            MyAlert('请选择开票类型！');
-            return;
-        }
-        if ("" == SALE_BILLING_UNIT)
-        {
-            MyAlert('请填写开票单位！');
-            return;
-        }
-        if ("" == SALE_TAX_NO)
-        {
-            MyAlert('请填写纳税人识别号！');
-            return;
-        }
-        if ("" == SALE_BANK)
-        {
-            MyAlert('请填写开户行！');
-            return;
-        }
-        if ("" == SALE_ACCOUNT)
-        {
-            MyAlert('请填写账号！');
-            return;
-        }
-   }
-	
-  //售后服务判断
-    if (<%=Constant.DEALER_TYPE_DWR%> == DEALERTYPE || <%=Constant.DEALER_TYPE_DP%> == DEALERTYPE)
-   {
-   	 var AFTE_BILLING_TYPE=document.getElementById("AFTE_BILLING_TYPE").value;
-   	 var AFTE_BILLING_UNIT=document.getElementById("AFTE_BILLING_UNIT").value;
-   	 var AFTE_TAX_NO=document.getElementById("AFTE_TAX_NO").value;
-   	 var AFTE_BANK=document.getElementById("AFTE_BANK").value;
-   	 var AFTE_ACCOUNT=document.getElementById("AFTE_ACCOUNT").value;
-   	 if ("" == AFTE_BILLING_TYPE)
-        {
-            MyAlert('请选择开票类型！');
-            return;
-        }
-        if ("" == AFTE_BILLING_UNIT)
-        {
-            MyAlert('请填写开票单位！');
-            return;
-        }
-        if ("" == AFTE_TAX_NO)
-        {
-            MyAlert('请填写纳税人识别号！');
-            return;
-        }
-        if ("" == AFTE_BANK)
-        {
-            MyAlert('请填写开户行！');
-            return;
-        }
-        if ("" == AFTE_ACCOUNT)
-        {
-            MyAlert('请填写账号！');
-            return;
-        }
-   }
-	
 	var dl=document.getElementById("DEALERLEVEL").value;
 	if(dealerLevel==dl)
 	{
@@ -297,6 +209,108 @@ function saveDealerInfo()
 		MyAlert("请选择经销商公司！");
 		return;	
 	}
+	if (<%=Constant.DEALER_TYPE_DVS%> != DEALERTYPE)
+    {
+        //结算等级
+        var BALANCE_LEVEL=document.getElementById("BALANCE_LEVEL").value;
+        //开票等级
+        var INVOICE_LEVEL=document.getElementById("INVOICE_LEVEL").value;
+        if ("" == BALANCE_LEVEL)
+        {
+            MyAlert('请选择结算等级！');
+            return;
+        }
+        if ("" == INVOICE_LEVEL)
+        {
+            MyAlert('请选择开票等级！');
+            return;
+        }
+    } 
+     if (<%=Constant.DEALER_TYPE_DVS%> != DEALERTYPE)
+    {
+        //结算等级
+        var BALANCE_LEVEL=document.getElementById("BALANCE_LEVEL").value;
+        //开票等级
+        var INVOICE_LEVEL=document.getElementById("INVOICE_LEVEL").value;
+        if ("" == BALANCE_LEVEL)
+        {
+            MyAlert('请选择结算等级！');
+            return;
+        }
+        if ("" == INVOICE_LEVEL)
+        {
+            MyAlert('请选择开票等级！');
+            return;
+        }
+    } 
+     //整车销售判断
+     if (<%=Constant.DEALER_TYPE_DVS%> == DEALERTYPE || <%=Constant.DEALER_TYPE_DP%> == DEALERTYPE)
+    {
+    	 var SALE_BILLING_TYPE = document.getElementById("SALE_BILLING_TYPE").value;
+    	 var SALE_BILLING_UNIT = document.getElementById("SALE_BILLING_UNIT").value;
+    	 var SALE_TAX_NO = document.getElementById("SALE_TAX_NO").value;
+    	 var SALE_BANK = document.getElementById("SALE_BANK").value;
+    	 var SALE_ACCOUNT = document.getElementById("SALE_ACCOUNT").value;
+         if ("" == SALE_BILLING_TYPE)
+         {
+             MyAlert('请选择开票类型！');
+             return;
+         }
+         if ("" == SALE_BILLING_UNIT)
+         {
+             MyAlert('请填写开票单位！');
+             return;
+         }
+         if ("" == SALE_TAX_NO)
+         {
+             MyAlert('请填写纳税人识别号！');
+             return;
+         }
+         if ("" == SALE_BANK)
+         {
+             MyAlert('请填写开户行！');
+             return;
+         }
+         if ("" == SALE_ACCOUNT)
+         {
+             MyAlert('请填写账号！');
+             return;
+         }
+    }
+     //售后服务判断
+     if (<%=Constant.DEALER_TYPE_DWR%> == DEALERTYPE || <%=Constant.DEALER_TYPE_DP%> == DEALERTYPE)
+    {
+    	 var AFTE_BILLING_TYPE=document.getElementById("AFTE_BILLING_TYPE").value;
+    	 var AFTE_BILLING_UNIT=document.getElementById("AFTE_BILLING_UNIT").value;
+    	 var AFTE_TAX_NO=document.getElementById("AFTE_TAX_NO").value;
+    	 var AFTE_BANK=document.getElementById("AFTE_BANK").value;
+    	 var AFTE_ACCOUNT=document.getElementById("AFTE_ACCOUNT").value;
+    	 if ("" == AFTE_BILLING_TYPE)
+         {
+             MyAlert('请选择开票类型！');
+             return;
+         }
+         if ("" == AFTE_BILLING_UNIT)
+         {
+             MyAlert('请填写开票单位！');
+             return;
+         }
+         if ("" == AFTE_TAX_NO)
+         {
+             MyAlert('请填写纳税人识别号！');
+             return;
+         }
+         if ("" == AFTE_BANK)
+         {
+             MyAlert('请填写开户行！');
+             return;
+         }
+         if ("" == AFTE_ACCOUNT)
+         {
+             MyAlert('请填写账号！');
+             return;
+         }
+    }
 	if(submitForm('fm'))
 	{
 		MyConfirm("确认修改经销商信息吗？",doUpdateDealerInfo);
@@ -396,7 +410,36 @@ function setText(obj,setValue) {
 	document.getElementById(obj).value = setValue ;
 } 
 
+
 $(function(){
+	//debugger
+	var jsonList = ${billingList};
+
+ 	if (jsonList.lengthist != 0){
+		for (var i=0; i<jsonList.length; i++) {
+			//alert(jsonList[i].BANK);
+		    if (jsonList[i].STATUS == 10011001){
+		    	
+		    	$("#SALE_BILLING").val(jsonList[i].BILING_TYPE);
+		    	$("#SALE_BILLING_INFO_ID").val(jsonList[i].BILLING_INFO_ID);
+		    	$("#SALE_BILLING_UNIT").val(jsonList[i].BILLING_UNIT);
+		    	$("#SALE_TAX_NO").val(jsonList[i].TAX_NO);
+		    	$("#SALE_BANK").val(jsonList[i].BANK);
+		    	$("#SALE_ACCOUNT").val(jsonList[i].ACCOUNT);
+		    	$("#SALE_BILLING_ADDRESS").val(jsonList[i].BILLING_ADDRESS);
+		    }
+		    if (jsonList[i].STATUS == 10011002){
+		    	$("#AFTE_BILLING_INFO_ID").val(jsonList[i].BILLING_INFO_ID);
+		    	$("#AFTE_BILLING_UNIT").val(jsonList[i].BILLING_UNIT);
+		    	$("#AFTE_TAX_NO").val(jsonList[i].TAX_NO);
+		    	$("#AFTE_BANK").val(jsonList[i].BANK);
+		    	$("#AFTE_ACCOUNT").val(jsonList[i].ACCOUNT);
+		    	$("#AFTE_BILLING_ADDRESS").val(jsonList[i].BILLING_ADDRESS);
+		    }
+		}
+	} 
+
+	
 	$("#DEALERTYPE").change(function(){
         var dataname = $(this).val();
         if (dataname == "10771001"){
@@ -429,7 +472,6 @@ $(function(){
          }
 	});
 });
- 
 </script>
 
 
@@ -444,44 +486,46 @@ $(function(){
  <input type="hidden"  name="sJDealerId"  value="<c:out value="${map.SJDEALERID}"/>"  id="sJDealerId" onpropertychange="chkDlr();" />
  <input type="hidden"  name="orgId"  value="<c:out value="${map.ORG_ID}"/>"  id="orgId" />
     <table border="0" align="center" cellpadding="1" cellspacing="1" class="table_query">
-    	  <tr>
-    	  <td class="right">经销商类型：</td>
+		  <tr>
+		  	<td class="right">经销商类型：</td>
 		    <td>
-		    	<label>
-					 <script type="text/javascript">
+			   <label>
+					<script type="text/javascript">
 						genSelBoxExp("DEALERTYPE",<%=Constant.DEALER_TYPE%>,"<c:out value="${map.DEALER_TYPE}"/>",true,"","onchange='dealerType(); '","false","<%=Constant.DEALER_TYPE_JSZX%>");
 					</script>
-		   		</label>
+			   </label>
 		    </td>
-    	  </tr>
+		  </tr>
+		  
 		  <tr>
 		    <td class="right">经销商代码：</td>
-		    
-		    <td><input type='text'  class="middle_txt" name="DEALER_CODE"  id="DEALER_CODE" datatype="0,is_name,20"  value="<c:out value="${map.DEALER_CODE}"/>" maxlength="20" onchange="chkDLRA(this.value);"/>
+		    <td>
+		    	<input type='text'  class="middle_txt" name="DEALER_CODE"  id="DEALER_CODE" datatype="0,is_name,20"  value="<c:out value="${map.DEALER_CODE}"/>" maxlength="20" onchange="chkDLRA(this.value);"/>
 		    </td>
 		    <td class="right">经销商名称：</td>
 		    <td>
-		    <input type='text'  class="middle_txt" name="DEALER_NAME"  id="DEALER_NAME" datatype="0,is_null,150"  value="<c:out value="${map.DEALER_NAME}"/>" maxlength="150"/>
+		    	<input type='text'  class="middle_txt" name="DEALER_NAME"  id="DEALER_NAME" datatype="0,is_null,150"  value="<c:out value="${map.DEALER_NAME}"/>" maxlength="150"/>
 		    </td>
 		    <td class="right">经销商简称：</td>
 		    <td>
-		    <input type='text'  class="middle_txt" name="SHORT_NAME"  id="SHORT_NAME" datatype="0,is_null,75"  value="<c:out value="${map.DEALER_SHORTNAME}"/>" maxlength="75"/>
+		    	<input type='text'  class="middle_txt" name="SHORT_NAME"  id="SHORT_NAME" datatype="0,is_null,75"  value="<c:out value="${map.DEALER_SHORTNAME}"/>" maxlength="75"/>
 		    </td>
 	      </tr>
+	      
 	       <tr>
 		    <td class="right">经销商公司：</td>
 		    <td>
-			   <input class="middle_txt" id="COMPANY_NAME" style="cursor: pointer;" name="COMPANY_NAME" type="text" value="<c:out value="${map.COMPANY_SHORTNAME}"/>" readonly="readonly"/>
-			   <input class="mark_btn" type="button" value="&hellip;" onclick="showCompany('<%=contextPath %>')"/>
+			   <input class="middle_txt" id="COMPANY_NAME" style="cursor: pointer;" name="COMPANY_NAME" type="text" value="<c:out value="${map.COMPANY_SHORTNAME}"/>" readonly="readonly" onclick="showCompany('<%=contextPath %>')" />
+			   <%-- <input class="mark_btn" type="button" value="&hellip;" onclick="showCompany('<%=contextPath %>')"/> --%>
 		    </td>
 		    <td class="right">经销商状态：</td>
-	      <td>
-	      <label>
-				<script type="text/javascript">
-					genSelBoxExp("DEALERSTATUS",<%=Constant.STATUS%>,"<c:out value="${map.STATUS}"/>",true,"","onchange='chkDealer(1); '","false",'');
-				</script>
-		  </label>
-	      </td>
+	       <td>
+	       		<label>
+					<script type="text/javascript">
+						genSelBoxExp("DEALERSTATUS",<%=Constant.STATUS%>,"<c:out value="${map.STATUS}"/>",true,"","onchange='chkDealer(1); '","false",'');
+					</script>
+				</label>
+		    </td>
 		    <td class="right">经销商等级：</td>
 		    <td>
 		    <label>
@@ -494,52 +538,60 @@ $(function(){
 	        <tr>
 		    <td class="right">上级组织：</td>
 		    <td>
-		    <input type="text"  name="orgCode" size="15" value="<c:out value="${map.ORG_CODE}"/>"  id="orgCode" class="middle_txt" readonly="readonly"/>
-		    <input name="orgbu"  id="orgbu" type="button" class="mark_btn" onclick="showOrg('orgCode','orgId','false')" value="&hellip;" />
+		    <input type="text"  name="orgCode" size="15" value="<c:out value="${map.ORG_CODE}"/>"  id="orgCode" class="middle_txt" readonly="readonly" onclick="showOrg('orgCode','orgId','false')" />
+		     <input name="orgbu"  id="orgbu" type="hidden" class="mark_btn" onclick="showOrg('orgCode','orgId','false')" value="&hellip;" /> 
 		    </td>
 		    <td class="right">上级经销商：</td>
 		    <td>
-		    <input type="text"  name="sJDealerCode" size="15" value="<c:out value="${map.SJDEALERCODE}"/>"  id="sJDealerCode" class="middle_txt" readonly="readonly"/>
-		    <input name="dealerbu"  id="dealerbu" type="button" class="mark_btn" onclick="showOrgDealer('sJDealerCode','sJDealerId','false','','true')" value="&hellip;" />
+		    <input type="text"  name="sJDealerCode" size="15" value="<c:out value="${map.SJDEALERCODE}"/>"  id="sJDealerCode" class="middle_txt" readonly="readonly"onclick="showOrgDealer('sJDealerCode','sJDealerId','false','','true')" />
+		     <input name="dealerbu"  id="dealerbu" type="hidden" class="mark_btn" onclick="showOrgDealer('sJDealerCode','sJDealerId','false','','true')" value="&hellip;" /> 
 		    </td>
 		    <td class="right">维修资源：</td>
-		    <td>
-			<label>
-					<script type="text/javascript">
-						genSelBoxExp("MAIN_RESOURCES",<%=Constant.MAIN_RESOURCES%>,"${map.MAIN_RESOURCES}",true,"",'',"false",'');
-					</script>
-			</label>
-			</td>
+	        <td>
+				<label>
+						<script type="text/javascript">
+							genSelBoxExp("MAIN_RESOURCES",<%=Constant.MAIN_RESOURCES%>,"${map.MAIN_RESOURCES}",true,"",'',"false",'');
+						</script>
+				</label>
+		    </td>
 	      </tr>
-
 	     	
 	      <tr>
-	      
 	      <td class="right">省份：</td>
-	      <td><select class="u-select" id="txt1" name="province" onchange="_regionCity(this,'txt2')"></select> </td>
-          <td class="right">地级市：</td>
-	      <td><select class="u-select" id="txt2" name="city" onchange="_regionCity(this,'txt3')"></select></td>
-          <td class="right" nowrap="nowrap">区/县：</td>
-		  <td nowrap="nowrap"> <select class="u-select" id="txt3" name="COUNTIES"></select></td>
+	      <td>
+	      	<select class="u-select" id="txt1" name="province" onchange="_regionCity(this,'txt2')"></select> 
+	      </td>
+	      <td class="right">地级市：</td>
+	      <td>
+	      	<select class="u-select" id="txt2" name="city" onchange="_regionCity(this,'txt3')"></select>
+	      </td> 
+	      <td class="right" nowrap="nowrap">区/县：</td>
+		  <td nowrap="nowrap">
+		 		<select class="u-select" id="txt3" name="COUNTIES"></select>
+		  </td> 
          </tr>
          <tr> 
           <td class="right" nowrap="nowrap">乡：</td>
 		  <td  nowrap="nowrap"> 
-			<input type="text"  class="middle_txt" id="TOWNSHIP" name="TOWNSHIP" value="${map.TOWNSHIP}"/>
+				<input type="text"  class="middle_txt" id="TOWNSHIP" name="TOWNSHIP" value="${map.TOWNSHIP}"/>
 		  </td>
 	      <td class="right">邮编：</td>
 	      <td><input type="text"  class="middle_txt" name="zipCode"  id="zipCode" value="<c:out value="${map.ZIP_CODE}"/>" maxlength="10" datatype="1,is_digit_letter,30" /></td>
 	      <td class="right">联系人：</td>
-	      <td><input type="text"  class="middle_txt" name="linkMan"  id="linkMan"  datatype="1,is_name,50" value="<c:out value="${map.LINK_MAN}"/>" maxlength="10"/></td>
+	      <td>
+	      	<input type="text"  class="middle_txt" name="linkMan"  id="linkMan"  datatype="1,is_name,50" value="<c:out value="${map.LINK_MAN}"/>" maxlength="10"/>
+	      </td>
 	     </tr>
 	     <tr>
-	      
 	      <td class="right">电话：</td>
-	      <td><input type="text"  class="middle_txt" name="phone"  id="phone" datatype="1,is_null,100" value="<c:out value="${map.PHONE}"/>" maxlength="25"/></td> 
+	      <td>
+	      <input type="text"  class="middle_txt" name="phone"  id="phone" datatype="1,is_null,100" value="<c:out value="${map.PHONE}"/>" maxlength="25"/></td> 
 	      <td class="right">传真：</td>
-	      <td><input type="text"  class="middle_txt" name="faxNo"  id="faxNo" value="<c:out value="${map.FAX_NO}"/>"  datatype="1,is_null,50" maxlength="25"/></td>
+	      <td>
+	      <input type="text"  class="middle_txt" name="faxNo"  id="faxNo" value="<c:out value="${map.FAX_NO}"/>"  datatype="1,is_null,50" maxlength="25"/></td>
 	      <td class="right">Email：</td>
-	      <td><input type="text"  class="middle_txt" name="email"  id="email" datatype="1,is_email,100" value="<c:out value="${map.EMAIL}"/>" maxlength="100"/></td>
+	      <td>
+	      <input type="text"  class="middle_txt" name="email"  id="email" datatype="1,is_email,100" value="<c:out value="${map.EMAIL}"/>" maxlength="100"/></td>
 	     </tr>
 	      <!-- <tr>
 	      <td class="right">联系人手机：</td>
@@ -547,9 +599,6 @@ $(function(){
 	      <td class="right"></td>
 	      <td></td> 
 	     </tr> -->
-	<tr>
-	      
-	</tr>
 	<tr>
 		<td class="right" nowrap="nowrap">经销商评级：</td>
 		<td nowrap="nowrap"> 
@@ -559,11 +608,11 @@ $(function(){
 				</script>
 		</label>
 		</td>
-		<td class="right">结算等级：</td>
+		 <td class="right">结算等级：</td>
         <td>
             <label>
                 <script type="text/javascript">
-                    genSelBoxExp("BALANCE_LEVEL",<%=Constant.BALANCE_LEVEL%>,"",true,"","","false",'');
+                    genSelBoxExp("BALANCE_LEVEL",<%=Constant.BALANCE_LEVEL%>,"<c:out value="${map.BALANCE_LEVEL}"/>",true,"","","false",'');
                 </script>
             </label>
         </td>
@@ -571,37 +620,40 @@ $(function(){
         <td>
         <label>
                 <script type="text/javascript">
-                    genSelBoxExp("INVOICE_LEVEL",<%=Constant.INVOICE_LEVEL%>,"",true,"","","false",'');
+                    genSelBoxExp("INVOICE_LEVEL",<%=Constant.INVOICE_LEVEL%>,"<c:out value="${map.INVOICE_LEVEL}"/>",true,"","","false",'');
                 </script>
             </label>
         </td>
-		<%-- <td class="right" nowrap="nowrap">开票单位：</td>
-		<td><input type="text"  class="middle_txt" name="erpCode" id="erpCode" datatype="0,is_textarea,20" value="<c:out value="${map.ERP_CODE}"/>" maxlength="20"/></td> --%> 
 	</tr>
 	<tr>
-		<%-- <td class="right" nowrap="nowrap">税号：</td>
-		<td nowrap="nowrap"> 
-			<input type="text"  class="middle_txt" id="taxesNo" name="taxesNo" value="${map.TAXES_NO }"  datatype="0,is_textarea,30" />
-		</td> --%>
-
-	</tr>
-	<tr>
-
 		<td class="right">法人：</td>
-	    <td><input type="text"  class="middle_txt" name="LEGAL"  id="LEGAL" value="${map.LEGAL}"/></td>
+	    <td>
+	    	<input type="text"  class="middle_txt" name="LEGAL"  id="LEGAL" value="${map.LEGAL}"/>
+	    </td>
 		<td class="right" nowrap="nowrap">站长电话：</td>
 		<td nowrap="nowrap"> 
 			<input type="text"  class="middle_txt" id="WEBMASTER_PHONE" name="WEBMASTER_PHONE" value="${map.WEBMASTER_PHONE}"/>
 		</td>
 		<td class="right">值班电话：</td>
-	    <td><input type="text"  class="middle_txt" name="DUTY_PHONE"  id="DUTY_PHONE" value="${map.DUTY_PHONE}"/></td>
+	    <td>
+	    	<input type="text"  class="middle_txt" name="DUTY_PHONE"  id="DUTY_PHONE" value="${map.DUTY_PHONE}"/>
+	    </td>
 	</tr>
+	<%-- <tr>
+		<td class="right" nowrap="nowrap">开票单位：</td>
+		<td><input type="text"  class="middle_txt" name="erpCode" id="erpCode" datatype="0,is_textarea,20" value="<c:out value="${map.ERP_CODE}"/>" maxlength="20"/></td>
+		<td class="right" nowrap="nowrap">税号：</td>
+		<td nowrap="nowrap"> 
+			<input type="text"  class="middle_txt" id="taxesNo" name="taxesNo" value="${map.TAXES_NO }"  datatype="0,is_textarea,30" />
+		</td>
+		
+	</tr> --%>
 	<%-- <tr>
 		<td class="right" nowrap="nowrap">开户行：</td>
 		<td nowrap="nowrap"> 
 			<input type="text"  class="middle_txt" id="BANK" name="BANK" value="${map.BANK}"/>
 		</td>
-
+		
 	</tr> --%>
 	<!-- <tr>
 		<td class="right" nowrap="nowrap">行政级别：</td>
@@ -634,23 +686,31 @@ $(function(){
 	      <tr>
 	        <td class="right">备注：</td>
 	      	<td><textarea name="remark" id="remark" cols="40" rows="2" datatype="1,is_textarea,1000"><c:out value="${map.REMARK}"/></textarea></td>
-	      <%--   <td class="right">开票地址：</td>
-	      	<td><textarea name="billAddress" id="billAddress" cols="40" rows="2" datatype="1,is_textarea,50" ><c:out value="${map.BILL_ADDRESS}"/></textarea></td>	      	
-	       --%>
+	        <%-- <td class="right">开票地址：</td>
+	      	<td><textarea name="billAddress" id="billAddress" cols="40" rows="2" datatype="1,is_textarea,50" ><c:out value="${map.BILL_ADDRESS}"/></textarea></td> --%>	      	
 	      </tr>
      </table> 
      <div id="Sale" style="display:none;">
           <div class="navigation"><img src="<%=contextPath%>/img/nav.gif" />经销商开票信息</div>
+          <input id="SALE_BILLING_INFO_ID" name="SALE_BILLING_INFO_ID" type="hidden" value=""/>
 	     	<table border="0" align="center" cellpadding="1" cellspacing="1" class="table_query">
-		    <c:forEach items="${billingList}" var="bi" varStatus = "i">
-     			<c:if test="${bi.STATUS==10011001}">
-     			
 		     	<tr>
 			     	<td class="right">开票类型：</td>
 		            <td >
 		                <label>
+		                	<input id="SALE_BILLING" name="SALE_BILLING" type="hidden" value=""/>
 		                	<script type="text/javascript">
-								genSelBoxExp("SALE_BILLING_TYPE",<%=Constant.DLR_INVOICE_TYPE%>,"<c:out value="${bi.BILLING_TYPE}"/>",true,"",'',"false",'');
+		                	var saleList = ${billingList};
+		                	var saleType = "";
+		                 	if (saleList.lengthist != 0){
+		                		for (var i=0; i<saleList.length; i++) {
+		                		    if (saleList[i].STATUS == 10011001){
+		                		    	saleType = saleList[i].BILLING_TYPE;
+		                		    }
+		                		  
+		                		}
+		                	} 
+								genSelBoxExp("SALE_BILLING_TYPE",<%=Constant.DLR_INVOICE_TYPE%>,saleType,true,"",'',"false",'');
 							</script>
 		                    <!-- <select id="SALE_BILLING_TYPE" name="SALE_BILLING_TYPE" class="u-select" >
 		                        <option selected="" value="">-请选择-</option>
@@ -681,27 +741,35 @@ $(function(){
 			        <td class="right">开票地址：</td>
             		<td>
                 		<textarea name="SALE_BILLING_ADDRESS" id="SALE_BILLING_ADDRESS" cols="40" rows="2" datatype="1,is_textarea,50" >
-                		<c:out value="${bi.BILLING_ADDRESS}"/>
                 		</textarea>
             		</td>  
 		     	</tr>
-		     	</c:if>
-     		</c:forEach>
+		     	 
+     		
 	     	</table>
       </div>
       <div id="afterSales" style="display:none;">
           <div class="navigation"><img src="<%=contextPath%>/img/nav.gif" />售后开票信息</div>
+          <input id="AFTE_BILLING_INFO_ID" name="AFTE_BILLING_INFO_ID" type="hidden" value=""/>
 	     	<table border="0" align="center" cellpadding="0" cellspacing="0"  class="table_query">
-		     	<c:forEach items="${billingList}" var="bi" varStatus = "i">
-     				<c:if test="${bi.STATUS==10011002}">
-     				
 		     	<tr>
 			     	<td class="right">开票类型：</td>
 		            <td >
 		                <label>
 		                	<script type="text/javascript">
-								genSelBoxExp("AFTE_BILLING_TYPE",<%=Constant.DLR_INVOICE_TYPE%>,"<c:out value="${bi.BILLING_TYPE}"/>",true,"",'',"false",'');
-							</script>
+								<%-- genSelBoxExp("AFTE_BILLING_TYPE",<%=Constant.DLR_INVOICE_TYPE%>,"<c:out value="${bi.BILLING_TYPE}"/>",true,"",'',"false",""); --%>
+								var afteList = ${billingList};
+			                	var afteType = "";
+			                 	if (afteList.lengthist != 0){
+			                		for (var i=0; i<afteList.length; i++) {
+			                		    if (afteList[i].STATUS == 10011002){
+			                		    	afteType = afteList[i].BILLING_TYPE;
+			                		    }
+			                		  
+			                		}
+			                	}
+								genSelBoxExp("AFTE_BILLING_TYPE",<%=Constant.DLR_INVOICE_TYPE%>,afteType,true,"",'',"false",'');
+								</script>
 		                    <!-- <select id="AFTE_BILLING_TYPE" name="AFTE_BILLING_TYPE" class="u-select" >
 		                        <option selected="" value="">-请选择-</option>
 		                        <option value="92701001" title="增值税专用发票">增值税专用发票</option>
@@ -731,12 +799,9 @@ $(function(){
 			        <td class="right">开票地址：</td>
             		<td>
                 		<textarea name="AFTE_BILLING_ADDRESS" id="AFTE_BILLING_ADDRESS" cols="40" rows="2" datatype="1,is_textarea,50" >
-                		<c:out value="${bi.BILLING_ADDRESS}"/>
                 		</textarea>
             		</td>  
 		     	</tr>
-		     		</c:if>
-     			</c:forEach>
 	     	</table>
       </div>
      <table class=table_query>

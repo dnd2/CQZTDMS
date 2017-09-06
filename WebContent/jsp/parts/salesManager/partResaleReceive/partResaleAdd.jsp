@@ -577,9 +577,14 @@ function selOrg() {
 	border: 1px solid #DAE0EE;
 	white-space: nowrap;
 }
+textarea.form-control {
+    width: 87.5%
+}
+table.table_query{background-color: transparent}
+table.table_query td.bottom-button{padding-bottom: 10px}
 </style>
 <body>
-	<div class="wbox" style="min-width: 1085px;">
+	<div class="wbox" style="min-width: 1100px;">
 		<form name="fm" id="fm" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="planState" id="planState" />
 			<input type="hidden" name="parentOrgId" id="parentOrgId" value="${parentOrgId }" />
@@ -598,8 +603,8 @@ function selOrg() {
 					<div class="form-body">
 						<table class="table_query">
 							<tr>
-								<td class="right">零售单号：</td>
-								<td>${changeCode}
+								<td class="right" width="8%">零售单号：</td>
+								<td width="20%">${changeCode}
 									<input type="hidden" name="changeCode" id="changeCode" value="${changeCode}" />
 								</td>
 								<td class="right">制单人：</td>
@@ -625,7 +630,7 @@ function selOrg() {
 							</tr>
 							<tr>
 								<td class="right">采购单位：</td>
-								<td>
+								<td width="24%">
 									<input class="middle_txt" type="text" name="linkMan" id="linkMan" value="" />
 									<input name="BUTTON" type="button" class="mini_btn" onclick="selOrg()" value="..." />
 								</td>
@@ -641,32 +646,34 @@ function selOrg() {
 							<tr>
 								<td class="right">备注：</td>
 								<td colspan="5">
-									<textarea class="form-control" style="width: 80%" id="remark" name="remark" cols="4" rows="4"></textarea>
+									<textarea class="form-control align" id="remark" name="remark" cols="4" rows="4"></textarea>
 								</td>
 							</tr>
 						</table>
 					</div>
 				</div>
-
-				<table id="file" class="table_list" style="border-bottom: 1px;">
-					<caption><img class="panel-icon nav" src="<%=contextPath%>/img/subNav.gif"/> 零售明细</caption>
-					<tr class="table_list_row0">
-						<th><input type="checkbox" onclick="selAll2(this)" /></th>
-						<th>序号</th>
-						<th>配件编码</th>
-						<th>配件名称</th>
-                    	<th>件号</th>
-						<th>单位</th>
-						<th>货位</th>
-						<th>批次号</th>
-						<th>可用库存</th>
-						<th>零售数量 <font color="red">*</font></th>
-						<th>零售单价</th>
-						<th>零售金额(元)</th>
-						<th>备注</th>
-						<th>操作</th>
-					</tr>
-				</table>
+                <div class="table-wrap">
+                   <table id="file" class="table_list">
+                        <caption><img class="panel-icon nav" src="<%=contextPath%>/img/subNav.gif"/> 零售明细</caption>
+                        <tr class="table_list_row0">
+                            <th><input type="checkbox" onclick="selAll2(this)" /></th>
+                            <th>序号</th>
+                            <th>配件编码</th>
+                            <th>配件名称</th>
+                            <th>件号</th>
+                            <th>单位</th>
+                            <th>货位</th>
+                            <th>批次号</th>
+                            <th>可用库存</th>
+                            <th>零售数量 <font color="red">*</font></th>
+                            <th>零售单价</th>
+                            <th>零售金额(元)</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                    </table>     
+                </div>    
+				
 				<table width="100%" align="center">
 					<tr>
 						<td height="2"></td>
@@ -693,7 +700,7 @@ function selOrg() {
 						</tr>
 					</table>
 				</div>
-				<FIELDSET>
+				<FIELDSET class="form-fieldset">
 					<LEGEND style="MozUserSelect: none; KhtmlUserSelect: none" unselectable="on">
 						<th colspan="6">
 							<img src="<%=contextPath%>/img/subNav.gif" alt="" class="nav" /> 配件查询
@@ -713,7 +720,7 @@ function selOrg() {
 								</td>
 							</tr>
 							<tr>
-								<td class="center" colspan="6">
+								<td class="center bottom-button" colspan="6">
 									<input class="u-button" type="button" name="BtnQuery" id="queryBtn" value="查 询" onclick="__extQuery__(1)" />
 									<input class="u-button" type="button" name="BtnQuery" id="queryBtn" value="添 加" onclick="addCells()" />
 								</td>
@@ -724,6 +731,16 @@ function selOrg() {
 					</div>
 				</FIELDSET>
 		</form>
-	</div>
+    </div>
+    <script>
+        $( function() {
+            var Fun = Common.FunHelper;
+            Fun.sizeArgs = [
+                { aEl: '.table-wrap table', rEl: '.form-panel' },
+                { aEl: '#myGrid', rEl: '.form-panel', pos: 26 }
+            ];
+            Fun.setElSize( 'width', 0 );
+        });
+    </script>
 </body>
 </html>

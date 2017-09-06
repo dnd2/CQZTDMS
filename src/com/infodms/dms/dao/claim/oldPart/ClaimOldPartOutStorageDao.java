@@ -4855,6 +4855,90 @@ public PageResult<TmAsWrBarcodePartStockPO> addOffsetStockListQuery(Map params,i
 		String isBc="否";
 		this.insertPo(0.0, list, loginUser,isBc);
 	}
-	
+	/**
+	* 旧件库存汇总查询
+	* @param paraMap
+	* @return
+	*/
+	@SuppressWarnings("unchecked")
+	public PageResult<Map<String,Object>> hzSelect(Map<String,Object> paraMap,int curPage,int pageSize) throws Exception{
+		StringBuffer sql= new StringBuffer();
+		sql.append("select sum(t.return_amount) as total,\n" );
+		sql.append("               t.producer_code,\n" );
+		sql.append("               t.producer_name,\n" );
+		sql.append("               t.part_code,\n" );
+		sql.append("               t.part_name\n" );
+		sql.append("          from tt_as_wr_returned_order_detail t\n" );
+		sql.append("         group by t.part_id,\n" );
+		sql.append("                  t.is_main_code,\n" );
+		sql.append("                  t.claim_id,\n" );
+		sql.append("                  t.producer_code,\n" );
+		sql.append("                  t.producer_name,\n" );
+		sql.append("                  t.part_code,\n" );
+		sql.append("                  t.part_name\n" );
+		
+		PageResult<Map<String,Object>> pr=pageQuery(sql.toString(), null ,getFunName(), pageSize, curPage);
+		return pr;			
+		}
+	/**
+	* 旧件库存单条查询
+	* @param paraMap
+	* @return
+	*/
+	@SuppressWarnings("unchecked")
+	public PageResult<Map<String,Object>> dtSelect(Map<String,Object> paraMap,int curPage,int pageSize) throws Exception{
+		List<Object> listPar=new ArrayList<Object>();
+		StringBuffer sql= new StringBuffer();
+		sql.append("select d.dealer_code,td.CLAIM_ID,\n" );
+		sql.append("       d.dealer_name,\n" );
+		sql.append("       td.claim_supplier_code,\n" );
+		sql.append("       td.claim_supplier_name,\n" );
+		sql.append("       td.producer_code,\n" );
+		sql.append("       td.producer_name,\n" );
+		sql.append("       td.claim_no,\n" );
+		sql.append("       td.part_id,\n" );
+		sql.append("       td.part_code,\n" );
+		sql.append("       td.part_name,\n" );
+		sql.append("       td.is_main_code,\n" );
+		sql.append("       td.vin\n" );
+		sql.append("  from TT_AS_WR_RETURNED_ORDER t\n" );
+		sql.append(" inner join tt_as_wr_returned_order_detail td\n" );
+		sql.append("    on t.id = td.return_id\n" );
+		sql.append("  left join tm_dealer d on t.dealer_id = d.dealer_id");
+		sql.append("  where 1=1 \n");
+		if(paraMap.get("dealerId")!=null){
+			sql.append(" and t.dealer_id = "+paraMap.get("dealerId")+"");
+		}
+		if(paraMap.get("IS_MAIN_PART")!=null){
+			sql.append(" and td.is_main_code = "+paraMap.get("IS_MAIN_PART")+"");
+		}
+		if(paraMap.get("partCode")!=null){
+			sql.append(" and td.part_code like ? ");
+			listPar.add("%"+paraMap.get("partCode")+"%");
+		}
+		if(paraMap.get("partName")!=null){
+			sql.append(" and td.part_name like ? ");
+			listPar.add("%"+paraMap.get("partName")+"%");
+		}
+		if(paraMap.get("CLAIM_SUPPLIER_CODE")!=null){
+			sql.append(" and Td.claim_supplier_code like ? ");
+			listPar.add("%"+paraMap.get("CLAIM_SUPPLIER_CODE")+"%");
+		}
+		if(paraMap.get("CLAIM_SUPPLIER_NAME")!=null){
+			sql.append(" and Td.claim_supplier_name like ? ");
+			listPar.add("%"+paraMap.get("CLAIM_SUPPLIER_NAME")+"%");
+		}
+		if(paraMap.get("PRODUCER_CODE")!=null){
+			sql.append(" and Td.producer_code like ? ");
+			listPar.add("%"+paraMap.get("PRODUCER_CODE")+"%");
+		}
+		if(paraMap.get("CLAIM_SUPPLIER_NAME")!=null){
+			sql.append(" and Td.PRODUCER_NAME like ? ");
+			listPar.add("%"+paraMap.get("CLAIM_SUPPLIER_NAME")+"%");
+		}
+		sql.append("  ORDER BY T.CREATE_DATE DESC");	
+		PageResult<Map<String,Object>> pr=pageQuery(sql.toString(), listPar,getFunName(), pageSize, curPage);
+		return pr;			
+		}
 
 }

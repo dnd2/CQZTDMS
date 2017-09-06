@@ -125,7 +125,7 @@
                 //{header: "件号", dataIndex: 'PART_CODE',   style: 'text-align: center'},
                 {header: "最小包装量", dataIndex: 'OEM_MIN_PKG'},
                 {header: "单位", dataIndex: 'UNIT'},
-                {header: "批次号", dataIndex: 'BATCH_NO', style: 'text-align:center'},
+               /*  {header: "批次号", dataIndex: 'BATCH_NO', style: 'text-align:center'}, */
                 {header: "可用库存", dataIndex: 'NORMAL_QTY', style: 'text-align:center'},
                 {header: "占用库存", dataIndex: 'BOOKED_QTY_NEW', style: 'text-align:center', renderer: getZYLink},
                 {header: "封存库存", dataIndex: 'FC_QTY', style: 'text-align:center', renderer: getFCLink},

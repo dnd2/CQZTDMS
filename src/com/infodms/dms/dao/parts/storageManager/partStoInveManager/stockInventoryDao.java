@@ -276,7 +276,7 @@ public class stockInventoryDao extends BaseDao {
         sql.append("                TD.PART_CNAME, \n");
         sql.append("                TD.OEM_MIN_PKG, \n");
         sql.append("                TD.UNIT, \n");
-        sql.append("                TD.BATCH_NO, \n");
+//        sql.append("                TD.BATCH_NO, \n");//20170905 屏蔽
         sql.append("                SUM(TD.NORMAL_QTY) NORMAL_QTY, \n");
         sql.append("                (SUM(TD.BOOKED_QTY) + SUM(TD.ZCFC_QTY) + SUM(TD.PKFC_QTY)) AS BOOKED_QTY_NEW, \n");
         sql.append("                SUM(TD.ITEM_QTY) ITEM_QTY, \n");
@@ -313,7 +313,7 @@ public class stockInventoryDao extends BaseDao {
         sql.append("                   TD.PART_CNAME, \n");
         sql.append("                   TD.OEM_MIN_PKG, \n");
         sql.append("                   TD.UNIT, \n");
-        sql.append("                   TD.BATCH_NO, \n");
+//        sql.append("                   TD.BATCH_NO, \n");//20170905 屏蔽
         sql.append("                   TD.IS_LOCKED, \n");
         sql.append("                   TD.PDSTATE, \n");
         sql.append("                   TD.WH_NAME, \n");

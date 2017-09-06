@@ -23,6 +23,7 @@ import com.infodms.dms.po.TmDealerPO;
 import com.infodms.dms.po.TmOrgPO;
 import com.infodms.dms.po.TtPartDlrChangeDtlPO;
 import com.infodms.dms.po.TtPartDlrReturnDtlPO;
+import com.infodms.dms.po.TtPartFixcodeDefinePO;
 import com.infodms.dms.po.TtPartReturnRelationPO;
 import com.infodms.dms.po.TtPartReturnUnlockDtlPO;
 import com.infodms.dms.po.TtPartReturnUnlockMainPO;
@@ -194,6 +195,12 @@ public class ReturnPartStateChange {
 				arradyAmount =  Double.valueOf(CommonUtils.checkNull(mp.get("AMOUNT")));
 			}
 			
+			// 获取配件单位选项
+            TtPartFixcodeDefinePO unitPo = new TtPartFixcodeDefinePO();
+            unitPo.setFixGouptype(Constant.FIXCODE_TYPE_02);
+            List<TtPartFixcodeDefinePO> unitList = dao.select(unitPo);
+            act.setOutData("unitList", unitList);
+			
 			Double kyAmount = edAmount - arradyAmount;
 			act.setOutData("edAmount", edAmount);
 			act.setOutData("arradyAmount", arradyAmount);
@@ -282,7 +289,8 @@ public class ReturnPartStateChange {
 					String partId = request.getParamValue("partId"+dtlId);
 					String partOldcode = request.getParamValue("partOldcode"+dtlId);
 					String partCname = request.getParamValue("partCname"+dtlId);
-//					String partCode = request.getParamValue("partCode"+dtlId);
+					String partCode = request.getParamValue("partCode"+dtlId);
+					String batchNo = request.getParamValue("batchNo"+dtlId);
 //					String salePrice = request.getParamValue("salePrice"+dtlId);//调拨价
 					String inQty = request.getParamValue("inQty"+dtlId);//冻结总量
 					String kyQty = request.getParamValue("kyQty"+dtlId);//可用总量
@@ -322,11 +330,11 @@ public class ReturnPartStateChange {
 						ud.setRdtlId(Long.valueOf(dtlId));
 						ud.setPartId(Long.valueOf(partId));
 						ud.setPartOldcode(partOldcode);
-						ud.setPartCode(partOldcode);
-//						ud.setPartCode(partCode);
+						ud.setPartCode(partCode);
 						ud.setPartCname(partCname);
 						ud.setSoCode(soCode);
 						ud.setInCode(inCode);
+						ud.setBatchNo(batchNo);
 						Long qty = Long.valueOf(applyQty);//申请数量
 						
 //						Double dbPrice = Double.valueOf(CommonUtils.checkNull(map.get("SALE_PRICE")));//调拨单价
@@ -999,7 +1007,13 @@ public class ReturnPartStateChange {
 				for (TtPartReturnUnlockDtlPO uds : udList) {
 					//验证占用库存数（解封数量，不需小于退换货占用数量）精确到货位
 					//改了封存逻辑后，需要修改对应得验证逻辑
-					Map<String,Object> stockMap = dao.getVwPartStock(uds.getPartId().toString(),ums.getDealerId().toString(),uds.getWhId().toString(),uds.getInlocId().toString());
+				    Map<String, String> paramMap = new HashMap<String, String>();
+				    paramMap.put("partId", uds.getPartId().toString());
+				    paramMap.put("orgId", ums.getDealerId().toString());
+				    paramMap.put("whId", uds.getWhId().toString());
+				    paramMap.put("locId", uds.getInlocId().toString());
+				    paramMap.put("batchNo", uds.getBatchNo());
+					Map<String,Object> stockMap = dao.getVwPartStock(paramMap);
 					if(stockMap==null){
 						throw new BizException(act, ErrorCodeConstant.SPECIAL_MEG, "配件：【"+uds.getPartOldcode()+"】封存数量不足，不能解封！");
 					}else{

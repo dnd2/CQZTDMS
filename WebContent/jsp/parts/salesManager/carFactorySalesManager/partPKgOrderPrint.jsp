@@ -88,7 +88,7 @@
     	window.open("<%=contextPath%>/parts/salesManager/carFactorySalesManager/PartPkg/opPrintHtml.do?pickOrderId=" + id, '', 'left=0,top=0,width=' + screen.availWidth + '- 10,height=' + screen.availHeight + '-50,toolbar=no,resizable=yes,menubar=no,scrollbars=yes,location=no');
     }
     function selectPkgNo(pickOrderId, count) {
-        OpenHtmlWindow("<%=contextPath%>/parts/salesManager/carFactorySalesManager/PartOutstock/pkgNoSelect.do?pickOrderId=" + pickOrderId + "&flag=1", 800, 450);
+        OpenHtmlWindow("<%=contextPath%>/parts/salesManager/carFactorySalesManager/PartOutstock/pkgNoSelect.do?pickOrderId=" + pickOrderId + "&flag=1", 800, 450, '打印装箱单');
     }
     function selectPkgNo2(pickOrderId, count) {
         OpenHtmlWindow("<%=contextPath%>/parts/salesManager/carFactorySalesManager/PartOutstock/pkgNoSelect2.do?pickOrderId=" + pickOrderId + "&flag=1", 800, 450);
@@ -216,7 +216,7 @@
     });
 </script>
 </head>
-<body onafterprint="MyAlert('complete')">
+<body class="u-main" onafterprint="MyAlert('complete')">
 <form name="fm" id="fm" method="post" enctype="multipart/form-data">
     <input id="condition_pickOrderId" name="condition_pickOrderId" value="${condition.pickOrderId}" type="hidden"/>
     <input id="condition_dealerName" name="condition_dealerName" value="${condition.dealerName}" type="hidden"/>

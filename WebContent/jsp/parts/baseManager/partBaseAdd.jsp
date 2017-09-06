@@ -165,7 +165,7 @@ $(function() {
 		<input type="hidden" name="curPage" id="curPage" value="${curPage}" />
 			<table class="table_query">
 				<tr>
-					<td class="right" width="89px;">件号：</td>
+					<td class="right">件号：</td>
 					<td>
 						<input class="middle_txt" type="text" id="PART_CODE" name="PART_CODE"  maxlength="100"/>
 						<font color="red">*</font>

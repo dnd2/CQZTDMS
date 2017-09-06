@@ -128,7 +128,7 @@ public class SendBoardDao extends BaseDao<PO>{
 		String startDate = (String)map.get("startDate"); //提交日期开始
 		String endDate = (String)map.get("endDate"); // 提交日期结束
 		String status = (String)map.get("status"); //状态
-		String isMiddleTurn = (String)map.get("isMiddleTurn"); //是否中转
+		//String isMiddleTurn = (String)map.get("isMiddleTurn"); //是否中转
 		String isSdan = (String)map.get("isSdan"); //是否散单
 		String provinceId = (String)map.get("provinceId");//结算省份
 		String cityId = (String)map.get("cityId");//结算城市
@@ -169,7 +169,7 @@ public class SendBoardDao extends BaseDao<PO>{
 		sql.append("       (SELECT TC.CODE_DESC\n" );
 		sql.append("          FROM TC_CODE TC\n" );
 		sql.append("         WHERE TC.CODE_ID = TSA.Dlv_Status) DLV_STATUS_NAME, --发运状态\n" );
-		sql.append("        TSA.DLV_IS_ZZ,--是否中转\n" );
+		//sql.append("        TSA.DLV_IS_ZZ,--是否中转\n" );
 		sql.append("        TSA.DLV_IS_SD--是否散单\n" );
 		sql.append("  FROM TT_VS_DLVRY   TSA,\n" );
 		sql.append("       TT_SALES_LOGI TSL,\n" );
@@ -244,11 +244,11 @@ public class SendBoardDao extends BaseDao<PO>{
 			sql.append("  AND TSA.Dlv_Date<=TO_DATE(?,'YYYY-MM-DD HH24:MI:SS')\n" );
 			params.add(endDate +" 23:59:59");
 		}
-		if (isMiddleTurn != null && !"".equals(isMiddleTurn))//是否中转
-		{
-			sql.append("   AND TSA.DLV_IS_ZZ=?\n");
-			params.add(isMiddleTurn);
-		}
+//		if (isMiddleTurn != null && !"".equals(isMiddleTurn))//是否中转
+//		{
+//			sql.append("   AND TSA.DLV_IS_ZZ=?\n");
+//			params.add(isMiddleTurn);
+//		}
 		if (isSdan != null && !"".equals(isSdan))//是否散单
 		{
 			sql.append("   AND TSA.DLV_IS_SD=?\n");
@@ -287,7 +287,7 @@ public class SendBoardDao extends BaseDao<PO>{
 		StringBuffer sql= new StringBuffer();
 		sql.append("SELECT VMGM.SERIES_NAME, --车系名称\n" );
 		sql.append("       TSA.REQ_ID,\n" );
-		sql.append("       TSA.ORD_ID ORDER_ID,\n" );
+		sql.append("       TSA.ORD_ID ORDER_ID,TSA.DLV_TYPE,\n" );
 		sql.append("       TSA.DLV_LOGI_ID LOGI_ID,\n" );
 		sql.append("       TW.AREA_ID, --发运产地ID\n" );
 		sql.append("       TSA.DLV_WH_ID, --发运仓库ID\n" );
@@ -393,9 +393,9 @@ public class SendBoardDao extends BaseDao<PO>{
 		String logiName=(String)map.get("logiName");
 		String startDate=(String)map.get("startDate");
 		String endDate=(String)map.get("endDate");
-		String provinceId = (String)map.get("provinceId");
-		String cityId =(String)map.get("cityId");
-		String countyId = (String)map.get("countyId");
+//		String provinceId = (String)map.get("provinceId");
+//		String cityId =(String)map.get("cityId");
+//		String countyId = (String)map.get("countyId");
 		//String poseId = (String)map.get("poseId"); 
 		StringBuffer sql= new StringBuffer();
 		sql.append("select TSB.BO_ID,\n" );
@@ -406,24 +406,24 @@ public class SendBoardDao extends BaseDao<PO>{
 		sql.append("          FROM TC_CODE TC\n" );
 		sql.append("         WHERE TC.CODE_ID = TSB.DLV_SHIP_TYPE) SHIP_NAME,\n" );
 		sql.append("       TSL.LOGI_NAME,\n" );
-		sql.append("       TSB.DLV_BAL_PROV_ID,\n" );
-		sql.append("       TSB.DLV_BAL_CITY_ID,\n" );
-		sql.append("       TSB.DLV_BAL_COUNTY_ID,\n" );
-		sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
+//		sql.append("       TSB.DLV_BAL_PROV_ID,\n" );
+//		sql.append("       TSB.DLV_BAL_CITY_ID,\n" );
+//		sql.append("       TSB.DLV_BAL_COUNTY_ID,\n" );
+//		sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
 		sql.append("       to_char(TSB.BO_DATE, 'yyyy-mm-dd') BO_DATE,\n" );
 		sql.append("       NVL(TSB.BO_NUM, 0) BO_NUM\n" );
 		sql.append("  from tt_sales_board     tsb,\n" );
-		sql.append("       TT_SALES_LOGI      TSL,\n" );
-		sql.append("       TM_REGION          TR1,\n" );
-		sql.append("       TM_REGION          TR2,\n" );
-		sql.append("       TM_REGION          TR3\n" );
+		sql.append("       TT_SALES_LOGI      TSL\n" );
+//		sql.append("       TM_REGION          TR1,\n" );
+//		sql.append("       TM_REGION          TR2,\n" );
+//		sql.append("       TM_REGION          TR3\n" );
 		sql.append(" WHERE 1=1\n" );
 		sql.append("   AND TSB.DLV_LOGI_ID = TSL.LOGI_ID(+)\n" );
-		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
-		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
-		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
-		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
-		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
+//		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
+//		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
+//		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
+//		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
+//		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
 		sql.append("   AND TSB.bo_status = '0'\n");
 		if(boardNo!=null&&!"".equals(boardNo)){
 			sql.append("AND TSB.BO_NO LIKE ?\n");		
@@ -445,18 +445,18 @@ public class SendBoardDao extends BaseDao<PO>{
 			sql.append("  AND TSB.BO_DATE<=TO_DATE(?,'YYYY-MM-DD HH24:MI:SS')\n" );
 			params.add(endDate +" 23:59:59");
 		}
-		if(provinceId!=null&&!"".equals(provinceId)){
-			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
-			params.add(provinceId);
-		}
-		if(cityId!=null&&!"".equals(cityId)){
-			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
-			params.add(cityId);
-		}
-		if(countyId!=null&&!"".equals(countyId)){
-			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
-			params.add(countyId);
-		}
+//		if(provinceId!=null&&!"".equals(provinceId)){
+//			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
+//			params.add(provinceId);
+//		}
+//		if(cityId!=null&&!"".equals(cityId)){
+//			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
+//			params.add(cityId);
+//		}
+//		if(countyId!=null&&!"".equals(countyId)){
+//			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
+//			params.add(countyId);
+//		}
 		PageResult<Map<String, Object>> ps= dao.pageQuery(sql.toString(), params, getFunName(),pageSize,curPage);
 		return ps;
 	}
@@ -676,9 +676,9 @@ public class SendBoardDao extends BaseDao<PO>{
 		String logiName=(String)map.get("logiName");
 		String startDate=(String)map.get("startDate");
 		String endDate=(String)map.get("endDate");
-		String provinceId = (String)map.get("provinceId");
-		String cityId =(String)map.get("cityId");
-		String countyId = (String)map.get("countyId");
+//		String provinceId = (String)map.get("provinceId");
+//		String cityId =(String)map.get("cityId");
+//		String countyId = (String)map.get("countyId");
 		//String poseId = (String)map.get("poseId"); 
 		StringBuffer sql= new StringBuffer();
 		sql.append("select TSB.BO_ID,\n" );
@@ -689,24 +689,24 @@ public class SendBoardDao extends BaseDao<PO>{
 		sql.append("          FROM TC_CODE TC\n" );
 		sql.append("         WHERE TC.CODE_ID = TSB.DLV_SHIP_TYPE) SHIP_NAME,\n" );
 		sql.append("       TSL.LOGI_NAME,\n" );
-		sql.append("       TSB.DLV_BAL_PROV_ID,\n" );
-		sql.append("       TSB.DLV_BAL_CITY_ID,\n" );
-		sql.append("       TSB.DLV_BAL_COUNTY_ID,\n" );
-		sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
+//		sql.append("       TSB.DLV_BAL_PROV_ID,\n" );
+//		sql.append("       TSB.DLV_BAL_CITY_ID,\n" );
+//		sql.append("       TSB.DLV_BAL_COUNTY_ID,\n" );
+//		sql.append("       TR1.REGION_NAME || TR2.REGION_NAME || TR3.REGION_NAME BAL_ADDR,\n" );
 		sql.append("       to_char(TSB.BO_DATE, 'yyyy-mm-dd') BO_DATE,\n" );
 		sql.append("       NVL(TSB.BO_NUM, 0) BO_NUM\n" );
 		sql.append("  from tt_sales_board     tsb,\n" );
-		sql.append("       TT_SALES_LOGI      TSL,\n" );
-		sql.append("       TM_REGION          TR1,\n" );
-		sql.append("       TM_REGION          TR2,\n" );
-		sql.append("       TM_REGION          TR3\n" );
+		sql.append("       TT_SALES_LOGI      TSL\n" );
+//		sql.append("       TM_REGION          TR1,\n" );
+//		sql.append("       TM_REGION          TR2,\n" );
+//		sql.append("       TM_REGION          TR3\n" );
 		sql.append(" WHERE 1=1\n" );
 		sql.append("   AND TSB.DLV_LOGI_ID = TSL.LOGI_ID(+)\n" );
-		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
-		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
-		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
-		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
-		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
+//		sql.append("   AND TR1.REGION_ID = TR2.PARENT_ID\n" );
+//		sql.append("   AND TR2.REGION_ID = TR3.PARENT_ID\n" );
+//		sql.append("   AND TR1.REGION_CODE = TSB.DLV_BAL_PROV_ID\n" );
+//		sql.append("   AND TR2.REGION_CODE = TSB.DLV_BAL_CITY_ID\n" );
+//		sql.append("   AND TR3.REGION_CODE = TSB.DLV_BAL_COUNTY_ID\n" );
 		sql.append("   AND TSB.bo_status = '1'\n");
 		sql.append("   AND TSB.HANDLE_STATUS<"+Constant.HANDLE_STATUS06+"\n");//组板审核已通过并未发运计划
 
@@ -730,18 +730,18 @@ public class SendBoardDao extends BaseDao<PO>{
 			sql.append("  AND TSB.BO_DATE<=TO_DATE(?,'YYYY-MM-DD HH24:MI:SS')\n" );
 			params.add(endDate +" 23:59:59");
 		}
-		if(provinceId!=null&&!"".equals(provinceId)){
-			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
-			params.add(provinceId);
-		}
-		if(cityId!=null&&!"".equals(cityId)){
-			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
-			params.add(cityId);
-		}
-		if(countyId!=null&&!"".equals(countyId)){
-			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
-			params.add(countyId);
-		}
+//		if(provinceId!=null&&!"".equals(provinceId)){
+//			sql.append(" AND TSB.Dlv_Bal_Prov_Id =?\n");		
+//			params.add(provinceId);
+//		}
+//		if(cityId!=null&&!"".equals(cityId)){
+//			sql.append(" AND TSB.Dlv_Bal_City_Id=?\n");
+//			params.add(cityId);
+//		}
+//		if(countyId!=null&&!"".equals(countyId)){
+//			sql.append(" AND TSB.Dlv_Bal_County_Id=?\n");
+//			params.add(countyId);
+//		}
 		PageResult<Map<String, Object>> ps= dao.pageQuery(sql.toString(), params, getFunName(),pageSize,curPage);
 		return ps;
 	}

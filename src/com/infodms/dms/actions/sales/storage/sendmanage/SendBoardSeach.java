@@ -100,9 +100,9 @@ public class SendBoardSeach {
 			String boNo = CommonUtils.checkNull(request.getParamValue("BO_NO")); // 组板编号
 			String logiName = CommonUtils.checkNull(request.getParamValue("LOGI_NAME")); //物流商
 			String transportType = CommonUtils.checkNull(request.getParamValue("TRANSPORT_TYPE")); // 发运方式
-			String provinceId = CommonUtils.checkNull(request.getParamValue("jsProvince")); //结算省份
-			String cityId = CommonUtils.checkNull(request.getParamValue("jsCity")); // 结算城市
-			String countyId = CommonUtils.checkNull(request.getParamValue("jsCounty")); // 结算区县
+//			String provinceId = CommonUtils.checkNull(request.getParamValue("jsProvince")); //结算省份
+//			String cityId = CommonUtils.checkNull(request.getParamValue("jsCity")); // 结算城市
+//			String countyId = CommonUtils.checkNull(request.getParamValue("jsCounty")); // 结算区县
 			
 			/******************************页面查询字段end***************************/
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -112,9 +112,9 @@ public class SendBoardSeach {
 			map.put("logiName", logiName);
 			map.put("poseId", logonUser.getPoseId().toString());
 			map.put("transportType", transportType);
-			map.put("provinceId", provinceId);
-			map.put("cityId", cityId);
-			map.put("countyId", countyId);
+//			map.put("provinceId", provinceId);
+//			map.put("cityId", cityId);
+//			map.put("countyId", countyId);
 			//根据职位ID获取是否属于物流商以及物流商ID
 			Map<String, Object> pmap=sbDao.getPoseLogiById(logonUser.getPoseId().toString());
 			map.put("posBusType", pmap.get("POSE_BUS_TYPE").toString());
@@ -124,8 +124,8 @@ public class SendBoardSeach {
 				act.setOutData("valueMap", valueMap);	
 			}else if("2".equals(common)){//导出 调用
 				List<Map<String, Object>> list = reDao.getSendBoardSeachQueryExport(map);
-				String [] head={"组板号","发运方式","物流公司","发运结算地","组板申请日期","组板数量","配车数量","出库数量","发运数量","验收数量","审核人","审核备注","审核时间"};
-				String [] cols={"BO_NO","SHIP_NAME","LOGI_NAME","BAL_ADDR","BO_DATE","BO_NUM","ALLOCA_NUM","OUT_NUM","SEND_NUM","ACC_NUM","AUDIT_BY","AUDIT_REMARK","AUDIT_TIME"};//导出的字段名称
+				String [] head={"组板号","发运方式","物流公司","组板申请日期","组板数量","配车数量","出库数量","发运数量","验收数量","审核人","审核备注","审核时间"};
+				String [] cols={"BO_NO","SHIP_NAME","LOGI_NAME","BO_DATE","BO_NUM","ALLOCA_NUM","OUT_NUM","SEND_NUM","ACC_NUM","AUDIT_BY","AUDIT_REMARK","AUDIT_TIME"};//导出的字段名称
 				ToExcel.toReportExcel(act.getResponse(),request, "组板查询列表.xls",head,cols,list);
 				//ToExcel.toBoardExcel(act.getResponse(),request,head,list, "组板详细信息.xls");
 			}else{

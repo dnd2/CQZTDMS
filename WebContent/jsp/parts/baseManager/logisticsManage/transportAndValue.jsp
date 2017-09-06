@@ -48,6 +48,8 @@ function addReservoir()
 	fm.action = "<%=contextPath%>/parts/baseManager/logisticsManage/TransportAndValueAction/transportAndValueAddInit.do";
 	fm.submit();
 }
+
+function doCusChange() {}
 </script>
 </head>
 

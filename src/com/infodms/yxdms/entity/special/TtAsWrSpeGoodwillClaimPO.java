@@ -4,7 +4,7 @@
 * License version 1.0, a copy of which has been included with this
 * distribution in the LICENSE.txt file.
 *
-* CreateDate : 2017-08-07 21:30:15
+* CreateDate : 2017-09-05 13:46:06
 * CreateBy   : Administrator
 * Comment    : generate by com.sgm.po.POGen
 */
@@ -32,6 +32,7 @@ public class TtAsWrSpeGoodwillClaimPO extends PO{
 	private Long id;
 	private Date problemDate;
 	private String supplyCodeDealer;
+	private Integer isSupplyClaim;
 	private Integer isClaim;
 	private String partCodeDealer;
 	private String tecSupplyCode;
@@ -154,6 +155,14 @@ public class TtAsWrSpeGoodwillClaimPO extends PO{
 
 	public String getSupplyCodeDealer(){
 		return this.supplyCodeDealer;
+	}
+
+	public void setIsSupplyClaim(Integer isSupplyClaim){
+		this.isSupplyClaim=isSupplyClaim;
+	}
+
+	public Integer getIsSupplyClaim(){
+		return this.isSupplyClaim;
 	}
 
 	public void setIsClaim(Integer isClaim){

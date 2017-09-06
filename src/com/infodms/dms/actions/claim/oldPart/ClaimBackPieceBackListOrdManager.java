@@ -91,7 +91,8 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 	private final String oldPartDeductionQuery_Url= "/jsp/claim/oldPart/oldPartDeductionQuery.jsp";
 	//旧件抵扣通知单明细页面
 	private final String oldPartDeductionDetail_Url= "/jsp/claim/oldPart/oldPartDeductionDetail.jsp";
-
+	
+	private final String CLAIM_DEDUCTION_SECOND_URL= "/jsp/claim/oldPart/oldPartDeductionQuery.jsp";//二次抵扣索赔单
 
 	public void queryListPage(){
 		super.sendMsgByUrl(queryBackListOrdUrl, "索赔件回运清单维护--初始化");
@@ -2788,8 +2789,8 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 			params.put("dealerId", String.valueOf(loginUser.getDealerId()));
 			params.put("deductionStatus", request.getParamValue("deductionStatus"));// 抵扣单状态
 			params.put("deductionNo", request.getParamValue("deductionNo"));// 抵扣单单号
-			params.put("report_start_date", request.getParamValue("report_start_date"));// 通知开始时间
-			params.put("report_end_date", request.getParamValue("report_end_date"));// 通知结束时间
+			params.put("updateDateStart", request.getParamValue("updateDateStart"));// 通知开始时间
+			params.put("updateDateEnd", request.getParamValue("updateDateEnd"));// 通知结束时间
 
 			PageResult<Map<String, Object>>ps = dao.oldPartDeductionQuery(params, curPage,
 					Constant.PAGE_SIZE);
@@ -2805,9 +2806,8 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 	// 抵扣通知单查看
 	public void oldPartDeductionCheck() {
 		try {
-			String id = CommonUtils.checkNull(request.getParamValue("id"));//ID
-			List<Map<String, Object>> list = dao.oldPartDeductionInfor(Long.valueOf(id));
-			act.setOutData("list", list);
+			String claimId = CommonUtils.checkNull(request.getParamValue("claimId"));
+			act.setOutData("claimId", claimId);
 			act.setForword(oldPartDeductionDetail_Url);
 		} catch (Exception e) {
 			BizException e1 = new BizException(act, e, ErrorCodeConstant.ACTION_NAME_ERROR_CODE, "抵扣通知单查看");
@@ -2815,6 +2815,58 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 			act.setException(e1);
 		}
 	}
+	// 抵扣通知单查询
+	public void oldPartDeductionListQuery() {
+		try {
+			String claimId = CommonUtils.checkNull(request.getParamValue("claimId"));
+			Integer curPage = request.getParamValue("curPage") != null ? Integer.parseInt(request.getParamValue("curPage")):1;
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("claimId", claimId);
+			PageResult<Map<String, Object>> ps = dao.oldPartDeductionInfor(params,curPage,Constant.PAGE_SIZE);
+			act.setOutData("ps", ps);
+			act.setForword(oldPartDeductionDetail_Url);
+		} catch (Exception e) {
+			BizException e1 = new BizException(act, e, ErrorCodeConstant.ACTION_NAME_ERROR_CODE, "抵扣通知单查看");
+			logger.error(logger, e1);
+			act.setException(e1);
+		}
+	}
+	
+	//二次抵扣索赔单
+	public void claimDeductionSecond() {
+		try {
+//			act = ActionContext.getContext();
+//			act.setOutData("yieldly", Constant.PART_IS_CHANGHE_01);
+			act.setForword(CLAIM_DEDUCTION_SECOND_URL);
+		} catch (Exception e) {
+			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "抵扣通知单 服务站初始化跳转");
+			logger.error(loginUser, e1);
+			act.setException(e1);
+		}
+	}
 
+	//二次抵扣索赔单查询
+	public void claimDeductionSecondQuery() {
+		String serviceOrderCode = CommonUtils.checkNull(request.getParamValue("serviceOrderCode"));//工单号
+		
+		Map<String, String> params = new HashMap<String, String>();
+		// 处理当前页
+		Integer curPage = request.getParamValue("curPage") != null ? Integer.parseInt(request.getParamValue("curPage")) : 1;
+		try {
+			params.put("dealerId", String.valueOf(loginUser.getDealerId()));
+			params.put("serviceOrderCode", serviceOrderCode);// 抵扣单状态
+			params.put("deductionNo", request.getParamValue("deductionNo"));// 抵扣单单号
+			params.put("updateDateStart", request.getParamValue("updateDateStart"));// 通知开始时间
+			params.put("updateDateEnd", request.getParamValue("updateDateEnd"));// 通知结束时间
+
+			PageResult<Map<String, Object>>ps = dao.oldPartDeductionQuery(params, curPage, Constant.PAGE_SIZE);
+			act.setOutData("ps", ps);
+		} catch (Exception e) {
+			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "旧件抵扣通知单查询--条件查询");
+			logger.error(loginUser, e1);
+			act.setException(e1);
+		}
+	}
+	
 }
  	

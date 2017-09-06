@@ -13,6 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
 <title>配件销售退货申请新增</title>
+<style>table .bottom-button{padding: 10px 0}</style>
 <script type="text/javascript">
 $(function(){
 	pushParentOrg();
@@ -30,15 +31,62 @@ var columns = [
     {header: "配件名称", dataIndex: 'PART_CNAME', style: 'text-align: center'},
     {header: "件号", dataIndex: 'PART_CODE', style: 'text-align: center'},
     {header: "单位", dataIndex: 'UNIT', style: 'text-align: center'},
-    {header: "可用库存", dataIndex: 'NORMAL_QTY', align: 'center',renderer: insertNormalQtyInput},
+    {header: "可用库存", dataIndex: 'NORMAL_QTY', align: 'center'},
     {header: "销售价格", dataIndex: 'BUY_PRICE', style: 'text-align:right'},
     {header: "采购数量", dataIndex: 'BUY_QTY', align: 'center'},
+    {header: "已退货数量", dataIndex: 'RETURN_QTY', align: 'center'},
     {header: "退货数量<font color='red'>*</font>", dataIndex: 'BUY_QTY', align: 'center', renderer: insertApplyQtyInput}
     //{header: "备注", align: 'center', renderer: insertRemarkInput}
 ];
 function seled(value, meta, record) {
     return "<input type='checkbox' value='" + value + "' name='ck' id='ck"+record.data.PART_ID+"' onclick='chkPart()'/>";
 }
+
+//插入文本框
+function insertApplyQtyInput(value, meta, record) {
+    var partId = record.data.PART_ID;
+    var output = '<input type="text" class="short_txt"  id="APPLY_QTY1' + partId + '" name="APPLY_QTY1' + partId + '" size ="10" style="background-color:#FF9"';
+    output += ' onchange="check(this,'+partId+', \'ck\');" />';
+    output += '<input type="hidden" id="BUY_QTYck' + record.data.PART_ID + '" value="'+record.data.BUY_QTY+'"/>';
+    output += '<input type="hidden" id="NORMAL_QTYck' + record.data.PART_ID + '" value="'+record.data.NORMAL_QTY+'"/>';
+    output += '<input type="hidden" id="RETURN_QTYck' + record.data.PART_ID + '" value="'+record.data.RETURN_QTY+'"/>';
+    return output;
+}
+
+function check(obj,partId, h) {
+	var pattern1 = /^[1-9][0-9]*$/;
+    if (!pattern1.exec(obj.value)) {
+        //MyAlert("请录入正整数且必须大于0！");
+        obj.value = obj.value.replace(/\D/g, '');
+        obj.focus();
+    }
+    if (isNumber(obj.value)) {
+        if (obj.value == 0) {
+            MyAlert("请输入正整数且必须大于0！");
+    	    obj.value="";
+            return;
+        }
+
+    }
+    var normalQty = $('#NORMAL_QTY'+h+partId).val();
+    if(parseInt(obj.value) > parseInt(normalQty)){
+	    MyAlert("退货数量不能大于可用库存！");
+	    obj.value="";
+	    return;
+    }
+    
+    var buyQty = $('#BUY_QTY'+h+partId).val();
+    var retrurnQty = $('#RETURN_QTY'+h+partId).val();
+    if(parseInt(obj.value) > parseInt(buyQty) - parseInt(retrurnQty)){
+	    MyAlert("退货数量不能大于采购数量与已退货数量的差！");
+	    obj.value="";
+	    return;
+    }
+    h = !h || h == '' ? 'cb' : h;
+    $("#"+h+partId)[0].checked=true;
+    chkPart(h);
+}
+
 function selAll(obj) {
     var cks = document.getElementsByName('ck');
     for (var i = 0; i < cks.length; i++) {
@@ -61,8 +109,8 @@ function selAll2(obj) {
     }
 }
 
-function chkPart() {
-    var cks = document.getElementsByName('ck');
+function chkPart(h) {
+    var cks = document.getElementsByName(h);
     var flag = true;
     for (var i = 0; i < cks.length; i++) {
         var obj = cks[i];
@@ -83,56 +131,6 @@ function chkPart1() {
         }
     }
     document.getElementById("ckAll").checked = flag;
-}
-
-function insertPartCodeInput(value, meta, record) {
-    var output = '<input type="hidden"  id="PART_CODE' + record.data.PART_ID + '" name="PART_CODE' + record.data.PART_ID + '" value="' + value + '"/>' + value;
-    return output;
-}
-function insertPartOldCodeInput(value, meta, record) {
-
-    var output = '<input type="hidden"  id="PART_OLDCODE' + record.data.PART_ID + '" name="PART_OLDCODE' + record.data.PART_ID + '" value="' + value + '"/>' + value;
-    return output;
-}
-function insertPartCnameInput(value, meta, record) {
-
-    var output = '<input type="hidden"  id="PART_CNAME' + record.data.PART_ID + '" name="PART_CNAME' + record.data.PART_ID + '" value="' + value + '"/>' + value
-            + '<input type="hidden"  id="UNIT' + record.data.PART_ID + '" name="UNIT' + record.data.PART_ID + '" value="' + record.data.UNIT + '"/>';
-    return output;
-}
-function insertBuyQtyInput(value, meta, record) {
-    var output = "";
-    if (record.data.BUY_QTY) {
-        output = '<input type="hidden"  id="BUY_QTY' + record.data.PART_ID + '" name="BUY_QTY' + record.data.PART_ID + '" value="' + value + '"/>' + value;
-    } else {
-        output = '<input type="hidden"  id="BUY_QTY' + record.data.PART_ID + '" name="BUY_QTY' + record.data.PART_ID + '" value=""/>' + 0;
-    }
-    return output;
-}
-
-//插入文本框
-function insertApplyQtyInput(value, meta, record) {
-    var partId = record.data.PART_ID;
-    var output = '<input type="text" class="short_txt" onchange="check(this,'+partId+');" id="APPLY_QTY1' + partId + '" name="APPLY_QTY1' + partId + '" value="' + value + '" size ="10" style="background-color:#FF9"/>\n';
-    return output;
-}
-
-function check(obj,partId) {
-	var pattern1 = /^[1-9][0-9]*$/;
-    if (!pattern1.exec(obj.value)) {
-        //MyAlert("请录入正整数且必须大于0！");
-        obj.value = obj.value.replace(/\D/g, '');
-        obj.focus();
-    }
-    if (isNumber(obj.value)) {
-        if (obj.value == 0) {
-            MyAlert("正整数且必须大于0！");
-            return;
-        }
-
-    }
-    $("#ck"+partId)[0].checked=true;
-    chkPart();
 }
 
 //插入文本框
@@ -165,7 +163,7 @@ function showChildOrg(RETURN_DEALER, childorgName, childorgId, WH_ID, WH_NAME) {
     OpenHtmlWindow("<%=contextPath%>/jsp/parts/storageManager/partReturnManager/partDlrReturnApply/returnDealerSelect.jsp?RETURN_DEALER=" + RETURN_DEALER + "&childorgName=" + childorgName + "&childorgId=" + childorgId + "&WH_ID=" + WH_ID + "&WH_NAME=" + WH_NAME, 730, 390);
 }
 
-function showSoCode(soCode) {
+function showSoCode() {
     var childorgId = $("#childorgId")[0].value;
     var saleOrgId = $("#SALE_ORG")[0].value.split(",")[0];
     if (!soCode) {
@@ -175,11 +173,13 @@ function showSoCode(soCode) {
         MyAlert("请先选择退货单位!");
         return;
     }
-    OpenHtmlWindow("<%=contextPath%>/jsp/parts/storageManager/partReturnManager/partDlrReturnApply/soCodeSelect.jsp?childorgId=" + childorgId + "&soCode=" +soCode+"&saleOrgId="+saleOrgId, 730, 550);
+    var url = "<%=contextPath%>/jsp/parts/storageManager/partReturnManager/partDlrReturnApply/soCodeSelect.jsp";
+    url += "?childorgId=" + childorgId;
+    url += "&saleOrgId=" + saleOrgId;
+    OpenHtmlWindow(url, 730, 550);
 }
 
 var parentOrg = new Array();
-
 function pushParentOrg() {
     var orgId = <%=dealerId%>;
     var saleOrg = document.getElementById("SALE_ORG");//销售单位
@@ -211,49 +211,63 @@ function changeDiv() {
     var tbl = document.getElementById('file');
     var len = tbl.rows.length;
 
-    if (orgId != childOrgId) {
-    	$("#soCode")[0].value="";
-        if (len > 2) {
-            //改变退货单位之后就要删除退货明细,重新选择
-            for (var i = tbl.rows.length - 1; i >= 2; i--) {
-                tbl.deleteRow(i);
-            }
-        }
-        childOrgId = orgId;
-        if (partDiv.style.display == "block") {
-            addPartViv.value = "增加";
-            partDiv.style.display = "none";
-        }
-    }
-    if (code != curSoCode) {
-        if (len > 2) {
-            //改变销售单号之后就要删除退货明细,重新选择
-            for (var i = tbl.rows.length - 1; i >= 2; i--) {
-                tbl.deleteRow(i);
-            }
-        }
-        curSoCode = code;
-        if (partDiv.style.display == "block") {
-            addPartViv.value = "增加";
-            partDiv.style.display = "none";
-        }
-    }
-
-    var saleOrg = document.getElementById("SALE_ORG");//销售单位
-    if (<%=dealerId%>==orgId){//如果退货单位选择的是当前用户所在单位,那该退货单位就是供应中心,那它的销售单位就只是车厂
-        saleOrg.options.length = 0;//先删除所有选项
-        for (var i = 0; i < parentOrg.length; i++) {
-            var objItemText = parentOrg[i].substr(parentOrg[i].lastIndexOf(",") + 1);
-            var varItem = new Option(objItemText, parentOrg[i]);
-            saleOrg.options.add(varItem);
-        }
+    if(!code && code == ''){
+		addPartViv.value = "增加";
+		partDiv.style.display = "none";
     }else{
-	    if (orgId && saleOrg.options) {//如果是退货单位选的是一般服务商,那销售单位就是当前供应中心
-	        saleOrg.options.length = 0;//先删除所有选项
-	        var varItem = new Option('<%=dealerName%>', '<%=dealerId%>,<%=dealerCode%>,<%=dealerName%>');
-	        saleOrg.options.add(varItem);
-	    }
+		addPartViv.value = "收起";
+		partDiv.style.display = "block";
+		__extQuery__(1);
+    }
+	if (len > 1) {
+		//改变退货单位之后就要删除退货明细,重新选择
+		for (var i = tbl.rows.length - 1; i >= 1; i--) {
+		    tbl.deleteRow(i);
+		}
 	}
+//     if (orgId != childOrgId) {
+//     	$("#soCode")[0].value="";
+//         if (len > 1) {
+//             //改变退货单位之后就要删除退货明细,重新选择
+//             for (var i = tbl.rows.length - 1; i >= 1; i--) {
+//                 tbl.deleteRow(i);
+//             }
+//         }
+//         childOrgId = orgId;
+//         if (partDiv.style.display == "block") {
+//             addPartViv.value = "增加";
+//             partDiv.style.display = "none";
+//         }
+//     }
+//     if (code != curSoCode) {
+//         if (len > 2) {
+//             //改变销售单号之后就要删除退货明细,重新选择
+//             for (var i = tbl.rows.length - 1; i >= 2; i--) {
+//                 tbl.deleteRow(i);
+//             }
+//         }
+//         curSoCode = code;
+//         if (partDiv.style.display == "block") {
+//             addPartViv.value = "增加";
+//             partDiv.style.display = "none";
+//         }
+//     }
+
+//     var saleOrg = document.getElementById("SALE_ORG");//销售单位
+<%--     if (<%=dealerId%>==orgId){//如果退货单位选择的是当前用户所在单位,那该退货单位就是供应中心,那它的销售单位就只是车厂 --%>
+//         saleOrg.options.length = 0;//先删除所有选项
+//         for (var i = 0; i < parentOrg.length; i++) {
+//             var objItemText = parentOrg[i].substr(parentOrg[i].lastIndexOf(",") + 1);
+//             var varItem = new Option(objItemText, parentOrg[i]);
+//             saleOrg.options.add(varItem);
+//         }
+//     }else{
+// 	    if (orgId && saleOrg.options) {//如果是退货单位选的是一般服务商,那销售单位就是当前供应中心
+// 	        saleOrg.options.length = 0;//先删除所有选项
+<%-- 	        var varItem = new Option('<%=dealerName%>', '<%=dealerId%>,<%=dealerCode%>,<%=dealerName%>'); --%>
+// 	        saleOrg.options.add(varItem);
+// 	    }
+// 	}
 
 }
 //document.getElementById('childorgName').attachEvent('oninput',function(o){
@@ -327,26 +341,17 @@ function addCells() {
         var partId = mt.rows[i].cells[1].firstChild.value;  //ID
         if (mt.rows[i].cells[1].firstChild.checked) {
             cn++;
-            var applyQty1 = $("#APPLY_QTY1" + partId)[0].value;
-            var pattern1 = /^[1-9][0-9]*$/;
-            if (!pattern1.exec(applyQty1)) {
-                MyAlert("配件【" + mt.rows[i].cells[2].innerText + "】的退货数量只能输入非零的正整数!");
-                return;
-            }
-            var normalQty = $("#NORMAL_QTY"+partId)[0].value;
-            if(parseInt(applyQty1)>parseInt(normalQty)){
-            	MyAlert("配件【" + mt.rows[i].cells[2].innerText + "】的退货数量不能大于可用库存!");
-                return;
-            }
             if (validateCell(partId)) {
                 var partOldcode = mt.rows[i].cells[2].innerText;  //配件编码
                 var partCname = mt.rows[i].cells[3].innerText;  //配件名称
 				var partCode = mt.rows[i].cells[4].innerText;  //件号
                 var unit = mt.rows[i].cells[5].innerText;  //单位
+                var normalQty = mt.rows[i].cells[6].innerText;  // 可用库存
                 var buyPrice = mt.rows[i].cells[7].innerText;  //销售价格
                 var buyQty = mt.rows[i].cells[8].innerText;  //采购数量
-                //addCell(partId, partCode, partOldcode, partCname, buyQty, buyPrice, applyQty1,normalQty,unit);
-                addCell(partId, partOldcode, partCname, partCode, buyQty, buyPrice, applyQty1,normalQty,unit);
+                var returnQty = mt.rows[i].cells[9].innerText;  //已退货数量
+				var applyQty = $("#APPLY_QTY1" + partId)[0].value;
+                addCell(partId, partOldcode, partCname, partCode, buyQty, buyPrice, applyQty, normalQty, unit, returnQty);
             } else {
                 MyAlert("第" + i + "行的配件：" + mt.rows[i].cells[2].innerText + " 已存在于退货明细中!");
                 break;
@@ -370,14 +375,10 @@ function validateCell(spartId) {
     return true;
 }
 
-function addCell(partId, partOldcode, partCname, partCode, buyQty, buyPrice, applyQty1,normalQty,unit) {
+function addCell(partId, partOldcode, partCname, partCode, buyQty, buyPrice, applyQty,normalQty,unit, returnQty) {
     var tbl = document.getElementById('file');
     var rowObj = tbl.insertRow(tbl.rows.length);
-    if (tbl.rows.length % 2 == 0) {
-        rowObj.className = "table_list_row2";
-    } else {
-        rowObj.className = "table_list_row1";
-    }
+    rowObj.className = "table_list_row2";
     var cell1 = rowObj.insertCell(0);
     var cell2 = rowObj.insertCell(1);
     var cell3 = rowObj.insertCell(2);
@@ -390,19 +391,21 @@ function addCell(partId, partOldcode, partCname, partCode, buyQty, buyPrice, app
     var cell10 = rowObj.insertCell(9);
     var cell11 = rowObj.insertCell(10);
     var cell12 = rowObj.insertCell(11);
+    var cell13 = rowObj.insertCell(12);
 
-    cell1.innerHTML = '<tr><td align="center" nowrap><input  type="checkbox" value="' + partId + '" id="cell_' + (tbl.rows.length - 2) + '" name="cb" checked="true" onclick="chkPart1();"/></td>';
-    cell2.innerHTML = '<td align="center" nowrap><input id="idx_' + partId + '" name="idx_' + partId + '" value="' + (tbl.rows.length - 2) + '" type="hidden" ></td>' + (tbl.rows.length - 2);
-    cell3.innerHTML = '<td align="left" nowrap><input   name="PART_OLDCODE' + partId + '" id="PART_OLDCODE' + partId + '" value="' + partOldcode + '" type="hidden" />' + partOldcode + '</td>';
-    cell4.innerHTML = '<td align="left" nowrap><input   name="PART_CNAME' + partId + '" id="PART_CNAME' + partId + '" value="' + partCname + '" type="hidden" class="cname_' + partId + '"/>' + partCname + '</td>';
-    cell5.innerHTML = '<td align="left" nowrap><input   name="PART_CODE' + partId + '" id="PART_CODE' + partId + '" value="' + partCode + '" type="hidden"/>' + partCode + '</td>';
-    cell6.innerHTML = '<td align="left" nowrap><input   name="UNIT' + partId + '" id="UNIT' + partId + '" value="' + unit + '" type="hidden"/>' + unit + '</td>';
-    cell7.innerHTML = '<td align="right" nowrap><input   name="BUY_PRICE' + partId + '" id="BUY_PRICE' + partId + '" value="' + buyPrice + '" type="hidden" />' + buyPrice + '</td>';
-    cell8.innerHTML = '<td align="center" nowrap><input   name="BUY_QTY' + partId + '" id="BUY_QTY' + partId + '" value="' + buyQty + '" type="hidden" />' + buyQty + '</td>';
-    cell9.innerHTML = '<td align="center" nowrap><input   name="NORMAL_QTY' + partId + '" id="NORMAL_QTY' + partId + '" value="' + normalQty + '" type="hidden"/>' + normalQty + '</td>';
-    cell10.innerHTML = '<td align="center" nowrap><input   name="APPLY_QTY' + partId + '" id="APPLY_QTY' + partId + '" value="' + applyQty1 + '" type="text" class="short_txt"/></td>';
-    cell11.innerHTML = '<td align="center" nowrap><input  class="short_txt" name="REMARK' + partId + '" id="REMARK' + partId + '" type="text"/></td>';
-    cell12.innerHTML = '<td><input  type="button" class="u-button"  name="queryBtn4" value="删除" onclick="deleteTblRow(' + (tbl.rows.length - 1) + ');" /></td></tr>';
+    cell1.innerHTML = '<tr><td align="center" nowrap><input  type="checkbox" value="' + partId + '" id="cb' + partId + '" name="cb" checked="true" onclick="chkPart1();"/></td>';
+    cell2.innerHTML = '<td align="center" nowrap><input id="idx_' + partId + '" name="idx_' + partId + '" value="' + (tbl.rows.length - 1) + '" type="hidden" ></td>' + (tbl.rows.length - 1);
+    cell3.innerHTML = '<td align="left" nowrap><input name="PART_OLDCODE' + partId + '" id="PART_OLDCODE' + partId + '" value="' + partOldcode + '" type="hidden" />' + partOldcode + '</td>';
+    cell4.innerHTML = '<td align="left" nowrap><input name="PART_CNAME' + partId + '" id="PART_CNAME' + partId + '" value="' + partCname + '" type="hidden" class="cname_' + partId + '"/>' + partCname + '</td>';
+    cell5.innerHTML = '<td align="left" nowrap><input name="PART_CODE' + partId + '" id="PART_CODE' + partId + '" value="' + partCode + '" type="hidden"/>' + partCode + '</td>';
+    cell6.innerHTML = '<td align="left" nowrap><input name="UNIT' + partId + '" id="UNIT' + partId + '" value="' + unit + '" type="hidden"/>' + unit + '</td>';
+    cell7.innerHTML = '<td align="right" nowrap><input name="BUY_PRICE' + partId + '" id="BUY_PRICE' + partId + '" value="' + buyPrice + '" type="hidden" />' + buyPrice + '</td>';
+    cell8.innerHTML = '<td align="center" nowrap><input name="BUY_QTY' + partId + '" id="BUY_QTY' + partId + '" value="' + buyQty + '" type="hidden" />' + buyQty + '</td>';
+    cell9.innerHTML = '<td align="center" nowrap><input name="NORMAL_QTY' + partId + '" id="NORMAL_QTY' + partId + '" value="' + normalQty + '" type="hidden"/>' + normalQty + '</td>';
+    cell10.innerHTML = '<td align="center" nowrap><input name="RETURN_QTY' + partId + '" id="RETURN_QTY' + partId + '" value="' + returnQty + '" type="hidden"/>' + returnQty + '</td>';
+    cell11.innerHTML = '<td align="center" nowrap><input name="APPLY_QTY' + partId + '" id="APPLY_QTY' + partId + '" value="' + applyQty + '" type="text" class="short_txt" onchange="check(this,\''+partId+'\', \'\');" /></td>';
+    cell12.innerHTML = '<td align="center" nowrap><input class="short_txt" name="REMARK' + partId + '" id="REMARK' + partId + '" type="text"/></td>';
+    cell13.innerHTML = '<td><input  type="button" class="u-button" name="queryBtn4" value="删除" onclick="deleteTblRow(' + (tbl.rows.length - 1) + ');" /></td></tr>';
 
 }
 
@@ -410,13 +413,8 @@ function deleteTblRow(rowNum) {
     var tbl = document.getElementById('file');
     tbl.deleteRow(rowNum);
     for (var i = rowNum; i < tbl.rows.length; i++) {
-        tbl.rows[i].cells[1].innerText = i - 1;
-        tbl.rows[i].cells[11].innerHTML = "<input type=\"button\" class=\"u-button\"  name=\"deleteBtn\" value=\"删除\" onclick='deleteTblRow(" + i + ")'/></td></tr>";
-        if (i % 2 == 0) {
-            tbl.rows[i].className = "table_list_row1";
-        } else {
-            tbl.rows[i].className = "table_list_row2";
-        }
+        tbl.rows[i].cells[1].innerText = i;
+        tbl.rows[i].cells[12].innerHTML = "<input type=\"button\" class=\"u-button\"  name=\"deleteBtn\" value=\"删除\" onclick='deleteTblRow(" + i + ")'/></td></tr>";
     }
 }
 
@@ -446,24 +444,35 @@ function setCheckModel() {
     for (var i = 0; i < l; i++) {
         if (chk[i].checked) {
             cnt++;
-            var applyQty = document.getElementById("APPLY_QTY" + chk[i].value).value;//退货数量
-            var normalQty = document.getElementById("NORMAL_QTY" + chk[i].value).value;//可用库存
-            var pattern1 = /^[1-9][0-9]*$/;
-            if (!pattern1.exec(applyQty)) {
-                MyAlert("第" + (i + 1) + "行的退货数量只能输入非零的正整数!");
-                return;
+            var partId = chk[i].value;
+            var obj = document.getElementById('APPLY_QTY'+partId);
+        	var pattern1 = /^[1-9][0-9]*$/;
+            if (!pattern1.exec(obj.value)) {
+                //MyAlert("请录入正整数且必须大于0！");
+                obj.value = obj.value.replace(/\D/g, '');
+                obj.focus();
             }
-            if (parseInt(applyQty) > parseInt(normalQty)) {
-                MyAlert("第" + (i + 1) + "行的退货数量不能大于可用库存,请重新输入!");
-                return;
-            }
-            var soCode = document.getElementById("soCode").value;
-            if (soCode != null && soCode != "") {//如果有销售单号,那么就要判断采购数量和退货数量
-                var buyQty = document.getElementById("BUY_QTY" + chk[i].value).value;//采购数量
-                if (parseInt(applyQty) > parseInt(buyQty)) {
-                    MyAlert("第" + (i + 1) + "行的退货数量不能大于采购数量,请重新输入!");
+            if (isNumber(obj.value)) {
+                if (obj.value == 0) {
+                    MyAlert("第" + (i + 1) + "行请输入正整数且必须大于0！");
+            	    obj.value="";
                     return;
                 }
+
+            }
+            var normalQty = $('#NORMAL_QTY'+partId).val();
+            if(parseInt(obj.value) > parseInt(normalQty)){
+        	    MyAlert("第" + (i + 1) + "行退货数量不能大于可用库存！");
+        	    obj.value="";
+        	    return;
+            }
+            
+            var buyQty = $('#BUY_QTY'+partId).val();
+            var retrurnQty = $('#RETURN_QTY'+partId).val();
+            if(parseInt(obj.value) > parseInt(buyQty) - parseInt(retrurnQty)){
+        	    MyAlert("第" + (i + 1) + "行退货数量不能大于采购数量与已退货数量的差！");
+        	    obj.value="";
+        	    return;
             }
         }
     }
@@ -471,7 +480,7 @@ function setCheckModel() {
         MyAlert("请选择退货明细！");
         return;
     }
-
+   
     MyConfirm("确认保存？", saveApply);
 }
 
@@ -488,8 +497,9 @@ function getResult(jsonObj) {
         var error = jsonObj.error;
         var exceptions = jsonObj.Exception;
         if (success) {
-            MyAlert(success);
-            window.location.href = '<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnApplyQuery/partReturnApplyInit.do';
+            MyAlert(success, function(){
+	            window.location.href = '<%=contextPath%>/parts/storageManager/partReturnManager/PartDlrReturnApplyQuery/partReturnApplyInit.do';
+            });
         } else if (error) {
             MyAlert(error);
         } else if (exceptions) {
@@ -580,8 +590,11 @@ function goback() {
 						<tr>
 							<td class="right">入库单号：</td>
 							<td>
-								<input id="soCode" name="soCode" type="text" class="middle_txt" readonly="readonly" />
-								<input class="mark_btn" type="button" value="&hellip;" onclick="showSoCode('soCode');" />
+								<input id="soId" name="soId" type="hidden" />
+								<input id="soCode" name="soCode" type="hidden" />
+								<input id="inId" name="inId" type="hidden" />
+								<input id="inCode" name="inCode" type="text" class="middle_txt" readonly="readonly" />
+								<input class="mark_btn" type="button" value="&hellip;" onclick="showSoCode();" />
 								<font color="red">*</font>
 								<input class=u-button onclick="clearInput();" value=清除 type=button name=clrBtn /	>
 							</td>
@@ -609,6 +622,7 @@ function goback() {
 					<th>销售价格</th>
 					<th>采购数量</th>
 					<th>可用库存</th>
+					<th>已退货数量</th>
 					<th>退货数量<font color="red">*</font></th>
 					<th>备注</th>
 					<th>操作</th>
@@ -616,20 +630,20 @@ function goback() {
 			</table>
 			<table style="width: 100%;">
 				<tr>
-					<td align="center">
+					<td class="bottom-button" align="center">
 						<input type="button" name="saveBtn" id="saveBtn" value="保 存" onclick="setCheckModel();" class="u-button" />
 						<input type="button" name="backBtn" id="backBtn" value="返 回" onclick="javascript:goback();" class="u-button" />
 					</td>
 				</tr>
 			</table>
-			<FIELDSET>
+			<FIELDSET class="form-fieldset">
 				<LEGEND style="MozUserSelect: none; KhtmlUserSelect: none" unselectable="on">
 					<th colspan="4" style="background-color: #DAE0EE; font-weight: normal; color: #416C9B; padding: 2px; line-height: 1.5em; border: 1px solid #E7E7E7;">
 						<img src="<%=contextPath%>/img/subNav.gif" alt="" class="nav" /> <font color="blue">配件信息</font>
 						<input type="button" class="u-button" name="addPartViv" id="addPartViv" value="增加" onclick="addPartDiv()" />
 					</th>
 				</LEGEND>
-				<div style="display: none; heigeht: 5px" id="partDiv">
+				<div style="display: none;" id="partDiv" class="grid-resize">
 					<table class="table_query" width=100% border="0" align="center" cellpadding="1" cellspacing="1">
 						<tr>
 							<td class="right">配件编码：</td>
@@ -643,7 +657,7 @@ function goback() {
 						</tr>
 						<tr>
 							<td class="center" colspan="6">
-								<input class="u-button u-query" type="button" name="BtnQuery" id="queryBtn" value="查 询" onclick="__extQuery__(1)" />
+								<input class="u-button" type="button" name="BtnQuery" id="queryBtn" value="查 询" onclick="__extQuery__(1)" />
 								<input class="u-button" type="button" name="BtnQuery" id="queryBtn" value="添加" onclick="addCells()" />
 							</td>
 						</tr>

@@ -67,6 +67,7 @@ function checkData(){
 	}
 	return true;
 }
+function doCusChange() {}
 </script>
 </head>
 <body>

@@ -235,13 +235,16 @@ public class PurchaseArrConfirDao extends BaseDao  {
      * @param locCode
      * @return
      */
-    public Map<String, Object> getLoc(String locCode) {
+    public Map<String, Object> getLoc(String locCode,Long partId,Long orgId,Long whId) {
       StringBuffer sql = new StringBuffer();
       sql.append(" SELECT LOC_ID,LOC_CODE,LOC_NAME");
       sql.append("  FROM TT_PART_LOACTION_DEFINE ");
       sql.append(" WHERE LOC_CODE = '"+locCode+"' ");
-      sql.append("   AND STATE = '10011001' ");
-      sql.append("   AND STATUS = '10041001' ");
+      sql.append(" AND WH_ID = "+whId);
+      sql.append(" AND PART_ID = "+partId);
+      sql.append(" AND ORG_ID = "+orgId);
+      sql.append(" AND STATE = '10011001' ");
+      sql.append(" AND STATUS = '10041001' ");
 
       List<Map<String, Object>> list = this.pageQuery(sql.toString(), null, this.getFunName());
       if (null == list || list.size() <= 0) {

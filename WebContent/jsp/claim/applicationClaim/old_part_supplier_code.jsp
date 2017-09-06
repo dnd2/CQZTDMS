@@ -4,9 +4,8 @@
 <head>
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
 <% String contextPath = request.getContextPath(); 
-String id=request.getParameter("id");
-String id_name=request.getParameter("id_name");
-String old_code=request.getParameter("old_code");
+String claimId=request.getParameter("claimId");
+String part_Id=request.getParameter("part_Id");
 %>
 <script language="JavaScript" >
 </script>
@@ -17,24 +16,29 @@ String old_code=request.getParameter("old_code");
 <img src="<%=contextPath %>/img/nav.gif" width="11" height="11" />&nbsp;当前位置：供应商选择 </div>
 </div>
  <form  name="fm" id="fm" method="post">
-<input class="middle_txt" id="partcode" name="partcode" value="${partcode }" type="hidden"/>
-<input class="middle_txt" id="id" name="id" value="<%=id%>" type="hidden"/>
-<input class="middle_txt" id="id_name" name="id_name" value="<%=id_name%>" type="hidden"/>
-<input class="middle_txt" id="old_code" name="old_code" value="<%=old_code%>" type="hidden"/>
+<input class="middle_txt" id="claimId" name="claimId" value="<%=claimId%>" type="hidden"/>
+<input class="middle_txt" id="part_Id" name="part_Id" value="<%=part_Id%>" type="hidden"/>
+<input class="middle_txt" id="supplyCode" name="supplyCode" type="hidden"/>
+<input class="middle_txt" id="supplyName" name="supplyName" type="hidden"/>
 <!--查询条件begin-->
 <table width=100% border="0" align="center" cellpadding="1" cellspacing="1" class="table_query">
     <tr>
-		<td  class="right" nowrap="true">供应商代码：</td>
-      	<td  nowrap="true">
+		<td width="12.5%" style="text-align: right;"></td>
+		<td width="10%" class="table_query_2Col_label_5Letter" nowrap="true">供应商代码：</td>
+      	<td width="15%" nowrap="true">
       		<input class="middle_txt" id="maker_code" name="maker_code" value="" type="text"/>
       	</td>
-        <td  class="right" nowrap="true">供应商名称：</td>
-      	<td  nowrap="true">
+        <td width="10%" style="text-align: right;" class="table_query_2Col_label_6Letter" nowrap="true">供应商名称：</td>
+      	<td width="15%" nowrap="true">
       		<input name="maker_shotname" type="text" id="maker_shotname"  class="middle_txt"/>
       	</td>
+		<td width="10%" nowrap="true" class="table_query_2Col_label_5Letter"></td>
+		<td width="15%" nowrap="true">
+		</td>
+		<td width="12.5%"></td>
 	</tr>
   	<tr>
-    	<td class="center" colspan="8">
+    	<td style="text-align: center;" colspan="8">
     		<input type="button" name="btnQuery" id="btnQuery" value="查询" class="normal_btn" onClick="__extQuery__(1);"/>
     		&nbsp;
     		<input type="reset"  name="bntReset" id="bntReset" value="重置" class="normal_btn" />
@@ -72,23 +76,20 @@ String old_code=request.getParameter("old_code");
 		 if(v1==null||v1=="null"){
 		 	v1 = "";
 		 }
-		 var id=document.getElementById("id").value;
-		 var id_name=document.getElementById("id_name").value;
-		 if(id=="0"){
-			 __parent().setOldCode(v1);
-		 }
-		 else{
-			 if (__parent().$('inIframe')) {			
-		 			__parent().setSupplierCode(v1,v2,id,id_name);
-		 		} else {
-		 			__parent().setSupplierCode(v1,v2,id,id_name);
-				} 
-		 }
-	 		
-	 	//关闭弹出页面
-	 	parent._hide();
+		 document.getElementById("supplyCode").value=v1;
+		 document.getElementById("supplyName").value=v2;
+		 var url="<%=contextPath%>/claim/oldPart/ClaimOldPartOutStorageManager/producerInfoSave.json";
+			makeNomalFormCall(url,sureCommitBack,"fm");
 	}
-	
+	function sureCommitBack(json){
+		if(json.msg=="0"){			
+			__parent().Back();
+		 	//关闭弹出页面
+		 	parent._hide();
+		}else{
+			MyAlert("操作失败！请与管理员联系！");
+		}
+	}
 </script>
 </body>
 </html>

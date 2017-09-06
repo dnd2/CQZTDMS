@@ -43,7 +43,7 @@ public class TtPartChgStateDtlPO extends PO{
 	private String partOldcode;
 	private Date createDate;
 	private Long lineNo;
-	private Long batchNo;
+	private String batchNo;
 	private Long venderId;
 	
 	public Long getVenderId() {
@@ -54,11 +54,11 @@ public class TtPartChgStateDtlPO extends PO{
         this.venderId = venderId;
     }
 
-    public Long getBatchNo() {
+    public String getBatchNo() {
         return batchNo;
     }
 
-    public void setBatchNo(Long batchNo) {
+    public void setBatchNo(String batchNo) {
         this.batchNo = batchNo;
     }
 

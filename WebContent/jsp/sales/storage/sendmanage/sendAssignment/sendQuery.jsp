@@ -128,7 +128,7 @@ String contextPath=request.getContextPath();
 				{header: "发运方式",dataIndex: 'DS_SHIP',align:'center'},
 				{header: "经销商",dataIndex: 'DEALER_NAME',align:'center'},
 				{header: "基地仓库",dataIndex: 'REC_WH_NAME',align:'center'},
-				{header: "发运地",dataIndex: 'DLV_ADDR',align:'center'},
+				{header: "发运结算地",dataIndex: 'DLV_ADDR',align:'center'},
 				{header: "分派量",dataIndex: 'DLV_FP_TOTAL',align:'center'},
 				{header: "未分派量",dataIndex: 'NO_FP_TOTAL',align:'center'},
 				{header: "分派日期",dataIndex: 'DLV_DATE',align:'center'},

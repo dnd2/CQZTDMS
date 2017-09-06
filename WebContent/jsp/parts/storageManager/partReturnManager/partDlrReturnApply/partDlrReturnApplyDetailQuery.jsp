@@ -70,8 +70,8 @@ function goback() {
 						<tr>
 							<td  class="right">退货单位：</td>
 							<td>${po["DEALER_NAME"]}</td>
-							<td  class="right">销售单号：</td>
-							<td>${po["SO_CODE"]}</td>
+							<td  class="right">入库单号：</td>
+							<td>${po["IN_CODE"]}</td>
 						</tr>
 						<%-- <tr>
                <td  class="right">销售单位：</td>

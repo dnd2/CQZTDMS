@@ -14,7 +14,10 @@
 	request.setAttribute("fileList",fileList);
 %>
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/web/common.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/js/jslib/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/js/jslib/zyw/jquery-calendar.js"></script> 
+<link rel="stylesheet" type="text/css" href="<%=contextPath%>/js/jslib/zyw/jquery-calendar.css" /> 
 <script type="text/javascript" src="<%=contextPath%>/js/jslib/CalendarZYW.js"></script>
 <title>品质情报填写</title>
 <script type="text/javascript">
@@ -228,13 +231,13 @@
     		故障日期:
     	</td>
     	<td nowrap="true">
-    		<input type="text" id="faultDate" readonly="readonly" class="middle_txt"  name="faultDate" value="${po.faultDate}"/><span style="color: red;">*</span>
+    		<input type="text" id="faultDate" readonly="readonly" class="middle_txt"  name="faultDate" value="${po.faultDate}" onclick="WdatePicker({onpicked:function(dq){changeArrivalDate(dq.cal.getNewDateStr());}})"/><span style="color: red;">*</span>
     	</td>
     	<td nowrap="true">
     		维修日期:
     	</td>
     	<td nowrap="true">
-    		<input type="text" id="serviceDate" readonly="readonly" class="middle_txt" name="serviceDate" value="${po.serviceDate}"/> <span style="color: red;">*</span>
+    		<input type="text" id="serviceDate" readonly="readonly" class="middle_txt" name="serviceDate" value="${po.serviceDate}" onclick="WdatePicker({onpicked:function(dq){changeArrivalDate(dq.cal.getNewDateStr());}})"/> <span style="color: red;">*</span>
     	</td>
     	<td nowrap="true">
     		车辆用途:
@@ -380,7 +383,7 @@
     		<input type="text" id="firstProblemName" readonly="readonly" name="firstProblemName" maxlength="30" class="middle_txt" value="${po.firstProblemName}"/>
     		<br/>
     		&nbsp;主故障件供应商代码&nbsp;
-    		<input type="text" id="firstProblemSupplierCode" maxlength="30"name="firstProblemSupplierCode" class="middle_txt" value="${po.firstProblemSupplierCode}"/>
+    		<input type="text" id="firstProblemSupplierCode" maxlength="30"name="firstProblemSupplierCode" class="middle_txt" value="${po.firstProblemSupplierCode}" onclick="onSupply();" readonly="readonly"/>
     		&nbsp;目录分组&nbsp;&nbsp;&nbsp;
     		<script type="text/javascript">
     		      genSelBoxExp("listGroup",<%=Constant.LISTGROUP%>,"${po.listGroup}",true,"short_sel","","false",'');
@@ -480,7 +483,7 @@
 						<font color="red">
 							<span id="span1"></span>
 						</font>
-			     		<input type="button" class="normal_btn" align="right" id="addfile" onclick="showUpload('<%=contextPath%>')" value ='添加附件'/><font color="red">*</font>
+			     		<input type="button" class="normal_btn" align="right" id="addfile" onclick="showUpload('<%=contextPath%>','PNG;PDF;JPG;JPEG;BMP;RAR;ZIP;TXT;XLS;XLSX;DOC;DOCX',10)" value ='添加附件'/><font color="red">*</font>
 					</th>
 				</tr>
 				<tr>
@@ -892,6 +895,18 @@
 	function selectmalfunctionBack(malcode,malname){
 		$("#firstProblemCode").val(malcode);
 		$("#firstProblemName").val(malname);
+	}
+	
+	function onSupply(){	
+		var old_code=$("#firstProblemCode").val();
+		if(old_code!=null && old_code!=""){
+			OpenHtmlWindow(globalContextPath +"/jsp_new/goodClaim/spe_show_supplier_code.jsp?old_code="+old_code+"&id=0",800,500);
+		}else{
+			MyAlert("故障件不能为空!");
+		}
+	}
+	function setOldCode(malcode){
+		$("#firstProblemSupplierCode").val(malcode);
 	}
 </script>
 </html>

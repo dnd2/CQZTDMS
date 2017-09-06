@@ -131,12 +131,14 @@ function changeType(obj, num) {
 				<div class="form-body">
 					<table class="table_query">
 						<tr>
-							<td class="right">备件编码:</td>
-							<td style="width: 20%;">${PO.partOldcode}</td>
-							<td class="right">备件名称:</td>
-							<td style="width: 20%;">${PO.partCname}</td>
-							<td class="right">备件件号:</td>
-							<td style="width: 20%;">${PO.partCode}</td>
+							<td class="right">配件编码:</td>
+							<td>${PO.partOldcode}</td>
+							<td class="right">配件名称:</td>
+							<td>${PO.partCname}</td>
+						</tr>
+						<tr>
+							<td class="right">配件件号:</td>
+							<td colspan="3">${PO.partCode}</td>
 						</tr>
 						<tr>
 							<td class="right">采购方式:</td>
@@ -165,8 +167,8 @@ function changeType(obj, num) {
 			<table class="table_edit tb-button-set">
 				<tr align="center">
 					<td>
-						<input class="u-button u-submit" type="button" value="保存" onclick="ON_OK();" />
-						<input class="u-button u-cancel" type="button" value="关闭" onclick="_hide();" />
+						<input class="u-button" type="button" value="保存" onclick="ON_OK();" />
+						<input class="u-button" type="button" value="关闭" onclick="_hide();" />
 					</td>
 				</tr>
 			</table>

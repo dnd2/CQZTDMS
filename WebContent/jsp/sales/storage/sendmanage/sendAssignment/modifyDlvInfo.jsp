@@ -54,7 +54,7 @@ String contextPath=request.getContextPath();
 			<input type="hidden" name="jsCountyM" id="jsCountyM" value="${map.DLV_BAL_COUNTY_ID}"/>
      	 </td> 
      </tr>
-     <tr>
+    <!--  <tr>
 	    <td class="right" width="15%">是否中转：</td>  
 		    <td align="left">
 		    <select id="isMiddleTurn" onchange="selectZz(this)" name="isMiddleTurn" class="u-select">
@@ -91,12 +91,13 @@ String contextPath=request.getContextPath();
      	 </td> 
      	  
      </tr>
+      -->
      <tr>
-     	<td class="right" width="15%">中转区县：</td>  
+     	<!-- <td class="right" width="15%">中转区县：</td>  
 		 <td align="left">
 	  		<select class="u-select" id="zZCounty" name="zZCounty" disabled="disabled"></select>
 			<input type="hidden" name="zZCountyM" id="zZCountyM" value="${map.DLV_ZZ_COUNTY_ID}"/>
-     	 </td>
+     	 </td>-->
 	   <td class="right" width="15%">发运方式：</td>  
 		 <td align="left">
 	  		<script type="text/javascript">
@@ -108,6 +109,10 @@ String contextPath=request.getContextPath();
 		 <td align="left">
 	  		
      	 </td> 
+     	 <td class="right" width="15%"></td>  
+		 <td align="left">
+	  		
+     	 </td>
      </tr>
      <tr> 
       	<td colspan="4" class="table_query_4Col_input" style="text-align: center">
@@ -181,66 +186,60 @@ function doInit(){
 		}
 	}
 	//是否中转
-	var isZzM = document.getElementById("isZzM");
-	var isMiddleTurn = document.getElementById("isMiddleTurn");
-	for(var i = 0;i<isMiddleTurn.length;i++){
-		if(isMiddleTurn[i].value == isZzM.value){
-			isMiddleTurn[i].selected = true;
-			break;
-		}
-	}
+	//var isZzM = document.getElementById("isZzM");
+	//var isMiddleTurn = document.getElementById("isMiddleTurn");
+	//for(var i = 0;i<isMiddleTurn.length;i++){
+	//	if(isMiddleTurn[i].value == isZzM.value){
+	//		isMiddleTurn[i].selected = true;
+	//		break;
+	//	}
+	//}
 	
-	if(isZzM.value==10041001){//是否中转为是，选择中转的省市县
+	//if(isZzM.value==10041001){//是否中转为是，选择中转的省市县
 		//加载默认选中中转仓库
-		var zzWareId = document.getElementById("zzWareId");
-		var zzWareIdM = document.getElementById("zzWareIdM");
-		for(var i = 0;i<zzWareId.length;i++){
-			if(zzWareId[i].value == zzWareIdM.value){
-				zzWareId[i].selected = true;
-				break;
-			}
-		}
+	//	var zzWareId = document.getElementById("zzWareId");
+	//	var zzWareIdM = document.getElementById("zzWareIdM");
+	//	for(var i = 0;i<zzWareId.length;i++){
+	//		if(zzWareId[i].value == zzWareIdM.value){
+	//			zzWareId[i].selected = true;
+	//			break;
+	//		}
+	//	}
 		//生成下拉框：结算省市县
-		genLocSel('zZProvince','zZCity','zZCounty');//支持火狐
+	//	genLocSel('zZProvince','zZCity','zZCounty');//支持火狐
 		//省市
-		var pro_z = document.getElementById("zZProvinceM");
-		_genCity(pro_z,'zZCity');
-		var proz = document.getElementById("zZProvince");
-		for(var i = 0;i<proz.length;i++){
-			if(proz[i].value == pro_z.value){
-				proz[i].selected = true;
-				break;
-			}
-		}
+	//	var pro_z = document.getElementById("zZProvinceM");
+	//	_genCity(pro_z,'zZCity');
+	//	var proz = document.getElementById("zZProvince");
+	//	for(var i = 0;i<proz.length;i++){
+	//		if(proz[i].value == pro_z.value){
+	//			proz[i].selected = true;
+	//			break;
+	//		}
+	//	}
 		//地级市
-		var city_z = document.getElementById("zZCityM");
-		_genCity(city_z,'zZCounty');
-		var cityz = document.getElementById("zZCity");
-		for(var i = 0;i<cityz.length;i++){
-			if(cityz[i].value == city_z.value){
-				cityz[i].selected = true;
-				break;
-			}
-		}
+	//	var city_z = document.getElementById("zZCityM");
+	//	_genCity(city_z,'zZCounty');
+	//	var cityz = document.getElementById("zZCity");
+	//	for(var i = 0;i<cityz.length;i++){
+	//		if(cityz[i].value == city_z.value){
+	//			cityz[i].selected = true;
+	//			break;
+	//		}
+	//	}
 		//区县
-		var county_z = document.getElementById("zZCountyM");
-		var countyz = document.getElementById("zZCounty");
-		for(var i = 0;i<countyz.length;i++){
-			if(countyz[i].value == county_z.value){
-				countyz[i].selected = true;
-				break;
-			}
-		}
-	}else{//中转省市县不可选择
-		var zzWareId = document.getElementById("zzWareId");
-		zzWareId.disabled=true;
-		//var proz = document.getElementById("zZProvince");
-		//var cityz = document.getElementById("zZCity");
-		//var countyz = document.getElementById("zZCounty");
-		//proz.disabled=true;
-		//cityz.disabled=true;
-		//countyz.disabled=true;
-	}
+	//	var county_z = document.getElementById("zZCountyM");
+	//	var countyz = document.getElementById("zZCounty");
+	//	for(var i = 0;i<countyz.length;i++){
+	//		if(countyz[i].value == county_z.value){
+	//			countyz[i].selected = true;
+	//			break;
+	//		}
+	//	}
+	//}else{//中转省市县不可选择
+	//	var zzWareId = document.getElementById("zzWareId");
+	//	zzWareId.disabled=true;
+	//}
 	
 }
 //根据是否中转控制省市县的选择
@@ -253,10 +252,6 @@ function selectZz(obj){
 	var countyz = document.getElementById("zZCounty");
 	if(isZz==10041001){
 		zzWareId.disabled=false;
-		
-		//proz.disabled=false;
-		//cityz.disabled=false;
-		//countyz.disabled=false;
 		//生成下拉框：结算省市县
 		genLocSel('zZProvince','zZCity','zZCounty');//支持火狐
 		//省市
@@ -290,9 +285,6 @@ function selectZz(obj){
 		}
 	}else{
 		zzWareId.disabled=true;
-		//proz.disabled=true;
-		//cityz.disabled=true;
-		//countyz.disabled=true;
 	}
 }
 //根据中转仓库获取中转省市县
@@ -366,29 +358,14 @@ function addReservoir()
 		MyAlert("请选择结算区县！");
 		return;
 	}
-	var isMiddleTurn=document.getElementById("isMiddleTurn").value;//是否中转
-	if(isMiddleTurn==10041001){//需选择中转省市县
-		var zzWareId = document.getElementById("zzWareId").value;//中转仓库
-		if(zzWareId==""){
-			MyAlert("请选择中转仓库！");
-			return;
-		}
-		//var zZProvince=document.getElementById("zZProvince").value;//中转省份
-		//var zZCity=document.getElementById("zZCity").value;//中转城市
-		//var zZCounty=document.getElementById("zZCounty").value;//中转区县
-		//if(zZProvince==""){
-		//	MyAlert("请选择中转省份！");
-		//	return;
-		//}
-		//if(zZCity==""){
-		//	MyAlert("请选择中转城市！");
-		//	return;
-		//}
-		//if(zZCounty==""){
-		//	MyAlert("请选择中转区县！");
-		//	return;
-		//}
-	}
+	//var isMiddleTurn=document.getElementById("isMiddleTurn").value;//是否中转
+	//if(isMiddleTurn==10041001){//需选择中转省市县
+	//	var zzWareId = document.getElementById("zzWareId").value;//中转仓库
+	//	if(zzWareId==""){
+	//		MyAlert("请选择中转仓库！");
+	//		return;
+	//	}
+	//}
 	if(!submitForm("fm")){
 		return;
 	}

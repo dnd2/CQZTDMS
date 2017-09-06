@@ -106,21 +106,18 @@ function getResult(json){
 				</div>
 			</div>
 			<table id="savefile" class="table_list" style="border-bottom: 1px;">
-				<tr>
-					<th colspan="15" align="left">
-						<img src="<%=contextPath%>/img/nav.gif" />&nbsp;配件解封明细
-					</th>
-				</tr>
+				<caption><img src="<%=contextPath%>/img/nav.gif" />&nbsp;配件解封明细</caption>
 				<tr class="table_list_row0">
-					<td>序号</td>
-					<td>退换单号</td>
-					<td>销售单号</td>
-					<td>入库单号</td>
-					<td>配件编码</td>
-					<td>配件名称</td>
-					<td>配件件号</td>
-					<td>单位</td>
-					<td>申请数量</td>
+					<th>序号</th>
+					<th>退换单号</th>
+					<th>销售单号</th>
+					<th>入库单号</th>
+					<th>配件编码</th>
+					<th>配件名称</th>
+					<th>配件件号</th>
+					<th>单位</th>
+					<th>批次号</th>
+					<th>申请数量</th>
 				</tr>
 
 				<c:forEach items="${mapList}" var="list" varStatus="v">
@@ -138,6 +135,7 @@ function getResult(json){
 					<td>${list.PART_CNAME}</td>
 					<td>${list.PART_CODE}</td>
 					<td>${list.UNIT}</td>
+					<td>${list.BATCH_NO}</td>
 					<td>${list.APPLY_QTY}</td>
 					</tr>
 				</c:forEach>

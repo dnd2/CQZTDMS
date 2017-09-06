@@ -4,6 +4,7 @@
 <%@taglib uri="/jstl/cout" prefix="c" %>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
     <% String contextPath = request.getContextPath(); %>
     <script language="javascript" type="text/javascript">
         function prtPage(obj) {
