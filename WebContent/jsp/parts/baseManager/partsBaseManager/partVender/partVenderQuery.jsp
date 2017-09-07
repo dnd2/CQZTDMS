@@ -7,9 +7,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=7">
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
-<title>供应商信息查询</title>
+<title>供应商配件标签管理</title>
 
 <script type="text/javascript" >
 var myPage;
@@ -122,10 +121,9 @@ $(function(){__extQuery__(1);});
 </script>
 </head>
 <body>
-	<!-- onunload='javascript:destoryPrototype()' -->
 	<div class="wbox">
 		<div class="navigation">
-			<img src="<%=request.getContextPath()%>/img/nav.gif" />&nbsp;当前位置： 配件管理 &gt;基础信息管理 &gt; 配件基础信息维护 &gt; 供应商信息维护
+			<img src="<%=request.getContextPath()%>/img/nav.gif" />&nbsp;当前位置：&gt;配件管理 &gt;基础信息管理&gt;供应商管理&gt; 供应商配件标签管理
 		</div>
 		<form method="post" name="fm" id="fm" enctype="multipart/form-data">
 			<div class="form-panel">

@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
-<title>备件采购属性维护</title>
+<title>合同维护</title>
 <style>#uploadDiv{margin:10px 0}#uploadDiv .table_query,#uploadDiv .table_query th{background-color: transparent}</style>
 <%
 	String contextPath = request.getContextPath();
@@ -84,9 +84,9 @@
 			{header: "序号", dataIndex: 'SEQUENCE_ID', renderer:getIndex,style:'text-align:center'},
 			{header: "合同号", dataIndex: 'CONTRACT_NUMBER', style:'text-align:center'},
 			{header: "合同类型", dataIndex: 'CONTRACT_TYPE', style:'text-align:center'},
-			{header: "备件编码", dataIndex: 'PART_OLDCODE', style:'text-align:center'},
-			{header: "备件名称", dataIndex: 'PART_CNAME',style:'text-align:center'},
-			{header: "备件件号", dataIndex: 'PART_CODE', style:'text-align:center'},
+			{header: "配件编码", dataIndex: 'PART_OLDCODE', style:'text-align:center'},
+			{header: "配件名称", dataIndex: 'PART_CNAME',style:'text-align:center'},
+			{header: "配件件号", dataIndex: 'PART_CODE', style:'text-align:center'},
 			{header: "合同价", dataIndex: 'CONTRACT_PRICE', style:'text-align:center'},
 			{header: "供应商编码", width: '4%',dataIndex: 'VENDER_CODE',style:'text-align:center'},
 			{header: "供应商名称",width: '4%',dataIndex: 'VENDER_NAME', style:'text-align:center'},
@@ -108,9 +108,9 @@
 			//{id: 'action', header: "操作", sortable: false, dataIndex: 'DEF_ID', renderer: myLink,style: 'text-align:center'},
 			{header: "合同号", dataIndex: 'CONTRACT_NUMBER', style:'text-align:center'},
 			{header: "合同类型", dataIndex: 'CONTRACT_TYPE', style:'text-align:center'},
-			{header: "备件编码", dataIndex: 'PART_OLDCODE', style:'text-align:center'},
-			{header: "备件名称", dataIndex: 'PART_CNAME',style:'text-align:center'},
-			{header: "备件件号", dataIndex: 'PART_CODE', style:'text-align:center'},
+			{header: "配件编码", dataIndex: 'PART_OLDCODE', style:'text-align:center'},
+			{header: "配件名称", dataIndex: 'PART_CNAME',style:'text-align:center'},
+			{header: "配件件号", dataIndex: 'PART_CODE', style:'text-align:center'},
 			{header: "合同价", dataIndex: 'CONTRACT_PRICE', style:'text-align:center'},
 			{header: "合同创建人",width: '4%',dataIndex: 'NAME', style:'text-align:center'},
 			{header: "供应商编码", width: '4%',dataIndex: 'VENDER_CODE',style:'text-align:center'},
@@ -324,7 +324,7 @@
 <div class="wbox">
 <input type="hidden" id="selPartId" name="selPartId" value=""/>
 <input type="hidden" id="CON_NUM" name="CON_NUM" value=""/>
-<div class="navigation"><img src="<%=contextPath%>/img/nav.gif" />&nbsp;当前位置：配件管理 &gt; 基础信息管理 &gt;供应商管理 &gt;合同管理&gt;查询</div>
+<div class="navigation"><img src="<%=contextPath%>/img/nav.gif" />&nbsp;当前位置：配件管理 &gt; 基础信息管理 &gt;供应商管理 &gt;合同维护</div>
     <div class="form-panel">
     <h2><img src="<%=contextPath%>/jmstyle/img/search-ico.png" style="margin-bottom: -13px;"/>查询条件</h2>
     <div class="form-body">
@@ -345,9 +345,9 @@
 			</td>
 	  </tr>
 	  <tr>
-			<td class="right">备件编码：</td>
+			<td class="right">配件编码：</td>
 			<td><input class="middle_txt" type="text" name="PART_OLDCODE" /></td>
-			<td class="right">备件名称：</td>
+			<td class="right">配件名称：</td>
 			<td><input class="middle_txt" type="text" name="PART_NAME" /></td>
 			<td class="right">合同是否过期：</td>
 			<td>

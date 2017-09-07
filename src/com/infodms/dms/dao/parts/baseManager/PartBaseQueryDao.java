@@ -82,18 +82,18 @@ public class PartBaseQueryDao extends BaseDao<PO> {
         List<TcCodePO> stateList = CodeDict.dictMap.get(Constant.STATUS.toString());// 状态类型 有效、无效
         List<TcCodePO> partTypeList = CodeDict.dictMap.get(Constant.PART_PRODUCE_STATE.toString()); //配件主数据维护-配件种类-9263
         List<TcCodePO> partFitList = CodeDict.dictMap.get(Constant.ZT_PB_PART_FIT.toString()); //配件主数据维护-装配-9570
-        List<TcCodePO> partCategoryList = CodeDict.dictMap.get(Constant.ZT_PB_PART_CATEGORY.toString()); //配件主数据维护-备件类别-9571
+        List<TcCodePO> partCategoryList = CodeDict.dictMap.get(Constant.ZT_PB_PART_CATEGORY.toString()); //配件主数据维护-配件类别-9571
 
         String partTypeDecode = this.loadDecodeSql2(partTypeList, "A.PRODUCE_STATE"); // 配件种类
         String isProtocolPackDecode = this.loadDecodeSql2(flagList, "A.IS_PROTOCOL_PACK"); // 是否协议包装
         String isMagBatchDecode = this.loadDecodeSql2(flagList, "A.IS_MAG_BATCH"); // 是否批次管理
         String isPartDisable = this.loadDecodeSql2(flagList, "A.IS_PART_DISABLE"); // 是否停用
         String isReplacedDecode = this.loadDecodeSql2(flagList, "A.IS_PART_DISABLE"); // 是否替换
-        String stateDecode = this.loadDecodeSql2(stateList, "A.STATE"); // 是否替换
+        String stateDecode = this.loadDecodeSql2(stateList, "A.STATE"); // 状态，有效or无效
         String isSaleDisable = this.loadDecodeSql2(flagList, "A.IS_SALE_DISABLE"); // 是否售完停用
         String isStopLoad = this.loadDecodeSql2(flagList, "A.IS_STOP_LOAD"); //  是否停止装车
         String partFitDecode = this.loadDecodeSql2(partFitList, "A.PART_FIT"); // 装配
-        String partCategoryDecode = this.loadDecodeSql2(partCategoryList, "A.PART_CATEGORY"); // 备件类别
+        String partCategoryDecode = this.loadDecodeSql2(partCategoryList, "A.PART_CATEGORY"); // 配件类别
         String cccFlagDecode = this.loadDecodeSql2(flagList, "A.CCC_FLAG"); // 是否3C标识
         String isEntrusrPackDecode = this.loadDecodeSql2(flagList, "A.IS_ENTRUSR_PACK"); // 是否委托发货
 
@@ -329,19 +329,19 @@ public class PartBaseQueryDao extends BaseDao<PO> {
 //        List<Map<String, Object>> produce_stateList = this.getTcCode(Constant.PART_PRODUCE_STATE);
 //        List<Map<String, Object>> pack_stateList = this.getTcCode(Constant.PART_PACK_STATE);
 //        List<Map<String, Object>> partMaterialList = this.getTcCode(Constant.PART_BASE_MATERIAL);//配件主数据维护中配件材料
-//        List<Map<String, Object>> produce_facList = this.getTcCode(Constant.YIELDLY); //备件品牌
+//        List<Map<String, Object>> produce_facList = this.getTcCode(Constant.YIELDLY); //配件品牌
 //        List<Map<String, Object>> positionList = this.getTcCode(Constant.PART_BASE_POSITION); //配件主数据维护中配件结构状态
         List<Map<String, Object>> flagList = this.getTcCode(Constant.PART_BASE_FLAG);  //配件中所有是否
         List<Map<String, Object>> stateList = this.getTcCode(Constant.STATUS);// 状态类型 有效、无效
         List<Map<String, Object>> partTypeList = this.getTcCode(Constant.PART_PRODUCE_STATE); //配件主数据维护-配件种类-9263
         List<Map<String, Object>> partFitList = this.getTcCode(Constant.ZT_PB_PART_FIT); //配件主数据维护-装配-9570
-        List<Map<String, Object>> partCategoryList = this.getTcCode(Constant.ZT_PB_PART_CATEGORY); //配件主数据维护-备件类别-9571
+        List<Map<String, Object>> partCategoryList = this.getTcCode(Constant.ZT_PB_PART_CATEGORY); //配件主数据维护-配件类别-9571
         List<Map<String, Object>> partProcurementSiteList = this.getTcCode(Constant.PURCHASE_WAY); //采购方式(配件主数据维护-所属基地)-9281PURCHASE_WAY
 
         String produceFacDecode = this.loadDecodeSql(partProcurementSiteList, "A.PRODUCE_FAC"); // 采购方式
         String producStateDecode = this.loadDecodeSql(partTypeList, "A.PRODUCE_STATE"); // 配件种类
         String partFitDecode = this.loadDecodeSql(partFitList, "A.PART_FIT"); // 装配
-        String partCategoryDecode = this.loadDecodeSql(partCategoryList, "A.PART_CATEGORY"); // 备件类别
+        String partCategoryDecode = this.loadDecodeSql(partCategoryList, "A.PART_CATEGORY"); // 配件类别
         String isPartDisable = this.loadDecodeSql(flagList, "A.IS_PART_DISABLE"); // 是否停用
         String isSaleDisable = this.loadDecodeSql(flagList, "A.IS_SALE_DISABLE"); // 是否售完停用
         String isStopLoad = this.loadDecodeSql(flagList, "A.IS_STOP_LOAD"); //  是否停止装车
@@ -923,7 +923,7 @@ public class PartBaseQueryDao extends BaseDao<PO> {
         return "";
     }
 
-  //将备件主数据写入历史记录表
+  //将配件主数据写入历史记录表
     public void saveHistory(String id) {
         StringBuffer sql=new StringBuffer();
         

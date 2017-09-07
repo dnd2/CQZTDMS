@@ -1870,7 +1870,39 @@ sql.append(" group by  d.erpd_code,a.stock_id,a.stock_no,c.code_desc ,a.stock_da
         PageResult<Map<String, Object>> pr = pageQuery(sql.toString(), null,getFunName(), pageSize, curPage);
         return pr;
 	}
-    
+    //二次抵扣查看
+	public Map<String, Object> oldPartDeductionSecondShow(Map<String, Object> params) {
+		String deductionId = CommonUtils.checkNull(params.get("deductionId"));
+		
+		Map<String, Object> map  = null;
+
+		StringBuffer sql = new StringBuffer("\n") ;
+		sql.append("SELECT A.DEDUCTION_ID,\n") ;
+		sql.append("       A.DEDUCTION_NO,\n") ;
+		sql.append("       A.CLAIM_ID,\n") ;
+		sql.append("       A.DEALER_ID,\n") ;
+		sql.append("       A.DEDUCTION_TYPE,\n") ;
+		sql.append("       F_GET_TC_CODE(A.DEDUCTION_TYPE) DEDUCTION_TYPE_NAME,\n") ;
+		sql.append("       A.BALANCE_NO,\n") ;
+		sql.append("       TO_CHAR(NVL(A.SECOND_DEDUCTION_AMOUNT,0),'FM99999990.00') SECOND_DEDUCTION_AMOUNT,\n") ;
+		sql.append("       A.STATUS,\n") ;
+		sql.append("       F_GET_TC_CODE(A.STATUS) STATUS_NAME,\n") ;
+		sql.append("       A.CREATE_BY,\n") ;
+		sql.append("       TO_CHAR(A.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE,\n") ;
+		sql.append("       A.SECOND_DEDUCTION_REMARK\n") ;
+		sql.append("  FROM TT_AS_WR_OLDPART_DEDUCTION A\n") ;
+		sql.append(" WHERE 1 = 1\n") ;
+		
+		if(!deductionId.equals("")){
+			sql.append(" AND A.DEDUCTION_ID = "+deductionId+"\n");
+		}else{
+			sql.append(" AND 1=2\n");
+		}
+		sql.append(" AND ROWNUM <=1\n") ;
+		map = this.pageQueryMap(sql.toString(), null, getFunName());
+		return map;
+	}
+	
 	//旧件抵扣通知单查询
 	public PageResult<Map<String, Object>> claimDeductionSecondQuery(Map params,int curPage, int pageSize){
 		//获取前台条件

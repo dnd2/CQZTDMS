@@ -11,7 +11,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
-    <title>滚动计划编制</title>
+    <title>周计划编制</title>
     <script type="text/javascript">
         function getYearSelect(id, name, scope, value) {
             var date = new Date();
@@ -110,7 +110,7 @@
                 <th colspan="6"><img class="nav" src="<%=request.getContextPath()%>/img/subNav.gif"/> 上传文件</th>
                 <tr>
                     <td colspan="6" style="padding-left: 12px; color:red;">
-                        <label>格式：备件编码 +计划数量+备件备注</label>
+                        <label>格式：配件编码 +计划数量+配件备注</label>
                     </td>
                 </tr>
                 <tr>
@@ -139,13 +139,13 @@
                 <tr>
                     <td colspan="6" style="padding-left: 12px;">
                         <label>3.选择：</label>
-                        <div class="upload-box upload-form">
+                        <!-- <div class="upload-box upload-form">
                             <i class="upload-icon"></i>将文件拖拽至此 或 
                             <a href="" class="upload-link">选择一个文件
                                 <input type="file" name="uploadFile" id="uploadFile" style="width: 250px" datatype="0,is_null,2000"/>
                             </a>
-                        </div>
-                        
+                        </div> -->
+                        <input type="file" name="uploadFile" id="uploadFile" style="width: 250px" datatype="0,is_null,2000"/>
                        <!--  <label>要导入的计划文件！</label>
                         <font color="red">(必选项)</font> -->
                     </td>
@@ -177,8 +177,6 @@
     </form>
 </div>
 <script type="text/javascript">
-	//btnEable();btnDisable();//全局
-   // autoAlertException();//输出错误信息
     var myPage;
     var url = "<%=contextPath%>/parts/planManager/PartPlanManager/getRollingPlanInfo.json";
     var title = null;
@@ -203,14 +201,10 @@
 	    		str+= "<a href=\"#\" onclick='subPlanNew(\"" + tid +"\")'>[提交]</a>&nbsp;";
 	    		str+= "<a href=\"#\" onclick='delPlan(\"" + tid + "\")'>[删除]</a>&nbsp;";
     		}
-    		
-    		
     		//暂时注释掉
     		//str+= "<a href=\"#\" onclick='expDlt(\"" + tid +"\")'>[导出计划]</a>&nbsp;";
     		//str+= "<a href=\"#\" onclick='expErrDlt(\"" + tid + "\")'>[导出错误]</a>";
     		//暂时注释掉
-    		
-    		
         return str;
     }
     //查看
@@ -278,10 +272,10 @@
     }
     //下载计划模板
     function downRollingPlanTemp(){
-    	if(confirm('确认下载模板？')){
+    	MyConfirm('确认下载模板？',function(){
     		fm.action = "<%=contextPath%>/parts/planManager/PartPlanManager/downRollingPlanTemp.do";
      		fm.submit();
-    	}
+        });
     }
     //上传更新检查和确认信息
     function confirmUploadUpdate() {
@@ -303,11 +297,11 @@
         var start = fileValue.lastIndexOf('.');
        	var gsStr = fileValue.substring(start,start.length).toUpperCase();
        	if(gsStr=='.XLS' || gsStr=='.XLSX'){
-       		if(confirm('确定新增滚动计划？')){
+       		MyConfirm('确定新增周计划？',function(){
 		        btnDisable();
 		        fm.action = g_webAppName + "/parts/planManager/PartPlanManager/impRollingPlan.do";
 		        fm.submit();
-	        }
+            });
        	}else{
        		MyAlert('只支持.XLS,.XLSX格式的文件，不支持'+gsStr+'格式的文件');
        		return;

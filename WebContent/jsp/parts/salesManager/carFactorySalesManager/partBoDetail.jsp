@@ -27,36 +27,24 @@
     <input type="hidden" name="orderIdE" id="orderIdE" value="${orderId}"/>
     <input type="hidden" name="flag" id="flag" value="${flag}"/>
     <div class="form-panel panel-bottom">
-        <h2><img class="nav" src="<%=contextPath%>/img/nav.gif"/>BO单信息</h2>
+    	<h2><img src="<%=contextPath%>/img/subNav.gif" alt="" class="panel-icon nav"/>BO单信息</h2>
         <div class="form-body">
             <table class="table_query">
                 <tr>
-                    <td width="10%" class="right">BO单号：</td>
-                    <td width="20%">
-                        ${po['BO_CODE'] }
-                    </td>
-                    <td width="10%" class="right">配件订单号：</td>
-                    <td width="20%">
-                        ${po['ORDER_CODE'] }
-                    </td>
-                    <td width="10%" class="right">制单人：</td>
-                    <td width="20%">
-                        ${po['NAME'] }
-                    </td>
+                    <td class="right">BO单号：</td>
+                    <td> ${po['BO_CODE'] }</td>
+                    <td class="right">配件订单号：</td>
+                    <td >${po['ORDER_CODE'] }</td>
+                    <td class="right">制单人：</td>
+                    <td >${po['NAME'] }</td>
                 </tr>
                 <tr>
                     <td class="right">制单日期：</td>
-                    <td>
-                        ${po['CREATE_DATE'] }
-                    </td>
+                    <td>${po['CREATE_DATE'] }</td>
                     <td class="right">销售单位：</td>
-                    <td>
-                        ${po['SELLER_NAME'] }
-                    </td>
+                    <td>${po['SELLER_NAME'] }</td>
                     <td class="right">订货单位：</td>
-                    <td>
-                        ${po['DEALER_NAME'] }
-                    </td>
+                    <td>${po['DEALER_NAME'] }</td>
                 </tr>
             </table>
         </div>
@@ -69,9 +57,7 @@
                 <tr>
                     <td class="right"> 配件编码：</td>
                     <td align="left">
-                        <input class="middle_txt" id="PART_OLDCODE"
-                            name="PART_OLDCODE"
-                            type="text"/>
+                        <input class="middle_txt" id="PART_OLDCODE" name="PART_OLDCODE" type="text"/>
                     </td>
                     <td class="right">  配件名称： </td>
                     <td align="left">

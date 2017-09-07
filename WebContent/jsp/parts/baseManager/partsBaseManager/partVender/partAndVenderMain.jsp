@@ -9,7 +9,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=7">
 <jsp:include page="${contextPath}/common/jsp_head_new.jsp" />
 <title>配件供应商维护</title>
 <script type="text/javascript">
@@ -151,7 +150,7 @@ $(function(){__extQuery__(1);});
 <body>
 <div class="wbox">
     <div class="navigation">
-    	<img src="<%=contextPath %>/img/nav.gif" alt=""/>&nbsp;当前位置：&gt;配件管理 &gt;基础信息管理&gt;计划相关信息维护&gt;供应商管理&gt;配件供应商维护
+    	<img src="<%=contextPath %>/img/nav.gif" alt=""/>&nbsp;当前位置：&gt;配件管理 &gt;基础信息管理&gt;供应商管理&gt;配件供应商关系维护
     </div>
     <form method="post" name="fm" id="fm" enctype="multipart/form-data">
     <div class="form-panel">

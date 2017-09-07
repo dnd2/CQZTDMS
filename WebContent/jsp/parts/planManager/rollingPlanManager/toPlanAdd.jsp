@@ -124,7 +124,7 @@ function toNext(num,partId1){
 		 }
 		 if($("#PQty"+(num+1))[0]){
 			 var val = $("#PQty"+(num+1))[0].value;
-			 $("#PQty"+(num+1)).focus();
+			 $("#PQty"+(num+1))[0].focus();
 			 $("#PQty"+(num+1))[0].value="";
 			 $("#PQty"+(num+1))[0].value=val;
 		 }
@@ -132,7 +132,7 @@ function toNext(num,partId1){
 	if(event.keyCode==38){
 		 if($("#PQty"+(num-1))[0]){
 			 var val = $("#PQty"+(num-1))[0].value;
-			 $("#PQty"+(num-1)).focus();
+			 $("#PQty"+(num-1))[0].focus();
 			 $("#PQty"+(num-1))[0].value="";
 			 $("#PQty"+(num-1))[0].value=val;
 		 }
@@ -149,22 +149,22 @@ function toNext1(partId){
 		    	deleteTblRow(obj);
 		    	flag = false;
 		 }
-		 if(flag&&cb[idx]&&$("plan_qty_"+(cb[idx].value))){
+		 if(flag&&cb[idx]&&$("#plan_qty_"+(cb[idx].value))[0]){
 			 var val = $("#plan_qty_"+(cb[idx].value))[0].value;
-			 $("#plan_qty_"+(cb[idx].value)).focus();
+			 $("#plan_qty_"+(cb[idx].value))[0].focus();
 			 $("#plan_qty_"+(cb[idx].value))[0].value="";
 			 $("#plan_qty_"+(cb[idx].value))[0].value=val;
 		 }
 		 var cb1 = document.getElementsByName("cb");
-		 if(!flag&&cb1[idx-1]&&$("plan_qty_"+(cb1[idx-1].value))){
-			 var val = $("plan_qty_"+(cb1[idx-1].value)).value;
+		 if(!flag&&cb1[idx-1]&&$("#plan_qty_"+(cb1[idx-1].value))[0]){
+			 var val = $("#plan_qty_"+(cb1[idx-1].value))[0].value;
 			 setTimeout("$('plan_qty_'+"+(cb1[idx-1].value)+").focus();$('plan_qty_'+"+(cb1[idx-1].value)+").value='';$('plan_qty_'+"+(cb1[idx-1].value)+").value="+val+";",50);
 			 //$("plan_qty_"+(cb1[idx-1].value)).value="";
 			 //$("plan_qty_"+(cb1[idx-1].value)).value=val;
 		 }
 	}
 	if(event.keyCode==38){
-		 if(cb[idx-2]&&$("plan_qty_"+(cb[idx-2].value))){
+		 if(cb[idx-2]&&$("#plan_qty_"+(cb[idx-2].value))[0]){
 			 var val = $("#plan_qty_"+(cb[idx-2].value))[0].value;
 			 $("#plan_qty_"+(cb[idx-2].value)).focus();
 			 $("#plan_qty_"+(cb[idx-2].value))[0].value="";
@@ -175,21 +175,21 @@ function toNext1(partId){
 
 function check(value,partId) {
 	var pattern1 = /^[1-9][0-9]*$/;
-    if (!pattern1.exec($(value).value)) {
+    if (!pattern1.exec($(value)[0].value)) {
         //MyAlert("请录入正整数且必须大于0！");
-        $(value).value = $(value).value.replace(/\D/g, '');
-        $(value).focus();
+        $(value)[0].value = $(value).value.replace(/\D/g, '');
+        $(value)[0].focus();
     }
-    if (isNumber($(value).value)) {
-        if ($(value).value == 0) {
+    if (isNumber($(value)[0].value)) {
+        if ($(value)[0].value == 0) {
             MyAlert("数量是正整数且必须大于0！");
-            $(value).value = "";
-            $(value).focus();
+            $(value)[0].value = "";
+            $(value)[0].focus();
             return;
         }
 
     }
-    $("ck"+partId).checked=true;
+    $("ck"+partId)[0].checked=true;
 }
 
 function selAll(obj) {
@@ -785,7 +785,7 @@ function changeDiv3(){
         if(isNaN(planCycle)){
         	MyAlert("订货周期不合法!");
         	$("#PLAN_CYCLE")[0].value = "";
-            $("#PLAN_CYCLE").focus();
+            $("#PLAN_CYCLE")[0].focus();
         	return;
         }
     }

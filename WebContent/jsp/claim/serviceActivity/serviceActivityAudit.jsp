@@ -96,8 +96,8 @@ function doInit()
 	function myLink(value,meta,record){
 		/* var str1="<input name='detailBtn' type='button' class='middle_btn' onclick='activitySearch(\""+ record.data.ID +"\")' value='查看'/>&nbsp;";
 		var str2="<input name='detailBtn' type='button' class='middle_btn' onclick='subcommit(\""+ record.data.ID  +"\")' value='审核'/>&nbsp;"; */
-		var str1="<a class=\"u-anchor\" href=\"#\" onclick='activitySearch(\""+ record.data.ID +"\")'>查看</a>";
-		var str2="<a class=\"u-anchor\" href=\"#\" onclick='subcommit(\""+ record.data.ID +"\")'>审核</a>";
+		var str1="<a href=\"#\" onclick='activitySearch(\""+ record.data.ID +"\")'>[查看]</a>";
+		var str2="<a href=\"#\" onclick='subcommit(\""+ record.data.ID +"\")'>[审核]</a>";
 		var str=str1;
 		if(record.data.STATUS == <%=Constant.SERVICEACTIVITYAPPLY_STATUS_02%>){
 			str+=str2;

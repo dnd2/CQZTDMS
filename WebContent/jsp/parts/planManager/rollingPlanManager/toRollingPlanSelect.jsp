@@ -16,7 +16,7 @@
 <body onload="__extQuery__(1);">
 <div class="wbox">
     <div class="navigation">
-    	<img src="<%=contextPath%>/img/nav.gif"/>&nbsp;当前位置：总部采购管理&gt; 采购计划管理 &gt; 计划编制&gt; 查看
+    	<img src="<%=contextPath%>/img/nav.gif"/>&nbsp;当前位置：配件管理&gt; 采购计划管理 &gt; 计划编制&gt; 查看
     </div>
     <form method="post" name="fm" id="fm" enctype="multipart/form-data">
     	<input type="hidden" id="planId" name="planId" value="${planId}">
@@ -43,7 +43,7 @@
             
             <tr>
                 <td class="center" colspan="6">
-                	<input type="button"  class="u-button u-query" name="BtnQuery" id="queryBtn" onclick="__extQuery__(1);" value="查询"/>&nbsp;
+                	<input type="button"  class="u-button" name="BtnQuery" id="queryBtn" onclick="__extQuery__(1);" value="查询"/>&nbsp;
                 	 <input type="button" class="normal_btn" onclick="javascript:history.go(-1);" value="返回"/>&nbsp;
                 	 
                 </td>
@@ -74,7 +74,7 @@
 				//{header: "转单周期",dataIndex:'ORDER_PERIOD', style:"text-align: center",renderer:getItemValue},
 				{header: "供应商",dataIndex:'VENDER_NAME', style:"text-align: center"},
 				{header: "收货库房",dataIndex:'WH_NAME', style:"text-align: center"},
-				{header: "备件备注",dataIndex:'PLAN_REMARK', style:"text-align: center"}
+				{header: "备注",dataIndex:'PLAN_REMARK', style:"text-align: center"}
             ];
         
         function goback(){

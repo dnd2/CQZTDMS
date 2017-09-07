@@ -230,7 +230,7 @@ public class PartVenderDao extends BaseDao {
         sql.append("     GROUP BY T1.PART_ID \n");
         sql.append(" ) T2 ON T2.PART_ID = T.PART_ID \n");
         
-        sql.append(" WHERE 1=1 \n");
+        sql.append(" WHERE 1=1 AND T.PRODUCE_STATE= 92631002 \n");//配套件才能设置供货比例20170907 add
         if(!CommonUtils.isEmpty(paramMap.get("PART_ID"))){
             sql.append("   AND T.PART_ID = '"+paramMap.get("PART_ID").trim()+"' \n");
         }

@@ -80,7 +80,7 @@ public class OutMainTainDao extends IBaseDao{
 		sql.append("  left join TT_CUSTOMER_SERVICE c on c.ctm_id=t.ctm_id\n" );
 		sql.append("  LEFT JOIN TM_VHCL_MATERIAL_GROUP TVMG ON TV.MODEL_ID = TVMG.GROUP_ID\n" );
 		sql.append("  left join TM_VHCL_MATERIAL TVM ON TVM.MATERIAL_ID = TV.MATERIAL_ID\n" );
-		sql.append("  left join TT_AS_SERVICE_ORDER ord ON TAE.ID = ord.EGRESS_ID\n" );
+		sql.append("  left join TT_AS_SERVICE_ORDER ord ON TAE.ORDER_ID = ord.SERVICE_ORDER_ID\n" );
 		sql.append("  WHERE 1=1 ");
 		if(paraMap.size()!=0){
 			if(StringUtils.isNotBlank((String) paraMap.get("id"))){
@@ -118,7 +118,7 @@ public class OutMainTainDao extends IBaseDao{
 				sql.append("and TAE.DEALER_ID in ("+paraMap.get("dealerId")+")");	
 			}
 		}
-		sql.append("  ORDER BY TAE.STATUS,TAE.CLAIM_NO ASC ");
+		sql.append("  ORDER BY TAE.STATUS ");
 		return dao.pageQuery(sql.toString(), listPar, getFunName(), pageSize, curPage);
 	}
 	

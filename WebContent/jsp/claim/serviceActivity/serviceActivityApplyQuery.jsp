@@ -99,10 +99,10 @@ function refreshOnload(){
 		var str2="<input name='detailBtn' type='button' class='middle_btn' onclick='subcommit(\""+ record.data.ID  +"\")' value='上报'/>&nbsp;";
 		var str3="<input name='detailBtn' type='button' class='middle_btn' onclick='updateActivity(\""+ record.data.ID +"\")' value='修改'/>&nbsp;";
 		var str4="<input name='detailBtn' type='button' class='middle_btn' onclick='subChecked(\""+ record.data.ID  +"\")' value='删除'/>&nbsp;"; */
-		var str1="<a href=\"#\" class=\"u-anchor\" onclick='activitySearch(\""+ record.data.ID +"\")'>查看</a>";
-		var str2="<a href=\"#\" class=\"u-anchor\" onclick='subcommit(\""+ record.data.ID  +"\")'>上报</a>";
-		var str3="<a href=\"#\" class=\"u-anchor\" onclick='updateActivity(\""+ record.data.ID  +"\")'>修改</a>";
-		var str4="<a href=\"#\" class=\"u-anchor\" onclick='subChecked(\""+ record.data.ID  +"\")'>删除</a>";
+		var str1="<a href=\"#\" onclick='activitySearch(\""+ record.data.ID +"\")'>[查看]</a>";
+		var str2="<a href=\"#\" onclick='subcommit(\""+ record.data.ID  +"\")'>[上报]</a>";
+		var str3="<a href=\"#\" onclick='updateActivity(\""+ record.data.ID  +"\")'>[修改]</a>";
+		var str4="<a href=\"#\" onclick='subChecked(\""+ record.data.ID  +"\")'>[删除]</a>";
 		var str=str1;
 		if(record.data.STATUS == <%=Constant.SERVICEACTIVITYAPPLY_STATUS_01%>){
 			str+=str2+str3+str4;

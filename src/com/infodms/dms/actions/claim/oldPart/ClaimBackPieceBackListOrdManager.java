@@ -87,11 +87,11 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 	private final String modClaimBackDetailUrl22 = "/jsp/claim/oldPart/modifyClaimBackDetail22.jsp";
 	private final String queryClaimBackDetailUrl33 = "/jsp/claim/oldPart/queryClaimBackDetail33.jsp";
 	private final String queryClaimBackDetailUrl33Dealer = "/jsp/claim/oldPart/queryClaimBackDetail33Dealer.jsp";
-	//旧件抵扣通知单 服务站
-	private final String oldPartDeductionQuery_Url= "/jsp/claim/oldPart/oldPartDeductionQuery.jsp";
-	//旧件抵扣通知单明细页面
-	private final String oldPartDeductionDetail_Url= "/jsp/claim/oldPart/oldPartDeductionDetail.jsp";
 	
+	private final String oldPartDeductionQuery_Url= "/jsp/claim/oldPart/oldPartDeductionQuery.jsp";//旧件抵扣通知单 服务站
+	private final String oldPartDeductionDetail_Url= "/jsp/claim/oldPart/oldPartDeductionDetail.jsp";//旧件抵扣通知单明细页面
+	private final String oldPartDeductionSecondDetail_Url= "/jsp/claim/oldPart/oldPartDeductionSecondDetail.jsp";//旧件二次抵扣通知单明细页面
+		
 	private final String CLAIM_DEDUCTION_SECOND_URL= "/jsp/claim/oldPart/claimDeductionSecondQuery.jsp";//二次抵扣索赔单
 	private final String CLAIM_DEDUCTION_SECOND_SHOW_URL= "/jsp/claim/oldPart/claimDeductionSecondShow.jsp";//二次抵扣索赔单展示
 	
@@ -2827,14 +2827,28 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 			params.put("claimId", claimId);
 			PageResult<Map<String, Object>> ps = dao.oldPartDeductionInfor(params,curPage,Constant.PAGE_SIZE);
 			act.setOutData("ps", ps);
-			act.setForword(oldPartDeductionDetail_Url);
+//			act.setForword(oldPartDeductionDetail_Url);
 		} catch (Exception e) {
 			BizException e1 = new BizException(act, e, ErrorCodeConstant.ACTION_NAME_ERROR_CODE, "抵扣通知单查看");
 			logger.error(logger, e1);
 			act.setException(e1);
 		}
 	}
-	
+	//二次抵扣通知单查看
+	public void oldPartDeductionSecondShow() {
+		try {
+			String deductionId = CommonUtils.checkNull(request.getParamValue("deductionId"));
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("deductionId", deductionId);
+			Map<String,Object> oldPartDeductionSecondInfo = dao.oldPartDeductionSecondShow(params);
+			act.setOutData("oldPartDeductionSecondInfo", oldPartDeductionSecondInfo);
+			act.setForword(oldPartDeductionSecondDetail_Url);
+		} catch (Exception e) {
+			BizException e1 = new BizException(act, e, ErrorCodeConstant.ACTION_NAME_ERROR_CODE, "抵扣通知单查看");
+			logger.error(logger, e1);
+			act.setException(e1);
+		}
+	}
 	//二次抵扣索赔单
 	public void claimDeductionSecond() {
 		try {

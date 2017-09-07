@@ -75,29 +75,40 @@
   				{header: "材料费扣款（元）", dataIndex: 'PART_DEDUCTION_AMOUNT', align:'center'},
   				{header: "工时费扣款（元）", dataIndex: 'HOURS_DEDUCTION_AMOUNT', align:'center'},
   				{header: "其他项目扣款(元)", dataIndex: 'OUTWARD_DEDUCTION_AMOUNT', align:'center'},
-  				{header: "二次抵扣(元)", dataIndex: 'SECOND_DEDUCTION_AMOUNT', align:'center'},
-  				{header: "二次抵扣备注", dataIndex: 'SECOND_DEDUCTION_REMARK', align:'center'},
+  				{header: "二次抵扣扣款(元)", dataIndex: 'SECOND_DEDUCTION_AMOUNT', align:'center'},
+  				//{header: "二次抵扣备注", dataIndex: 'SECOND_DEDUCTION_REMARK', align:'center'},
   				{header: "总计(元)", dataIndex: 'TOTAL_DEDUCTION_AMOUNT', align:'center'},
-  				{header: "开票单号", dataIndex: 'BALANCE_NO', align:'center'}
+  				{header: "结算单号", dataIndex: 'BALANCE_NO', align:'center'}
   		      ];
   		      
    //超链接设置
    function myLink(value,meta,record){  
+	 var deductionId = record.data.DEDUCTION_ID;
 	 var claimId = record.data.CLAIM_ID;
-	 return String.format("<a href='#' onclick=check("+claimId+")>[查看]</a>");
+	 var deductionType = record.data.DEDUCTION_TYPE;
+	 if(deductionType=="<%=Constant.DEDUCTION_TYPE_01%>"){
+		 return String.format("<a href='#' onclick=deductionShow("+claimId+")>[查看]</a>");
+	 }else{
+		 return String.format("<a href='#' onclick=secondDeductionShow("+deductionId+")>[查看]</a>");
+	 }
+	 
    }
 	
    /**
    * 查看
    * @param value
    */
-   function check(value){
-   	var id ="?claimId="+value;
-   	OpenHtmlWindow("<%=contextPath%>/claim/oldPart/ClaimBackPieceBackListOrdManager/oldPartDeductionCheck.do"+id,800,600);
+   function deductionShow(value){
+		var id ="?claimId="+value;
+   		OpenHtmlWindow("<%=contextPath%>/claim/oldPart/ClaimBackPieceBackListOrdManager/oldPartDeductionCheck.do"+id,800,600);
+   }
+   function secondDeductionShow(value){
+	   	var id ="?deductionId="+value;
+	   	OpenHtmlWindow("<%=contextPath%>/claim/oldPart/ClaimBackPieceBackListOrdManager/oldPartDeductionSecondShow.do"+id,800,300);
    }
    function doInit(){
-	   __extQuery__(1);
-	  loadcalendar();
+		__extQuery__(1);
+		loadcalendar();
    }
 </script>
 

@@ -221,14 +221,14 @@ public class partMainDataQuery extends BaseImport implements PTConstants {
             listHead.add("最小采购数量");
             listHead.add("是否可替代");
             listHead.add("是否有效");
-            // 价格变量-获取前7个
-            List<Map<String, Object>> priceList = PartSalePriceDao.getInstance().queryPartPriceSettingList();
-            if (null != priceList && priceList.size() > 0) {
-                for (int i = 0; i < 7; i++) {
-                    String tempValue = priceList.get(i).get("TYPE_DESC").toString();
-                    listHead.add(tempValue);
-                }
-            }
+            // 价格变量-获取前4个
+//            List<Map<String, Object>> priceList = PartSalePriceDao.getInstance().queryPartPriceSettingList();
+//            if (null != priceList && priceList.size() > 0) {
+//                for (int i = 0; i < 4; i++) {
+//                    String tempValue = priceList.get(i).get("TYPE_DESC").toString();
+//                    listHead.add(tempValue);
+//                }
+//            }
             listHead.add("备注");
             expExlList.add(listHead);
             
@@ -249,18 +249,18 @@ public class partMainDataQuery extends BaseImport implements PTConstants {
                 rowDataList.add(CommonUtils.checkNull(data.get("MAX_SALE_VOLUME")));
                 rowDataList.add(CommonUtils.checkNull(data.get("MIN_PURCHASE")));
                 rowDataList.add(CommonUtils.checkNull(data.get("IS_REPLACED_DESC")));
-                rowDataList.add(CommonUtils.checkNull(data.get("STATE")));
-                if (null != priceList && priceList.size() > 0) {
-                    for (int i = 0; i < 7; i++) {
-                        rowDataList.add(CommonUtils.checkNull(data.get("SALE_PRICE"+(i+1))));
-                    }
-                }
+                rowDataList.add(CommonUtils.checkNull(data.get("STATE_DESC")));
+//                if (null != priceList && priceList.size() > 0) {
+//                    for (int i = 0; i < 4; i++) {
+//                        rowDataList.add(CommonUtils.checkNull(data.get("SALE_PRICE"+(i+1))));
+//                    }
+//                }
                 rowDataList.add(CommonUtils.checkNull(data.get("REMARK")));
                 expExlList.add(rowDataList);
             }
             
             // 导出的文件名
-            String fileName = "配件主数据信息.xls";
+            String fileName = "配件数据.xls";
             // 导出的文字编码
             fileName = new String(fileName.getBytes("GB2312"), "ISO8859-1");
             response.setContentType("Application/text/xls");

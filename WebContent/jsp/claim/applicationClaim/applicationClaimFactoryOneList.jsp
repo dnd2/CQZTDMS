@@ -181,7 +181,8 @@ var myPage;
  		    </td> 
         </tr>       
         <tr>
-        	<td >
+        	<td style="text-align: right">维修类型：</td>
+            <td >
            		<script type="text/javascript"> 
           			genSelBoxExp("repairType",<%=Constant.REPAIR_TYPE%>,"","true","","","false",'');
         		</script>

@@ -95,7 +95,7 @@ function doInit()
 	//超链接设置
 	function myLink(value,meta,record){
 		/* var str1="<input name='detailBtn' type='button' class='middle_btn' onclick='activitySearch(\""+ record.data.ID +"\")' value='查看'/>&nbsp;"; */
-		var str1 = "<a class=\"u-anchor\" href=\"#\" onclick='activitySearch(\""+ record.data.ID +"\")'>查看</a>" ;
+		var str1 = "<a href=\"#\" onclick='activitySearch(\""+ record.data.ID +"\")'>[查看]</a>" ;
 		return String.format(str1);
 	
 	}

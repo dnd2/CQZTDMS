@@ -13,9 +13,8 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<LINK href="<%=contextPath%>/style/page-info.css" type="text/css"/>
 <title>查看</title>
-<link href="<%=contextPath%>/style/content.css" type="text/css" rel="stylesheet"/>
-<link href="<%=contextPath%>/style/calendar.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
 .table_list_row0 td {
 	background-color:#FFFFCC;
@@ -23,13 +22,12 @@
 	white-space:    nowrap;
 }
 </style>
-<LINK href="<%=contextPath%>/style/page-info.css" type="text/css"/>
 
 </head>
 <body  >
 <form name='fm' id='fm'  method="post"  enctype="multipart/form-data">
 	<div class="wbox">
-	  <div class="navigation"><img src="<%=contextPath%>/img/nav.gif" />&nbsp;当前位置：总部采购管理&gt;计划导入</div>
+	  <div class="navigation"><img src="<%=contextPath%>/img/nav.gif" />&nbsp;当前位置：配件管理&gt;采购计划管理&gt;计划导入</div>
 	  <input id="errNum" type="hidden" name="errNum" value="${ecount}" />
 	  <input id="errInfo" type="hidden" name="errInfo" value="${errList}" />
 	  <input id="planId" type="hidden" name="planId" value="${planId}" />

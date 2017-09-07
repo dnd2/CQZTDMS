@@ -364,7 +364,7 @@ public class PartPlanManager extends BaseImport implements PTConstants{
 			if(Constant.PART_PURCHASE_PLAN_TYPE_01.toString().equals(PLAN_TYPES)){
 				fileNamez = "月度计划编制模板";
 			}else{
-				fileNamez = "补充计划编制模板";
+				fileNamez = "周度计划编制模板";
 			}
 			
 			List<Map<String, Object>> listRs = null;

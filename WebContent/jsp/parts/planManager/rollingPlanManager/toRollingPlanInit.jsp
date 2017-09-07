@@ -67,7 +67,7 @@
 <div class="wbox">
     <form name='fm' id='fm' method="post" enctype="multipart/form-data">
         <div class="navigation">
-            <img src="<%=contextPath%>/img/nav.gif"/>&nbsp;当前位置：总部采购管理&gt; 采购计划管理 &gt; 月度需求计划编制
+            <img src="<%=contextPath%>/img/nav.gif"/>&nbsp;当前位置：配件管理> 采购计划管理  > 月度需求计划编制
         </div>
         <input type="hidden" id="PLAN_TYPES" name="PLAN_TYPES" value="<%=Constant.PART_PURCHASE_PLAN_TYPE_01 %>" />
         <input type="hidden" id="planIdTemp" name="planIdTemp" value="" />
@@ -103,7 +103,7 @@
                 <th colspan="6"><img class="nav" src="<%=request.getContextPath()%>/img/subNav.gif"/> 上传文件</th>
                 <tr>
                     <td colspan="6" style="padding-left: 12px; color:red;">
-                        <label>格式：备件编码 +计划数量+备件备注</label>
+                        <label>格式：配件编码 +计划数量+配件备注</label>
                     </td>
                 </tr>
                 <tr>
@@ -209,19 +209,20 @@
     }
     //滚动计划提交
     function subPlanNew(tid) {
-        if(confirm('确定要提交需求？')){
+        MyConfirm('确定要提交需求？',function(){
         	//提交给各个部门确认需求
         	var urlkey = "<%=contextPath%>/parts/planManager/PartPlanManager/subPlanStayConfim.json?planId=" + tid;
-        	sendAjax(urlkey, getResult, "fm");
-        }
+        	makeNomalFormCall(urlkey, getResult, "fm");
+        });
     }
     //删除
     function delPlan(value) {
-        if(confirm('是否确定删除此计划单？')){
-        	var url = "<%=contextPath%>/parts/planManager/PartPlanManager/delPlanByPlanId.json?planId="+value;
-        	sendAjax(url, getResult, 'fm');
-        }
 
+        MyConfirm('是否确定删除此计划单？',function(){
+        	var url = "<%=contextPath%>/parts/planManager/PartPlanManager/delPlanByPlanId.json?planId="+value;
+        	makeNomalFormCall(url, getResult, 'fm');
+        });
+        
     }
     //审核结果
     function getResult(json){
@@ -263,10 +264,10 @@
     }
     //下载计划模板
     function downRollingPlanTemp(){
-    	if(confirm('确认下载模板？')){
+    	MyConfirm('确认下载模板？',function(){
     		fm.action = "<%=contextPath%>/parts/planManager/PartPlanManager/downRollingPlanTemp.do";
      		fm.submit();
-    	}
+        });
     }
     //上传更新检查和确认信息
     function confirmUploadUpdate() {
@@ -288,11 +289,11 @@
         var start = fileValue.lastIndexOf('.');
        	var gsStr = fileValue.substring(start,start.length).toUpperCase();
        	if(gsStr=='.XLS' || gsStr=='.XLSX'){
-       		if(confirm('确定新增滚动计划？')){
+       		MyConfirm('确定新增滚动计划？',function(){
 		        btnDisable();
 		        fm.action = g_webAppName + "/parts/planManager/PartPlanManager/impRollingPlan.do";
 		        fm.submit();
-	        }
+            });
        	}else{
        		MyAlert('只支持.XLS,.XLSX格式的文件，不支持'+gsStr+'格式的文件');
        		return;

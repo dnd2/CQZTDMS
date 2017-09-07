@@ -4,7 +4,7 @@
 * License version 1.0, a copy of which has been included with this
 * distribution in the LICENSE.txt file.
 *
-* CreateDate : 2017-08-17 14:27:41
+* CreateDate : 2017-09-07 10:49:56
 * CreateBy   : Administrator
 * Comment    : generate by com.sgm.po.POGen
 */
@@ -38,7 +38,6 @@ public class TtAsEgressPO extends PO{
 	private Integer reliefMileage;
 	private String eName;
 	private String company;
-	private Long claimNo;
 	private Long cusmerId;
 	private Long ministerAuditingBy;
 	private String address;
@@ -47,6 +46,7 @@ public class TtAsEgressPO extends PO{
 	private Date ministerAuditingDate;
 	private String ministerAuditingReamrk;
 	private String eNum;
+	private Long orderId;
 	private String mobile;
 	private String province;
 	private Integer isRlationOrder;
@@ -221,14 +221,6 @@ public class TtAsEgressPO extends PO{
 		return this.company;
 	}
 
-	public void setClaimNo(Long claimNo){
-		this.claimNo=claimNo;
-	}
-
-	public Long getClaimNo(){
-		return this.claimNo;
-	}
-
 	public void setCusmerId(Long cusmerId){
 		this.cusmerId=cusmerId;
 	}
@@ -291,6 +283,14 @@ public class TtAsEgressPO extends PO{
 
 	public String getENum(){
 		return this.eNum;
+	}
+
+	public void setOrderId(Long orderId){
+		this.orderId=orderId;
+	}
+
+	public Long getOrderId(){
+		return this.orderId;
 	}
 
 	public void setMobile(String mobile){

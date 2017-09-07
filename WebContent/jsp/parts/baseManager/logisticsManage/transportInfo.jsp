@@ -106,7 +106,7 @@ String contextPath=request.getContextPath();
 		  <td class="right" >承运商：</td>
 	   	  <td class="left">
 			  <select  name="logiCode" id = "logiCode" class="u-select" >
-	       		<option  value="">--请选择--</option>
+	       		<option  value="">-请选择-</option>
 			   	<c:forEach items="${logisticsList}" var="logi">
 					<option  value="${logi.LOGI_CODE}">${logi.LOGI_FULL_NAME}</option>
 				</c:forEach>
@@ -115,7 +115,7 @@ String contextPath=request.getContextPath();
 		  <td class="right" >运输计划类型：</td> 
 		  <td class="left">
 			   <select  name="tvCode" id = ""tvCode"" class="u-select" >
-	       		<option  value="">--请选择--</option>
+	       		<option  value="">-请选择-</option>
 			   	<c:forEach items="${modeList}" var="mode">
 					<option  value="${mode.TV_ID}">${mode.TV_NAME}</option>
 				</c:forEach>

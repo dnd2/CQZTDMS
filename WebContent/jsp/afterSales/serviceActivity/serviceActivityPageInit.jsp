@@ -95,12 +95,12 @@ var columns = [
          
 function myLink(value, meta, record) {
 		 if(record.data.ACTIVITY_STATUS == 96291001){
-			return String.format("<a class='u-anchor' href='#' onclick='check("+value+")' id=''>查看</a>" +
-					"<a class='u-anchor' href='#' onclick='updateData(\""+ value +"\",\""+ record.data.ACTIVITY_TYPE +"\")' id=''>修改</a>" +
-					"<a class='u-anchor' href='#' onclick='deleteData("+value+")' id=''>删除</a>" +
-					"<a class='u-anchor' href='#' onclick='ChangeStatus("+value+")' id=''>发布</a>");
+			return String.format("<a class='u-anchor' href='#' onclick='check("+value+")' id=''>[查看]</a>" +
+					"<a href='#' onclick='updateData(\""+ value +"\",\""+ record.data.ACTIVITY_TYPE +"\")' id=''>[修改]</a>" +
+					"<a href='#' onclick='deleteData("+value+")' id=''>[删除]</a>" +
+					"<a href='#' onclick='ChangeStatus("+value+")' id=''>[发布]</a>");
 		}else{
-			return String.format("<a class='u-anchor' href='#' onclick='check("+value+")' id=''>查看</a>");
+			return String.format("<a href='#' onclick='check("+value+")' id=''>[查看]</a>");
 		} 
 		
 } 

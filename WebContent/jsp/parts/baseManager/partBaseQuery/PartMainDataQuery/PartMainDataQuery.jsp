@@ -32,7 +32,7 @@
         },
         {header: "配件编码", dataIndex: 'PART_OLDCODE', style: "text-align: center", width: '3%'},
         {header: "配件名称", dataIndex: 'PART_CNAME', style: "text-align: center", width: '5%'},
-        {header: "配件种类", dataIndex: 'PART_TYPE', style: "text-align: center", renderer: getItemValue},
+        {header: "配件种类", dataIndex: 'PRODUCE_STATE', style: "text-align: center", renderer: getItemValue},
         {header: "单位", dataIndex: 'UNIT', style: "text-align: center"},
         {header: "适用车型", dataIndex: 'MODEL_NAME', style: "text-align: center;"},
         {header: "是否协议包装", dataIndex: 'IS_PROTOCOL_PACK', style: "text-align: center;", renderer: getItemValue},
@@ -139,7 +139,7 @@
 </head>
 <body>
 <form name="fm" id="fm" method="post" enctype="multipart/form-data">
-    <div class="navigation"><img src="<%=contextPath%>/img/nav.gif"/>&nbsp;当前位置：基础数据管理 >配件基础数据查询> 配件主信息查询</div>
+    <div class="navigation"><img src="<%=contextPath%>/img/nav.gif"/>&nbsp;当前位置：配件管理 >基础数据管理 >配件基础数据查询> 配件主信息查询</div>
     <input type="hidden" id="STATE" name="STATE" value="<%=Constant.STATUS_ENABLE%>"/>
 	<div class="form-panel">
 		<h2><img src="<%=contextPath%>/jmstyle/img/search-ico.png" style="margin-bottom: -13px;"/>查询条件</h2>
@@ -155,7 +155,7 @@
 	        </tr>
 	        <tr>
 	            <td class="center" colspan="6">
-	                <input class="u-button u-query" type="button" name="BtnQuery" id="queryBtn" value="查 询" onclick="__extQuery__(1)"/>
+	                <input class="u-button" type="button" name="BtnQuery" id="queryBtn" value="查 询" onclick="__extQuery__(1)"/>
 	                <input class="u-button" type="button" name="BtnExportPartBaseExcel" value="导 出" onclick="exportPartBaseExcel()"/>
 	            </td>
 	        </tr>
