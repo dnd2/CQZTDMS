@@ -168,7 +168,7 @@ public class PartMoveSeat extends BaseImport {
 
             if ("".equals(error)) {
                 //一、校验--3.判断出库数量是否正常
-                List<Map<String, Object>> list = Misc_exManagerDAO.getInstance().checkItemQty(partId, whId, orgId, locId);
+                List<Map<String, Object>> list = Misc_exManagerDAO.getInstance().checkItemQty(partId, whId, orgId, locId, "");
                 if (list != null && list.size() > 0 && list.get(0) != null) {
                     String itemQty = list.get(0).get("ITEM_QTY").toString();//账面库存
                     String normalQty = list.get(0).get("NORMAL_QTY").toString();//可用库存

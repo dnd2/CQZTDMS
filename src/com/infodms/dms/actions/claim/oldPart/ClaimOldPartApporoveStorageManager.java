@@ -4703,6 +4703,7 @@ try {
 				sql.append("     DEDUCTION_NO,\n") ;
 				sql.append("     CLAIM_ID,\n") ;
 				sql.append("     DEALER_ID,\n") ;
+				sql.append("     DEDUCTION_TYPE,\n") ;
 				sql.append("     PART_DEDUCTION_AMOUNT,\n") ;
 				sql.append("     HOURS_DEDUCTION_AMOUNT,\n") ;
 				sql.append("     OUTWARD_DEDUCTION_AMOUNT,\n") ;
@@ -4713,6 +4714,7 @@ try {
 				sql.append("     ?,\n") ;
 				sql.append("     B.CLAIM_ID,\n") ;
 				sql.append("     B.DEALER_ID,\n") ;
+				sql.append("     ?,\n") ;
 				sql.append("     B.PART_DEDUCTION_AMOUNT,\n") ;
 				sql.append("     B.HOURS_DEDUCTION_AMOUNT,\n") ;
 				sql.append("     B.OUTWARD_DEDUCTION_AMOUNT,\n") ;
@@ -4722,6 +4724,7 @@ try {
 				params.add(claimId);
 				params.add(loginUser.getUserId());
 				params.add(deductionNo);
+				params.add(Constant.DEDUCTION_TYPE_01);//一次抵扣
 				params.add(loginUser.getUserId());
 	            dao.update(sql.toString(), params);
             }else if(signAmount.equals("1")){//如果签收数是1,表示不扣除

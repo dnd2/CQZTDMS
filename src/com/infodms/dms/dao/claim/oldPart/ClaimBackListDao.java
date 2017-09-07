@@ -18,9 +18,11 @@ import com.infodms.dms.bean.TtAsWrOldPartBackListDetailBean;
 import com.infodms.dms.bean.TtAsWrOldPartDetailListBean;
 import com.infodms.dms.bean.TtAsWrPartsitemApplyBean;
 import com.infodms.dms.common.Constant;
+import com.infodms.dms.common.ErrorCodeConstant;
 import com.infodms.dms.common.Utility;
 import com.infodms.dms.common.tag.DaoFactory;
 import com.infodms.dms.dao.common.BaseDao;
+import com.infodms.dms.exception.BizException;
 import com.infodms.dms.po.TcCodePO;
 import com.infodms.dms.po.TmAsWrBarcodePartStockPO;
 import com.infodms.dms.po.TmBusinessParaPO;
@@ -38,6 +40,7 @@ import com.infodms.dms.po.TtAsWrReturnedOrderPO;
 import com.infodms.dms.po.TtDeliveryOrderDetailPO;
 import com.infodms.dms.po.TtDeliveryOrderPO;
 import com.infodms.dms.util.CommonUtils;
+import com.infodms.dms.util.OrderCodeManager;
 import com.infodms.dms.util.StringUtil;
 import com.infodms.dms.util.sequenceUitl.SequenceManager;
 import com.infodms.yxdms.dao.SpecialDAO;
@@ -1745,6 +1748,7 @@ sql.append(" group by  d.erpd_code,a.stock_id,a.stock_no,c.code_desc ,a.stock_da
 	//旧件抵扣通知单查询
 	public PageResult<Map<String, Object>> oldPartDeductionQuery(Map params,int curPage, int pageSize){
 		//获取前台条件
+		String claimId=ClaimTools.dealParamStr(params.get("claimId"));//索赔单ID
 		String dealerId=ClaimTools.dealParamStr(params.get("dealerId"));//经销商ID
 		String deductionStatus=ClaimTools.dealParamStr(params.get("deductionStatus"));//抵扣状态
 		String deductionNo=ClaimTools.dealParamStr(params.get("deductionNo"));//抵扣单号
@@ -1755,15 +1759,24 @@ sql.append(" group by  d.erpd_code,a.stock_id,a.stock_no,c.code_desc ,a.stock_da
 		sql.append(" SELECT A.DEDUCTION_ID,\n");
 		sql.append("        A.CLAIM_ID,\n");
 		sql.append("        A.DEDUCTION_NO,\n");
+		sql.append("        A.DEDUCTION_TYPE,\n");
 		sql.append("        A.STATUS,\n");
 		sql.append("        NVL(A.PART_DEDUCTION_AMOUNT,0) PART_DEDUCTION_AMOUNT,\n");
 		sql.append("        NVL(A.HOURS_DEDUCTION_AMOUNT,0) HOURS_DEDUCTION_AMOUNT,\n");
 		sql.append("        NVL(A.OUTWARD_DEDUCTION_AMOUNT,0) OUTWARD_DEDUCTION_AMOUNT,\n");
-		sql.append("        NVL(A.PART_DEDUCTION_AMOUNT,0)+NVL(A.HOURS_DEDUCTION_AMOUNT,0)+NVL(A.OUTWARD_DEDUCTION_AMOUNT,0) TOTAL_DEDUCTION_AMOUNT,\n");
+		sql.append("        NVL(A.SECOND_DEDUCTION_AMOUNT,0) SECOND_DEDUCTION_AMOUNT,\n");
+		sql.append("        A.SECOND_DEDUCTION_REMARK,\n");
+		sql.append("        NVL(A.PART_DEDUCTION_AMOUNT,0)+NVL(A.HOURS_DEDUCTION_AMOUNT,0)+NVL(A.OUTWARD_DEDUCTION_AMOUNT,0)+NVL(A.SECOND_DEDUCTION_AMOUNT,0) TOTAL_DEDUCTION_AMOUNT,\n");
 		sql.append("        A.BALANCE_NO,\n");
 		sql.append("        TO_CHAR(NVL(A.UPDATE_DATE,A.CREATE_DATE), 'YYYY-MM-DD') UPDATE_DATE\n");
 		sql.append("   FROM TT_AS_WR_OLDPART_DEDUCTION A\n");
 		sql.append("  WHERE 1 = 1\n");
+		if(StringUtil.notNull(claimId)){
+			sql.append("	AND A.CLAIM_ID = "+claimId+"\n");
+		}
+		if(StringUtil.notNull(dealerId)){
+			sql.append("	AND A.DEALER_ID = "+dealerId+"\n");
+		}
 		if(StringUtil.notNull(deductionNo)){
 			sql.append("    AND A.DEDUCTION_NO LIKE '%"+deductionNo+"%'\n");
 		}
@@ -1776,7 +1789,7 @@ sql.append(" group by  d.erpd_code,a.stock_id,a.stock_no,c.code_desc ,a.stock_da
 		if(StringUtil.notNull(updateDateEnd)){
 			sql.append("     AND NVL(A.UPDATE_DATE,A.CREATE_DATE)<= TO_DATE('"+updateDateEnd+" 23:59:59', 'YYYY-MM-DD HH24:MI:SS')\n");
 		}
-		sql.append("	AND A.DEALER_ID = "+dealerId+"\n");
+		
 		sql.append("	ORDER BY A.CREATE_DATE DESC");
 		PageResult<Map<String, Object>> pr = pageQuery(sql.toString(), null,getFunName(), pageSize, curPage);
 		return pr;
@@ -1800,7 +1813,7 @@ sql.append(" group by  d.erpd_code,a.stock_id,a.stock_no,c.code_desc ,a.stock_da
 		sql.append("               A.ID APP_CLAIM_ID,\n") ;
 		sql.append("               A.APP_CLAIM_NO,\n") ;
 		sql.append("               A.VIN,\n") ;
-		sql.append("               "+Constant.DEDUCTION_TYPE_01+" OBJ_TYPE,\n") ;
+		sql.append("               "+Constant.DEDUCTION_OBJECT_TYPE_01+" OBJ_TYPE,\n") ;
 		sql.append("               C.PART_CODE OBJ_CODE,\n") ;
 		sql.append("               C.PART_CNAME OBJ_NAME,\n") ;
 		sql.append("               NVL(C.SALE_PRICE, 0) DEDUCTION_AMOUNT,\n") ;
@@ -1818,7 +1831,7 @@ sql.append(" group by  d.erpd_code,a.stock_id,a.stock_no,c.code_desc ,a.stock_da
 		sql.append("               A.ID,\n") ;
 		sql.append("               A.APP_CLAIM_NO,\n") ;
 		sql.append("               A.VIN,\n") ;
-		sql.append("               "+Constant.DEDUCTION_TYPE_02+" OBJ_TYPE,\n") ;
+		sql.append("               "+Constant.DEDUCTION_OBJECT_TYPE_02+" OBJ_TYPE,\n") ;
 		sql.append("               B.LABOUR_CODE,\n") ;
 		sql.append("               B.CN_DES,\n") ;
 		sql.append("               NVL(B.HOURS_APPLY_AMOUNT, 0) -\n") ;
@@ -1836,7 +1849,7 @@ sql.append(" group by  d.erpd_code,a.stock_id,a.stock_no,c.code_desc ,a.stock_da
 		sql.append("               A.ID,\n") ;
 		sql.append("               A.APP_CLAIM_NO,\n") ;
 		sql.append("               A.VIN,\n") ;
-		sql.append("               "+Constant.DEDUCTION_TYPE_03+" OBJ_TYPE,\n") ;
+		sql.append("               "+Constant.DEDUCTION_OBJECT_TYPE_03+" OBJ_TYPE,\n") ;
 		sql.append("               B.FEE_CODE,\n") ;
 		sql.append("               B.FEE_NAME,\n") ;
 		sql.append("               NVL(B.FEE_PRICE，0) - NVL(B.FEE_SETTLEMENT_PRICE, 0),\n") ;
@@ -1857,5 +1870,135 @@ sql.append(" group by  d.erpd_code,a.stock_id,a.stock_no,c.code_desc ,a.stock_da
         PageResult<Map<String, Object>> pr = pageQuery(sql.toString(), null,getFunName(), pageSize, curPage);
         return pr;
 	}
+    
+	//旧件抵扣通知单查询
+	public PageResult<Map<String, Object>> claimDeductionSecondQuery(Map params,int curPage, int pageSize){
+		//获取前台条件
+		String dealerId = CommonUtils.checkNull(params.get("dealerId"));//经销商ID
+		String appClaimNo = CommonUtils.checkNull(params.get("appClaimNo"));//索赔单号
+		String repairType = CommonUtils.checkNull(params.get("repairType"));//维修类型
+		String vin = CommonUtils.checkNull(params.get("vin"));//vin
+		
+		StringBuffer sql = new StringBuffer("\n") ;
+		sql.append("SELECT A.ID CLAIM_ID,\n") ;
+		sql.append("       B.DEALER_CODE,\n") ;
+		sql.append("       B.DEALER_NAME,\n") ;
+		sql.append("       A.APP_CLAIM_NO,\n") ;
+		sql.append("       A.REPAIR_TYPE,\n") ;
+		sql.append("       A.APPLY_TOTAL_AMOUNT,\n") ;
+		sql.append("       A.APPLY_TOTAL_AMOUNT - A.SETTLEMENT_TOTAL_AMOUNT DEDUCTION_AMOUNT,\n") ;
+		sql.append("       (SELECT NVL(SUM(TAWOD.SECOND_DEDUCTION_AMOUNT), 0)\n") ;
+		sql.append("          FROM TT_AS_WR_OLDPART_DEDUCTION TAWOD\n") ;
+		sql.append("         WHERE A.ID = TAWOD.CLAIM_ID\n") ;
+		sql.append("           AND TAWOD.DEDUCTION_TYPE = "+Constant.DEDUCTION_TYPE_02+") SECOND_DEDUCTION_AMOUNT\n") ;
+		sql.append("  FROM TT_AS_WR_APPLICATION_CLAIM A\n") ;
+		sql.append("  LEFT JOIN TM_DEALER B\n") ;
+		sql.append("    ON A.DEALER_ID = B.DEALER_ID\n") ;
+		sql.append(" WHERE 1 = 1\n") ;
+//		sql.append("   AND A.IS_BILL = "+Constant.IF_TYPE_YES+"\n") ;//已开票
 
+		if(!dealerId.equals("")){
+			sql.append(" AND A.DEALER_ID IN ("+dealerId+")\n");
+		}
+		if(!appClaimNo.equals("")){
+			sql.append(" AND A.APP_CLAIM_NO LIKE '%"+appClaimNo+"%'\n");
+		}
+		if(!repairType.equals("")){
+			sql.append(" AND A.REPAIR_TYPE = "+repairType+"\n");
+		}
+		if(!vin.equals("")){
+			sql.append(" AND A.VIN LIKE '%"+vin+"%'\n");
+		}
+		sql.append("	ORDER BY A.CREATE_DATE DESC");
+		PageResult<Map<String, Object>> pr = pageQuery(sql.toString(), null,getFunName(), pageSize, curPage);
+		return pr;
+	}
+	
+	public Map<String, Object> claimDeductionSecondQuery(Map<String, Object> params) {
+		String claimId = CommonUtils.checkNull(params.get("claimId"));
+		
+		Map<String, Object> map  = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT CLAIM_ID,\n") ;
+		sql.append("       DEALER_ID,\n") ;
+		sql.append("       DEALER_CODE,\n") ;
+		sql.append("       DEALER_NAME,\n") ;
+		sql.append("       APP_CLAIM_NO,\n") ;
+		sql.append("       REPAIR_TYPE,\n") ;
+		sql.append("       REPAIR_TYPE_NAME,\n") ;
+		sql.append("       APPLY_TOTAL_AMOUNT,\n") ;
+		sql.append("       DEDUCTION_AMOUNT,\n") ;
+		sql.append("       SECOND_DEDUCTION_AMOUNT,\n") ;
+		sql.append("       APPLY_TOTAL_AMOUNT - DEDUCTION_AMOUNT - SECOND_DEDUCTION_AMOUNT SURPLUS_DEDUCTION_AMOUNT\n") ;
+		sql.append("       FROM(\n") ;
+		sql.append("SELECT A.ID CLAIM_ID,\n") ;
+		sql.append("       A.DEALER_ID,\n") ;
+		sql.append("       B.DEALER_CODE,\n") ;
+		sql.append("       B.DEALER_NAME,\n") ;
+		sql.append("       A.APP_CLAIM_NO,\n") ;
+		sql.append("       A.REPAIR_TYPE,\n") ;
+		sql.append("       F_GET_TC_CODE(A.REPAIR_TYPE) REPAIR_TYPE_NAME,\n") ;
+		sql.append("       NVL(A.APPLY_TOTAL_AMOUNT,0) APPLY_TOTAL_AMOUNT,\n") ;
+		sql.append("       NVL(A.APPLY_TOTAL_AMOUNT,0) - NVL(A.SETTLEMENT_TOTAL_AMOUNT,0) DEDUCTION_AMOUNT,\n") ;
+		sql.append("       (SELECT NVL(SUM(TAWOD.SECOND_DEDUCTION_AMOUNT), 0)\n") ;
+		sql.append("          FROM TT_AS_WR_OLDPART_DEDUCTION TAWOD\n") ;
+		sql.append("         WHERE A.ID = TAWOD.CLAIM_ID\n") ;
+		sql.append("           AND TAWOD.DEDUCTION_TYPE = "+Constant.DEDUCTION_TYPE_02+") SECOND_DEDUCTION_AMOUNT\n") ;
+		sql.append("  FROM TT_AS_WR_APPLICATION_CLAIM A\n") ;
+		sql.append("  LEFT JOIN TM_DEALER B\n") ;
+		sql.append("    ON A.DEALER_ID = B.DEALER_ID\n") ;
+		sql.append(" WHERE 1 = 1\n") ;
+		
+		if(!claimId.equals("")){
+			sql.append(" AND A.ID = "+claimId+"\n");
+		}else{
+			sql.append(" AND 1=2\n");
+		}
+		sql.append(" AND ROWNUM <=1)\n") ;
+		map = this.pageQueryMap(sql.toString(), null, getFunName());
+		return map;
+	}
+	public void secondDeductionAmountSave(Map<String, Object> params) throws Exception{
+		String claimId = CommonUtils.checkNull(params.get("claimId"));//索赔单ID
+		String dealerId = CommonUtils.checkNull(params.get("dealerId"));//索赔经销商ID
+		String secondDeductionAmount = CommonUtils.checkNull(params.get("secondDeductionAmount"));//抵扣费
+		String secondDeductionRemark = CommonUtils.checkNull(params.get("secondDeductionRemark"));//抵扣备注
+		String loginUserId = CommonUtils.checkNull(params.get("loginUserId"));
+		
+		StringBuffer sql = new StringBuffer("") ;
+		List parList = new ArrayList();
+		String deductionNo = OrderCodeManager.getOrderCode(92291066);//售后服务工单编码
+        //修改扣件原因
+        sql.setLength(0);
+        sql.append("  INSERT INTO TT_AS_WR_OLDPART_DEDUCTION\n") ;
+		sql.append("    (DEDUCTION_ID,\n") ;
+		sql.append("     DEDUCTION_NO,\n") ;
+		sql.append("     CLAIM_ID,\n") ;
+		sql.append("     DEALER_ID,\n") ;
+		sql.append("     DEDUCTION_TYPE,\n") ;
+		sql.append("     SECOND_DEDUCTION_AMOUNT,\n") ;
+		sql.append("     SECOND_DEDUCTION_REMARK,\n") ;
+		sql.append("     CREATE_BY,\n") ;
+		sql.append("     CREATE_DATE)\n") ;
+		sql.append("  VALUES\n") ;
+		sql.append("    (F_GETID(),\n") ;
+		sql.append("     ?,\n") ;
+		sql.append("     ?,\n") ;
+		sql.append("     ?,\n") ;
+		sql.append("     ?,\n") ;
+		sql.append("     ?,\n") ;
+		sql.append("     ?,\n") ;
+		sql.append("     ?,\n") ;
+		sql.append("     SYSDATE)\n") ;
+		parList.clear();
+		parList.add(deductionNo);
+		parList.add(claimId);
+		parList.add(dealerId);
+		parList.add(Constant.DEDUCTION_TYPE_02);//二次抵扣
+		parList.add(secondDeductionAmount);
+		parList.add(secondDeductionRemark);
+		parList.add(loginUserId);
+        dao.insert(sql.toString(), parList);
+			
+	}
 }

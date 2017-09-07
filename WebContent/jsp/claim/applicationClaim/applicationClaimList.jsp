@@ -127,6 +127,12 @@ var myPage;
             <td >
 				<input type="text" name="LICENSE_NO" id="LICENSE_NO" maxlength="20" class="middle_txt"/>
  		    </td> 
+ 		    <td style="text-align: right">维修类型：</td>
+            <td >
+           		<script type="text/javascript"> 
+          			genSelBoxExp("repairType",<%=Constant.REPAIR_TYPE%>,"","true","","","false",'');
+        		</script>
+	       	</td>
         </tr>                  	    	
     	<tr>
             <td colspan="6" style="text-align: center">

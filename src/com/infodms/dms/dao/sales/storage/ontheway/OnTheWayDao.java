@@ -340,7 +340,7 @@ public class OnTheWayDao extends  IBaseDao {
 		sql.append("       DECODE(a.driver_phone,NULL,bo.driver_tel,a.driver_phone) driver_phone,\n" );
 		sql.append("       e.order_no,\n" );
 		sql.append("        f_get_tccode_desc(a.status) STATUS_NAME,\n" );
-		sql.append("       tsw.bill_no,\n" );
+		sql.append("       tsw.bill_id,tsw.bill_no,\n" );
 		sql.append("       bo.bo_no,\n" );
 		sql.append("       tsw.address_info ADDRESS,\n" );
 //		sql.append("       F.ADDRESS,\n" );
@@ -414,7 +414,7 @@ public class OnTheWayDao extends  IBaseDao {
 		sql.append("       tsw.address_info ADDRESS,\n" );
 		sql.append("       e.order_no,\n" );
 		sql.append("        f_get_tccode_desc(a.status)STATUS_NAME,\n" );
-		sql.append("       tsw.bill_no,\n" );
+		sql.append("       tsw.bill_id,tsw.bill_no,\n" );
 		sql.append("       bo.bo_no,\n" );
 //		sql.append("       F.ADDRESS,\n" );
 		sql.append("       a.dtl_id,\n" );
@@ -483,7 +483,7 @@ public class OnTheWayDao extends  IBaseDao {
 		sql.append("       tsw.address_info address,\n" );
 		sql.append("       e.order_no,\n" );
 		sql.append("        f_get_tccode_desc(a.status) STATUS_NAME,\n" );
-		sql.append("       tsw.bill_no,\n" );
+		sql.append("       tsw.bill_id,tsw.bill_no,\n" );
 		sql.append("       bo.bo_no,\n" );
 //		sql.append("       F.ADDRESS,\n" );
 		sql.append("       a.dtl_id,\n" );

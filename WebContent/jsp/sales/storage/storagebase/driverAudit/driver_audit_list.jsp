@@ -205,12 +205,12 @@ var columns = [
 <div class="form-body">
 <input type="hidden" name="driver_id" id="driver_id"  />
 <!-- 查询条件 begin -->
-<table width=100% border="0" align="center" cellpadding="1" cellspacing="1" class="table_query">
+<table class="table_query" >
 	<tr>
 		<td width="12.5%"></td>
-		<td width="10%" class="right" nowrap="true">司机姓名：</td>
+		<td width="10%" class="right">司机姓名：</td>
 		<td width="15%" align="left"><input name="driver_name" type="text" id="driver_name"  maxlength="30" class="middle_txt"/></td>
-		<td width="10%" class="right" nowrap="true">司机电话：</td>
+		<td width="10%" class="right">司机电话：</td>
       	<td width="15%" align="left">
       	<input name="driver_phone" type="text" id="driver_phone"  maxlength="30" class="middle_txt"/>
       	</td>
@@ -218,8 +218,8 @@ var columns = [
 	</tr>
 	<tr>
 		<td width="12.5%"></td>
-		<td width="10%" nowrap="true" class="right">状态：</td>
-		<td width="15%" nowrap="true" align="left">
+		<td width="10%" class="right">状态：</td>
+		<td width="15%" align="left">
 		     <script type="text/javascript">
 		       genSelBoxExp("status",<%=Constant.DRIVER_TYPE%>,"20501002",true,"u-select","","false",'20501001');
 		    </script>
@@ -251,13 +251,13 @@ var columns = [
 		<td width="12.5%"></td>
 	</tr>
 	<tr>
-    	<td colspan="8" class="table_query_4Col_input" style="text-align: center">
-    		<input type="button" name="btnQuery" id="queryBtn" value="查询" class="u-button u-query" onClick="__extQuery__(1);"/> &nbsp;&nbsp;
-    		<input type="reset"  name="bntReset" id="bntReset" value="重置" class="u-button u-reset" />
+    	<td colspan="6" class="table_query_4Col_input" style="text-align: center">
+    		<input type="button" name="queryBtn" id="queryBtn" value="查询" class="u-button u-query" onClick="__extQuery__(1);"/> &nbsp;&nbsp;
+    		<input type="reset"  name="resetBtn" id="bntReset" value="重置" class="u-button u-reset" />
     	</td>
     </tr>
     <tr>
-       <td align="center" colspan="8">
+       <td align="center" colspan="6">
           <input type="button" name="btnQuery" id="auditall1" value="批量通过" class="normal_btn" onClick="auditAll(20501003);"/>
           <input type="button" name="btnQuery" id="auditall2" value="批量拒绝" class="normal_btn" onClick="auditAll(20501004);"/>
           <input type="text" name="audit_remark" id="audit_remark" class="middle_txt"/>

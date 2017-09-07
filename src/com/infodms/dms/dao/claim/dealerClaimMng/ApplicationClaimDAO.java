@@ -123,9 +123,9 @@ public class ApplicationClaimDAO extends BaseDao {
 			sql.append(" and to_date(to_char(T.CREATE_DATE,'yyyy-mm-dd'),'yyyy-mm-dd') <= to_date(?,'yyyy-mm-dd') \n");
 			listPar.add(paraMap.get("outPlantDate"));
 		}
-		if(paraMap.get("REPAIR_TYPE")!=null){
+		if(paraMap.get("repairType")!=null){
 			sql.append(" and T.REPAIR_TYPE = ? ");
-			listPar.add(paraMap.get("REPAIR_TYPE"));
+			listPar.add(paraMap.get("repairType"));
 		}
 		if(paraMap.get("LICENSE_NO")!=null){
 			sql.append(" and T.LICENSE_NO like ? ");
@@ -252,10 +252,10 @@ public class ApplicationClaimDAO extends BaseDao {
 			sql.append(" and to_date(to_char(T.CREATE_DATE,'yyyy-mm-dd'),'yyyy-mm-dd') <= to_date(?,'yyyy-mm-dd') \n");
 			listPar.add(paraMap.get("outPlantDate"));
 		}
-		/*if(paraMap.get("REPAIR_TYPE")!=null){
+		if(paraMap.get("repairType")!=null){
 			sql.append(" and T.REPAIR_TYPE = ? ");
-			listPar.add(paraMap.get("REPAIR_TYPE"));
-		}*/
+			listPar.add(paraMap.get("repairType"));
+		}
 		if(paraMap.get("LICENSE_NO")!=null){
 			sql.append(" and T.LICENSE_NO like ? ");
 			listPar.add("%"+paraMap.get("LICENSE_NO")+"%");

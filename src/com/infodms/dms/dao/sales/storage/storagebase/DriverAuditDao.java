@@ -60,7 +60,7 @@ public class DriverAuditDao  extends IBaseDao {
 		 TcPosePO po = new TcPosePO();
 		 po.setPoseId(poseId);
 		 List<TcPosePO> list = dao.select(po);
-		 if(CommonUtils.isNullList(list)&&list.size()>0){
+		 if(!CommonUtils.isNullList(list)&&list.size()>0){
 			 return  list.get(0);
 		 }else {
 			return null;

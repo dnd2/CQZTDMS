@@ -4,7 +4,7 @@
 * License version 1.0, a copy of which has been included with this
 * distribution in the LICENSE.txt file.
 *
-* CreateDate : 2017-09-04 15:48:46
+* CreateDate : 2017-09-06 16:33:49
 * CreateBy   : Administrator
 * Comment    : generate by com.sgm.po.POGen
 */
@@ -62,6 +62,7 @@ public class TtAsWrReturnedOrderPO extends PO{
 	private Integer isBill;
 	private String transportNo;
 	private Date wrStartDate;
+	private Integer isAuthPrice;
 	private String dealerName;
 	private String tranNo;
 	private Integer dealerLevel;
@@ -426,6 +427,14 @@ public class TtAsWrReturnedOrderPO extends PO{
 
 	public Date getWrStartDate(){
 		return this.wrStartDate;
+	}
+
+	public void setIsAuthPrice(Integer isAuthPrice){
+		this.isAuthPrice=isAuthPrice;
+	}
+
+	public Integer getIsAuthPrice(){
+		return this.isAuthPrice;
 	}
 
 	public void setDealerName(String dealerName){

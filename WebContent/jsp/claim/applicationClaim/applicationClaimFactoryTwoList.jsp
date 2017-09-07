@@ -177,7 +177,14 @@ var myPage;
             <td >
 				<input type="text" name="LICENSE_NO" id="LICENSE_NO" maxlength="20" class="middle_txt"/>
  		    </td> 
-        </tr>                  	    	
+        </tr>   
+        <tr>
+        	<td >
+           		<script type="text/javascript"> 
+          			genSelBoxExp("repairType",<%=Constant.REPAIR_TYPE%>,"","true","","","false",'');
+        		</script>
+	       	</td>
+        </tr>           	    	
     	<tr>
             <td colspan="6" style="text-align: center">
             <input name="queryBtn" type="button" class="u-button u-query" onclick="__extQuery__(1)" value="查 询" id="queryBtn" /> &nbsp; 

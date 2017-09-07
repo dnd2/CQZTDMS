@@ -81,7 +81,7 @@ public class ApplicationClaim extends BaseAction {
 		paraMap.put("VIN", request.getParamValue("VIN"));
 		paraMap.put("creatDate", request.getParamValue("creatDate"));
 		paraMap.put("outPlantDate", request.getParamValue("outPlantDate"));
-		paraMap.put("REPAIR_TYPE", request.getParamValue("REPAIR_TYPE"));
+		paraMap.put("repairType", request.getParamValue("repairType"));
 		paraMap.put("LICENSE_NO", request.getParamValue("LICENSE_NO"));
 		paraMap.put("CTM_NAME", request.getParamValue("CTM_NAME"));
 		String flag=request.getParamValue("flag");
@@ -908,7 +908,7 @@ public class ApplicationClaim extends BaseAction {
 				paraMap.put("VIN", request.getParamValue("VIN"));
 				paraMap.put("creatDate", request.getParamValue("creatDate"));
 				paraMap.put("outPlantDate", request.getParamValue("outPlantDate"));
-				//paraMap.put("REPAIR_TYPE", request.getParamValue("REPAIR_TYPE"));
+				paraMap.put("repairType", request.getParamValue("repairType"));
 				paraMap.put("LICENSE_NO", request.getParamValue("LICENSE_NO"));
 				paraMap.put("APP_CLAIM_NO", request.getParamValue("APP_CLAIM_NO"));
 				String flag=request.getParamValue("flag");
@@ -972,7 +972,7 @@ public class ApplicationClaim extends BaseAction {
 				paraMap.put("VIN", request.getParamValue("VIN"));
 				paraMap.put("creatDate", request.getParamValue("creatDate"));
 				paraMap.put("outPlantDate", request.getParamValue("outPlantDate"));
-				//paraMap.put("REPAIR_TYPE", request.getParamValue("REPAIR_TYPE"));
+				paraMap.put("repairType", request.getParamValue("repairType"));
 				paraMap.put("LICENSE_NO", request.getParamValue("LICENSE_NO"));
 				paraMap.put("APP_CLAIM_NO", request.getParamValue("APP_CLAIM_NO"));
 				String flag=request.getParamValue("flag");
@@ -1010,7 +1010,7 @@ public class ApplicationClaim extends BaseAction {
 				paraMap.put("VIN", request.getParamValue("VIN"));
 				paraMap.put("creatDate", request.getParamValue("creatDate"));
 				paraMap.put("outPlantDate", request.getParamValue("outPlantDate"));
-				//paraMap.put("REPAIR_TYPE", request.getParamValue("REPAIR_TYPE"));
+				paraMap.put("repairType", request.getParamValue("repairType"));
 				paraMap.put("LICENSE_NO", request.getParamValue("LICENSE_NO"));
 				paraMap.put("APP_CLAIM_NO", request.getParamValue("APP_CLAIM_NO"));
 				String flag=request.getParamValue("flag");
@@ -1048,7 +1048,7 @@ public class ApplicationClaim extends BaseAction {
 				paraMap.put("VIN", request.getParamValue("VIN"));
 				paraMap.put("creatDate", request.getParamValue("creatDate"));
 				paraMap.put("outPlantDate", request.getParamValue("outPlantDate"));
-				//paraMap.put("REPAIR_TYPE", request.getParamValue("REPAIR_TYPE"));
+				paraMap.put("repairType", request.getParamValue("repairType"));
 				paraMap.put("LICENSE_NO", request.getParamValue("LICENSE_NO"));
 				paraMap.put("APP_CLAIM_NO", request.getParamValue("APP_CLAIM_NO"));
 				String flag=request.getParamValue("flag");

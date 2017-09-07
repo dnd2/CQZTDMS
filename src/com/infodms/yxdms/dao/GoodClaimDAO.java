@@ -324,31 +324,43 @@ public class GoodClaimDAO extends IBaseDao{
 
 	@SuppressWarnings("unchecked")
 	public PageResult<Map<String, Object>> specialClaimSettlementList(TtAsSpecialAmountRangePO po,RequestWrapper request, AclUserBean loginUser, Integer pageSize,Integer currPage) {
-		StringBuffer sb= new StringBuffer();
-		sb.append("select t.*,tm.dealer_name,tm.dealer_shortname,vw.root_org_name\n" );
-		sb.append("  from tt_as_wr_Special t, tm_dealer tm, vw_data_by_vin v,vw_org_dealer_service vw\n" );
-		sb.append(" where tm.dealer_id = t.dealer_id and t.dealer_code=vw.root_dealer_code\n" );
-		sb.append("   and v.vin = t.vin and t.status=20331007 \n");
-		sb.append("   and t.apply_money >= "+po.getAmountOffline()+"\n" );		
+		StringBuffer sql= new StringBuffer();
+		sql.append("select t.*,\n" );
+		sql.append("       tm.dealer_name,\n" );
+		sql.append("       tm.dealer_shortname,\n" );
+		sql.append("       vw.root_org_name\n" );
+		sql.append("  from tt_as_wr_Special t,\n" );
+		sql.append("       tm_dealer        tm,\n" );
+		sql.append("       vw_org_dealer_service vw\n" );
+		sql.append(" where tm.dealer_id = t.dealer_id\n" );
+		sql.append("   and t.dealer_code = vw.dealer_code");
+
+		sql.append("   and t.status=20331007 \n");
+		sql.append("   and t.apply_money >= "+po.getAmountOffline()+"\n" );		
 		if(StringUtils.isNotBlank((String) request.getParamValue("dealerId"))){
-			sb.append("and t.dealer_id in ("+request.getParamValue("dealerId")+")");	
+			sql.append("and t.dealer_id in ("+request.getParamValue("dealerId")+")");	
 		}
-		DaoFactory.getsql(sb, "t.APPLY_NO", request.getParamValue("APPLY_NO"), 2);
-		DaoFactory.getsql(sb, "t.STATUS", request.getParamValue("STATUS"), 1);
-		DaoFactory.getsql(sb, "t.REPORT_DATE", request.getParamValue("creatDate"), 31);
-        sb.append(CommonUtils.getOrgDealerLimitSqlByPose("t", loginUser));
-        sb.append("   order by t.status asc,t.REPORT_DATE desc\n" );
-		PageResult<Map<String, Object>> list=pageQuery(sb.toString(), null,getFunName(), pageSize, currPage);
+		DaoFactory.getsql(sql, "t.APPLY_NO", request.getParamValue("APPLY_NO"), 2);
+		DaoFactory.getsql(sql, "t.STATUS", request.getParamValue("STATUS"), 1);
+		DaoFactory.getsql(sql, "t.REPORT_DATE", request.getParamValue("creatDate"), 31);
+		sql.append(CommonUtils.getOrgDealerLimitSqlByPose("t", loginUser));
+		sql.append("   order by t.status asc,t.REPORT_DATE desc\n" );
+		PageResult<Map<String, Object>> list=pageQuery(sql.toString(), null,getFunName(), pageSize, currPage);
 		return list;
 	}
 
 	@SuppressWarnings("unchecked")
 	public PageResult<Map<String, Object>> specialTecSupportList(TtAsSpecialAmountRangePO po,RequestWrapper request, AclUserBean loginUser, Integer pageSize,Integer currPage) {
 		StringBuffer sb= new StringBuffer();
-		sb.append("select t.*,vw.root_org_name,tm.DEALER_NAME\n" );
-		sb.append("  from tt_as_wr_Special t, tm_dealer tm, vw_data_by_vin v,vw_org_dealer_service vw\n" );
-		sb.append(" where tm.dealer_id = t.dealer_id and t.dealer_id= vw.dealer_id\n" );
-		sb.append("   and v.vin = t.vin\n" );
+		sb.append("select t.*,\n" );
+		sb.append("       tm.dealer_name,\n" );
+		sb.append("       tm.dealer_shortname,\n" );
+		sb.append("       vw.root_org_name\n" );
+		sb.append("  from tt_as_wr_Special t,\n" );
+		sb.append("       tm_dealer        tm,\n" );
+		sb.append("       vw_org_dealer_service vw\n" );
+		sb.append(" where tm.dealer_id = t.dealer_id\n" );
+		sb.append("   and t.dealer_code = vw.dealer_code");
 		sb.append("   and t.status = 20331002\n" );
 		sb.append("   and t.apply_money >= "+po.getAmountOffline()+"\n" );		
 		if(StringUtils.isNotBlank((String) request.getParamValue("dealerId"))){
@@ -365,10 +377,15 @@ public class GoodClaimDAO extends IBaseDao{
 	@SuppressWarnings("unchecked")
 	public PageResult<Map<String, Object>> specialTecSeSupportList(RequestWrapper request, AclUserBean loginUser, Integer pageSize,Integer currPage) {
 		StringBuffer sb= new StringBuffer();
-		sb.append("select t.*,vw.root_org_name,tm.DEALER_NAME\n" );
-		sb.append("  from tt_as_wr_Special t, tm_dealer tm, vw_data_by_vin v,vw_org_dealer_service vw\n" );
-		sb.append(" where tm.dealer_id = t.dealer_id and t.dealer_id= vw.dealer_id\n" );
-		sb.append("   and v.vin = t.vin\n" );
+		sb.append("select t.*,\n" );
+		sb.append("       tm.dealer_name,\n" );
+		sb.append("       tm.dealer_shortname,\n" );
+		sb.append("       vw.root_org_name\n" );
+		sb.append("  from tt_as_wr_Special t,\n" );
+		sb.append("       tm_dealer        tm,\n" );
+		sb.append("       vw_org_dealer_service vw\n" );
+		sb.append(" where tm.dealer_id = t.dealer_id\n" );
+		sb.append("   and t.dealer_code = vw.dealer_code");
 		sb.append("   and t.status not in (20331001)\n" );	
 		if(StringUtils.isNotBlank((String) request.getParamValue("dealerId"))){
 			sb.append("and t.dealer_id in ("+request.getParamValue("dealerId")+")");	
@@ -385,10 +402,16 @@ public class GoodClaimDAO extends IBaseDao{
 	@SuppressWarnings("unchecked")
 	public PageResult<Map<String, Object>> specialRegionalDirectorList(TtAsSpecialAmountRangePO po,RequestWrapper request, AclUserBean loginUser, Integer pageSize,Integer currPage) {
 		StringBuffer sb= new StringBuffer();
-		sb.append("select t.*,vw.root_org_name,tm.dealer_name,tm.dealer_shortname\n" );
-		sb.append("  from tt_as_wr_Special t, tm_dealer tm, vw_data_by_vin v,vw_org_dealer_service vw\n" );
-		sb.append(" where tm.dealer_id = t.dealer_id and t.dealer_id= vw.dealer_id\n" );
-		sb.append("   and v.vin = t.vin and t.status=20331005 \n");
+		sb.append("select t.*,\n" );
+		sb.append("       tm.dealer_name,\n" );
+		sb.append("       tm.dealer_shortname,\n" );
+		sb.append("       vw.root_org_name\n" );
+		sb.append("  from tt_as_wr_Special t,\n" );
+		sb.append("       tm_dealer        tm,\n" );
+		sb.append("       vw_org_dealer_service vw\n" );
+		sb.append(" where tm.dealer_id = t.dealer_id\n" );
+		sb.append("   and t.dealer_code = vw.dealer_code");
+		sb.append("  and t.status=20331005 \n");
         sb.append("   and t.apply_money >= "+po.getAmountOffline()+"\n" );		
 		if(StringUtils.isNotBlank((String) request.getParamValue("dealerId"))){
 			sb.append("and t.dealer_id in ("+request.getParamValue("dealerId")+")");	
@@ -405,10 +428,16 @@ public class GoodClaimDAO extends IBaseDao{
 	@SuppressWarnings("unchecked")
 	public PageResult<Map<String, Object>> specialRegionalManagerList(TtAsSpecialAmountRangePO po,RequestWrapper request, AclUserBean loginUser, Integer pageSize,Integer currPage) {
 		StringBuffer sb= new StringBuffer();
-		sb.append("select t.*,vw.root_org_name,tm.DEALER_NAME,tm.dealer_shortname\n" );
-		sb.append("  from tt_as_wr_Special t, tm_dealer tm, vw_data_by_vin v,vw_org_dealer_service vw\n" );
-		sb.append(" where tm.dealer_id = t.dealer_id and t.dealer_id= vw.dealer_id\n" );
-		sb.append("   and v.vin = t.vin and t.status=20331003\n");
+		sb.append("select t.*,\n" );
+		sb.append("       tm.dealer_name,\n" );
+		sb.append("       tm.dealer_shortname,\n" );
+		sb.append("       vw.root_org_name\n" );
+		sb.append("  from tt_as_wr_Special t,\n" );
+		sb.append("       tm_dealer        tm,\n" );
+		sb.append("       vw_org_dealer_service vw\n" );
+		sb.append(" where tm.dealer_id = t.dealer_id\n" );
+		sb.append("   and t.dealer_code = vw.dealer_code");
+		sb.append(" and t.status=20331003\n");
 		sb.append("   and t.apply_money >= "+po.getAmountOffline()+"\n" );		
 		if(StringUtils.isNotBlank((String) request.getParamValue("dealerId"))){
 			sb.append("and t.dealer_id in ("+request.getParamValue("dealerId")+")");	

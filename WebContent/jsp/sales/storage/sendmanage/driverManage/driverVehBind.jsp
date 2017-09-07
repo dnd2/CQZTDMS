@@ -81,7 +81,14 @@ List list =(List)request.getAttribute("drivers");
 	var columns = [
 				{header: "序号",align:'center',renderer:getIndex},
 				{id:'action',header: "<input type='checkbox' name='checkAll' onclick='selectAll(this,\"groupIds\")'/>",sortable: false,dataIndex: 'DTL_ID',renderer:myCheckBox},
-				{header: "交接单号",dataIndex: 'BILL_NO',align:'center'},
+				//{header: "交接单号",dataIndex: 'BILL_NO',align:'center'},
+				{
+					header: "交接单号", dataIndex: 'BILL_NO', align:'center', 
+					renderer: function(value, metaData, record) {
+						var url = '<%=contextPath%>/sales/storage/sendmanage/DlvWayBillManage/showBillDetailInit.do?billId=' + record.data.BILL_ID;
+						return "<a href='javascript:;' onclick='viewOrderInfo(\""+url+"\")'>"+value+"</a>";
+					}
+				},
 				{header: "订单号",dataIndex: 'ORDER_NO',align:'center'},
 				{header: "组板号",dataIndex: 'BO_NO',align:'center'},
 				{header: "驾驶员姓名",dataIndex: 'DRIVER_NAME',align:'center',renderer:selectDriverName},
@@ -175,7 +182,10 @@ List list =(List)request.getAttribute("drivers");
 		disabledButton(["saveButton"],true);
 		makeNomalFormCall("<%=contextPath%>/sales/storage/sendmanage/DriverVehManage/saveDriverVehBind.json",sendBindBack,'fm','queryBtn'); 
 	}
-	
+	function viewOrderInfo(url)
+	{
+		OpenHtmlWindow(url,1000,450);
+	}
 	function sendBindBack(json)
 	{
 		if(json.returnValue == 1)

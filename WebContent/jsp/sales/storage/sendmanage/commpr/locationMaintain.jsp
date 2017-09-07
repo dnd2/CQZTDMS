@@ -74,7 +74,14 @@
 	var columns = [
 					{header: "序号", dataIndex: '', align:'center', renderer:getIndex},
 	              	{header: "承运商",dataIndex: 'LOGI_NAME',align:'center'},
-	                {header: "交接单号",dataIndex: 'BILL_NO',align:'center'},
+	                //{header: "交接单号",dataIndex: 'BILL_NO',align:'center'},
+	                {
+						header: "交接单号", dataIndex: 'BILL_NO', align:'center', 
+						renderer: function(value, metaData, record) {
+							var url = '<%=contextPath%>/sales/storage/sendmanage/DlvWayBillManage/showBillDetailInit.do?billId=' + record.data.BILL_ID;
+							return "<a href='javascript:;' onclick='viewOrderInfo(\""+url+"\")'>"+value+"</a>";
+						}
+					},
 	                {header: "经销商/收货仓库",dataIndex: 'DEALER_NAME',align:'center'},
 	                {header: "详细地址",dataIndex: 'ADDRESS', style:'text-align:left;'},
 	                {header: "交接日期",dataIndex: 'BILL_CRT_DATE',align:'center'},
@@ -104,6 +111,10 @@
 	function txtClr(valueId1,valueId2) {
 		document.getElementById(valueId1).value = '' ;
 		document.getElementById(valueId2).value = '' ;
+	}
+	function viewOrderInfo(url)
+	{
+		OpenHtmlWindow(url,1000,450);
 	}
 </script>
 <!--页面列表 end -->

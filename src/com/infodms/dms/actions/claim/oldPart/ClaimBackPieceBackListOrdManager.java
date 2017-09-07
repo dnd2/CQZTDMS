@@ -92,8 +92,9 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 	//旧件抵扣通知单明细页面
 	private final String oldPartDeductionDetail_Url= "/jsp/claim/oldPart/oldPartDeductionDetail.jsp";
 	
-	private final String CLAIM_DEDUCTION_SECOND_URL= "/jsp/claim/oldPart/oldPartDeductionQuery.jsp";//二次抵扣索赔单
-
+	private final String CLAIM_DEDUCTION_SECOND_URL= "/jsp/claim/oldPart/claimDeductionSecondQuery.jsp";//二次抵扣索赔单
+	private final String CLAIM_DEDUCTION_SECOND_SHOW_URL= "/jsp/claim/oldPart/claimDeductionSecondShow.jsp";//二次抵扣索赔单展示
+	
 	public void queryListPage(){
 		super.sendMsgByUrl(queryBackListOrdUrl, "索赔件回运清单维护--初始化");
 	}
@@ -2770,7 +2771,8 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 	public void oldPartDeductionQuery() {
 		try {
 			act = ActionContext.getContext();
-			act.setOutData("yieldly", Constant.PART_IS_CHANGHE_01);
+//			act.setOutData("yieldly", Constant.PART_IS_CHANGHE_01);‘
+			act.setOutData("dealerId", String.valueOf(loginUser.getDealerId()));
 			act.setForword(oldPartDeductionQuery_Url);
 		} catch (Exception e) {
 			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "抵扣通知单 服务站初始化跳转");
@@ -2786,7 +2788,8 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 		Integer curPage = request.getParamValue("curPage") != null ? Integer.parseInt(request.getParamValue("curPage"))
 				: 1;
 		try {
-			params.put("dealerId", String.valueOf(loginUser.getDealerId()));
+			params.put("claimId", request.getParamValue("claimId"));
+			params.put("dealerId", request.getParamValue("dealerId"));
 			params.put("deductionStatus", request.getParamValue("deductionStatus"));// 抵扣单状态
 			params.put("deductionNo", request.getParamValue("deductionNo"));// 抵扣单单号
 			params.put("updateDateStart", request.getParamValue("updateDateStart"));// 通知开始时间
@@ -2839,7 +2842,7 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 //			act.setOutData("yieldly", Constant.PART_IS_CHANGHE_01);
 			act.setForword(CLAIM_DEDUCTION_SECOND_URL);
 		} catch (Exception e) {
-			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "抵扣通知单 服务站初始化跳转");
+			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "二次抵扣索赔单");
 			logger.error(loginUser, e1);
 			act.setException(e1);
 		}
@@ -2847,24 +2850,71 @@ public class ClaimBackPieceBackListOrdManager extends BaseAction{
 
 	//二次抵扣索赔单查询
 	public void claimDeductionSecondQuery() {
-		String serviceOrderCode = CommonUtils.checkNull(request.getParamValue("serviceOrderCode"));//工单号
+		String dealerId = CommonUtils.checkNull(request.getParamValue("dealerId"));//经销商ID
+		String appClaimNo = CommonUtils.checkNull(request.getParamValue("appClaimNo"));//索赔单号
+		String repairType = CommonUtils.checkNull(request.getParamValue("repairType"));//索赔类型
+		String vin = CommonUtils.checkNull(request.getParamValue("vin"));//vin
 		
 		Map<String, String> params = new HashMap<String, String>();
 		// 处理当前页
 		Integer curPage = request.getParamValue("curPage") != null ? Integer.parseInt(request.getParamValue("curPage")) : 1;
 		try {
-			params.put("dealerId", String.valueOf(loginUser.getDealerId()));
-			params.put("serviceOrderCode", serviceOrderCode);// 抵扣单状态
-			params.put("deductionNo", request.getParamValue("deductionNo"));// 抵扣单单号
-			params.put("updateDateStart", request.getParamValue("updateDateStart"));// 通知开始时间
-			params.put("updateDateEnd", request.getParamValue("updateDateEnd"));// 通知结束时间
-
-			PageResult<Map<String, Object>>ps = dao.oldPartDeductionQuery(params, curPage, Constant.PAGE_SIZE);
+			params.put("dealerId", dealerId);
+			params.put("appClaimNo", appClaimNo);
+			params.put("repairType", repairType);
+			params.put("vin", vin);
+			PageResult<Map<String, Object>> ps = dao.claimDeductionSecondQuery(params, curPage, Constant.PAGE_SIZE);
 			act.setOutData("ps", ps);
 		} catch (Exception e) {
-			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "旧件抵扣通知单查询--条件查询");
+			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "二次抵扣索赔单查询");
 			logger.error(loginUser, e1);
 			act.setException(e1);
+		}
+	}
+	//二次抵扣展示
+	public void claimDeductionSecondShow() {
+		try {
+			String claimId = CommonUtils.checkNull(request.getParamValue("claimId"));//索赔单ID
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("claimId", claimId);
+			Map<String, Object> claimDeductionSecondMap = dao.claimDeductionSecondQuery(params);
+			act.setOutData("claimId", claimId);
+			act.setOutData("claimDeductionSecondMap", claimDeductionSecondMap);
+			act.setForword(CLAIM_DEDUCTION_SECOND_SHOW_URL);
+		} catch (Exception e) {
+			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "二次抵扣索赔单");
+			logger.error(loginUser, e1);
+			act.setException(e1);
+		}
+	}
+
+	//二次抵扣保存
+	public void secondDeductionAmountSave() {
+		String claimId = CommonUtils.checkNull(request.getParamValue("claimId"));//索赔类型
+		String dealerId = CommonUtils.checkNull(request.getParamValue("dealerId"));//经销商ID
+		String secondDeductionAmount = CommonUtils.checkNull(request.getParamValue("secondDeductionAmount"));//二次抵扣金额
+		String secondDeductionRemark = CommonUtils.checkNull(request.getParamValue("secondDeductionRemark"));//二次抵扣备注
+		
+		String vin = CommonUtils.checkNull(request.getParamValue("vin"));//vin
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		try {
+			params.put("claimId", claimId);
+			params.put("dealerId", dealerId);
+			params.put("secondDeductionAmount", secondDeductionAmount);
+			params.put("secondDeductionRemark", secondDeductionRemark);
+			params.put("loginUserId", loginUser.getUserId());
+			
+			dao.secondDeductionAmountSave(params);
+			act.setOutData("code", "succ");
+			act.setOutData("msg", "操作成功");
+		} catch (Exception e) {
+			BizException e1 = new BizException(act, e, ErrorCodeConstant.QUERY_FAILURE_CODE, "二次抵扣保存");
+			logger.error(loginUser, e1);
+			act.setException(e1);
+			act.setOutData("code", "fail");
+			act.setOutData("msg", "保存失败!"+e1);
 		}
 	}
 	

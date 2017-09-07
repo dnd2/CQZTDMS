@@ -66,7 +66,14 @@
 	var columns = [
 					{header: "操作",sortable: false, dataIndex: 'DTL_ID', align:'center',renderer:myLink},
 	                {header: "VIN",dataIndex: 'VIN',align:'center'},
-	                {header: "交接单号",dataIndex: 'BILL_NO',align:'center'},
+	                //{header: "交接单号",dataIndex: 'BILL_NO',align:'center'},
+	                {
+						header: "交接单号", dataIndex: 'BILL_NO', align:'center', 
+						renderer: function(value, metaData, record) {
+							var url = '<%=contextPath%>/sales/storage/sendmanage/DlvWayBillManage/showBillDetailInit.do?billId=' + record.data.BILL_ID;
+							return "<a href='javascript:;' onclick='viewOrderInfo(\""+url+"\")'>"+value+"</a>";
+						}
+					},
 	                {header: "批售单号",dataIndex: 'ORDER_NO',align:'center'},
 	                {header: "调拨单号",dataIndex: 'ORDER_NO',align:'center'},
 	                {header: "车型",dataIndex: 'MODEL_NAME',align:'center'},
@@ -113,6 +120,10 @@
 	function outputExcel(){
 		fm.action='<%=contextPath%>/sales/storage/sendmanage/OnTheWayAction/locationMaintainQueryInit.do?query=excel';  
 		fm.submit();
+	}
+	function viewOrderInfo(url)
+	{
+		OpenHtmlWindow(url,1000,450);
 	}
 </script>
 <!--页面列表 end -->
